@@ -1,4 +1,5 @@
 import { useEffect, useState, type FormEvent } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Navigate, useLocation } from 'react-router-dom'
 import { FirebaseError } from 'firebase/app'
 import {
@@ -11,26 +12,28 @@ import {
 import { useAuth, type AuthState } from '../auth/AuthContext'
 import { SetuMark } from '../components/SetuMark'
 import { homePathFor } from '../consoles/consoles'
+import { useLanguages } from '../language/LanguageContext'
 import { auth } from '../lib/firebase'
 import { SplashScreen } from './SplashScreen'
 
-function authErrorMessage(error: unknown): string {
+/** Maps a Firebase error to a translation key; the raw code is shown only as a fallback. */
+function authErrorKey(error: unknown): { key: string; code: string } {
   const code = error instanceof FirebaseError ? error.code : ''
   switch (code) {
     case 'auth/invalid-credential':
     case 'auth/wrong-password':
     case 'auth/user-not-found':
-      return 'Email or password is incorrect.'
+      return { key: 'login.errors.invalidCredential', code }
     case 'auth/invalid-email':
-      return 'That is not a valid email address.'
+      return { key: 'login.errors.invalidEmail', code }
     case 'auth/user-disabled':
-      return 'This account has been disabled in Firebase Authentication.'
+      return { key: 'login.errors.userDisabled', code }
     case 'auth/too-many-requests':
-      return 'Too many attempts. Wait a few minutes and try again.'
+      return { key: 'login.errors.tooManyRequests', code }
     case 'auth/network-request-failed':
-      return 'Could not reach the sign-in service. Check your connection.'
+      return { key: 'login.errors.network', code }
     default:
-      return `Sign-in failed (${code || 'unknown error'}).`
+      return { key: 'login.errors.unknown', code: code || 'unknown error' }
   }
 }
 
@@ -47,7 +50,9 @@ function postSignInPath(state: AuthState, locationState: unknown): string {
 }
 
 export function LoginPage() {
+  const { t } = useTranslation()
   const { state } = useAuth()
+  const { promptNeeded } = useLanguages()
   const location = useLocation()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -58,10 +63,14 @@ export function LoginPage() {
   const [notice, setNotice] = useState<string | null>(null)
 
   useEffect(() => {
-    document.title = 'Sign in · SETU'
-  }, [])
+    document.title = `${t('login.title')} · SETU`
+  }, [t])
 
   if (state.status === 'loading') return <SplashScreen />
+  // Nobody signed in and no language chosen yet: that screen comes first.
+  if (state.status === 'signed-out' && promptNeeded) {
+    return <Navigate to="/language" replace state={location.state} />
+  }
   if (state.status !== 'signed-out') {
     return <Navigate to={postSignInPath(state, location.state)} replace />
   }
@@ -76,7 +85,8 @@ export function LoginPage() {
       await signInWithEmailAndPassword(auth, email.trim(), password)
       // AuthProvider sees the new user and this page redirects.
     } catch (err) {
-      setError(authErrorMessage(err))
+      const { key, code } = authErrorKey(err)
+      setError(t(key, { code }))
       setSubmitting(false)
     }
   }
@@ -86,14 +96,15 @@ export function LoginPage() {
     setNotice(null)
     const address = email.trim()
     if (!address) {
-      setError('Enter your official email first, then choose “Forgot password?”.')
+      setError(t('login.resetNeedsEmail'))
       return
     }
     try {
       await sendPasswordResetEmail(auth, address)
-      setNotice(`If ${address} has a SETU account, a password reset link has been sent to it.`)
+      setNotice(t('login.resetSent', { email: address }))
     } catch (err) {
-      setError(authErrorMessage(err))
+      const { key, code } = authErrorKey(err)
+      setError(t(key, { code }))
     }
   }
 
@@ -106,27 +117,19 @@ export function LoginPage() {
         </div>
 
         <div className="login-pitch">
-          <div className="login-pitch-title">The bridge, staffed.</div>
-          <p>
-            Sign in with your official credentials. SETU reads your role and opens the right console — no menu to
-            navigate.
-          </p>
-          <p className="login-pitch-secondary">
-            Every entry you make here reaches someone who cannot read this screen. Skilling by voice, in ten
-            languages, for anyone with a phone.
-          </p>
+          <div className="login-pitch-title">{t('login.panelTitle')}</div>
+          <p>{t('login.panelBody')}</p>
+          <p className="login-pitch-secondary">{t('login.panelBodySecondary')}</p>
         </div>
 
         <div className="login-ministry">
           <div className="emblem-placeholder" aria-hidden="true">
-            MoSJE
-            <br />
-            emblem
+            {t('common.emblemPlaceholder')}
           </div>
           <span>
-            Ministry of Social Justice
+            {t('common.ministryLine1')}
             <br />
-            and Empowerment · Government of India
+            {t('common.ministryLine2')} · {t('common.government')}
           </span>
         </div>
       </aside>
@@ -134,15 +137,15 @@ export function LoginPage() {
       <section className="login-form-area">
         <div className="login-form-wrap">
           <div className="login-heading">
-            <span className="eyebrow">Official access</span>
-            <h1>Sign in</h1>
-            <p>For departmental staff only. Beneficiaries do not sign in — they reach SETU by phone.</p>
+            <span className="eyebrow">{t('login.eyebrow')}</span>
+            <h1>{t('login.title')}</h1>
+            <p>{t('login.subtitle')}</p>
           </div>
 
           <form className="login-form" onSubmit={handleSubmit} noValidate>
             <div className="field">
               <label className="field-label" htmlFor="email">
-                Official email
+                {t('login.emailLabel')}
               </label>
               <input
                 id="email"
@@ -157,10 +160,10 @@ export function LoginPage() {
             <div className="field">
               <div className="field-label-row">
                 <label className="field-label" htmlFor="password">
-                  Password
+                  {t('login.passwordLabel')}
                 </label>
                 <button type="button" className="link-button" onClick={() => void handleForgotPassword()}>
-                  Forgot password?
+                  {t('login.forgotPassword')}
                 </button>
               </div>
               <div className="password-input">
@@ -178,7 +181,7 @@ export function LoginPage() {
                   onClick={() => setShowPassword((shown) => !shown)}
                   aria-pressed={showPassword}
                 >
-                  {showPassword ? 'Hide' : 'Show'}
+                  {showPassword ? t('login.hide') : t('login.show')}
                 </button>
               </div>
             </div>
@@ -189,7 +192,7 @@ export function LoginPage() {
                 checked={keepSignedIn}
                 onChange={(event) => setKeepSignedIn(event.target.checked)}
               />
-              <span>Keep me signed in on this device</span>
+              <span>{t('login.keepSignedIn')}</span>
             </label>
 
             {error && (
@@ -204,16 +207,14 @@ export function LoginPage() {
             )}
 
             <button type="submit" className="btn btn-primary btn-block" disabled={submitting || !email || !password}>
-              {submitting ? 'Signing in…' : 'Sign in'}
+              {submitting ? t('login.submitting') : t('common.signIn')}
             </button>
 
-            <div className="alert alert-info">You will be routed to your console automatically based on your assigned role.</div>
+            <div className="alert alert-info">{t('login.routedNote')}</div>
           </form>
         </div>
 
-        <footer className="login-footer">
-          Unauthorised access to this system is an offence under the Information Technology Act, 2000.
-        </footer>
+        <footer className="login-footer">{t('login.legal')}</footer>
       </section>
     </div>
   )

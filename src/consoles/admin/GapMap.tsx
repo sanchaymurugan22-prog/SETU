@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import L from 'leaflet'
 import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
@@ -69,6 +70,7 @@ export function GapMap({
   focus: FocusRequest | null
   onAction: (gap: BlockGap, action: GapAction) => void
 }) {
+  const { t } = useTranslation()
   const markers = useRef<Record<string, L.Marker | null>>({})
 
   return (
@@ -92,11 +94,12 @@ export function GapMap({
             <div className="gap-popup">
               <div className={`gap-popup-bar ${gap.gapType === 'no-centre' ? 'is-demand' : 'is-unplaced'}`}>
                 <span className="gap-popup-block">{gap.block}</span>
-                <span className="gap-popup-district">{gap.district} district</span>
+                <span className="gap-popup-district">{t('gapMap.popup.district', { district: gap.district })}</span>
               </div>
 
               <span className="gap-popup-tag">
-                {gap.gapType === 'no-centre' ? 'Demand, no centre' : 'Trained, no local jobs'} · {gap.course}
+                {gap.gapType === 'no-centre' ? t('gapMap.popup.demandTag') : t('gapMap.popup.unplacedTag')} ·{' '}
+                {gap.course}
               </span>
 
               <p className="gap-popup-detail">{gap.detail}</p>
@@ -105,30 +108,30 @@ export function GapMap({
                 {gap.gapType === 'no-centre' ? (
                   <>
                     <div>
-                      <dt>Want this course</dt>
+                      <dt>{t('gapMap.popup.wantCourse')}</dt>
                       <dd>{formatNumber(gap.demandCount)}</dd>
                     </div>
                     <div>
-                      <dt>Centres in block</dt>
+                      <dt>{t('gapMap.popup.centresInBlock')}</dt>
                       <dd>0</dd>
                     </div>
                     <div>
-                      <dt>Nearest centre</dt>
-                      <dd>{gap.nearestCentreKm} km</dd>
+                      <dt>{t('gapMap.popup.nearestCentre')}</dt>
+                      <dd>{t('gapMap.popup.km', { km: gap.nearestCentreKm })}</dd>
                     </div>
                   </>
                 ) : (
                   <>
                     <div>
-                      <dt>Trained</dt>
+                      <dt>{t('gapMap.popup.trained')}</dt>
                       <dd>{formatNumber(gap.trainedCount)}</dd>
                     </div>
                     <div>
-                      <dt>Placed</dt>
+                      <dt>{t('gapMap.popup.placed')}</dt>
                       <dd>{formatNumber(gap.placedCount)}</dd>
                     </div>
                     <div>
-                      <dt>Unplaced</dt>
+                      <dt>{t('gapMap.popup.unplaced')}</dt>
                       <dd className="is-alert">{formatNumber(gap.unplacedCount)}</dd>
                     </div>
                   </>
@@ -136,16 +139,16 @@ export function GapMap({
               </dl>
 
               <div className="gap-popup-action">
-                <span className="gap-popup-action-label">Recommended action</span>
+                <span className="gap-popup-action-label">{t('gapMap.popup.recommendedAction')}</span>
                 <p>{gap.recommendedAction}</p>
               </div>
 
               <div className="gap-popup-buttons">
                 <button type="button" className="btn btn-primary btn-small" onClick={() => onAction(gap, 'proposal')}>
-                  Raise proposal
+                  {t('gapMap.actions.raiseProposal')}
                 </button>
                 <button type="button" className="btn btn-outline btn-small" onClick={() => onAction(gap, 'officer')}>
-                  Assign officer
+                  {t('gapMap.actions.assignOfficer')}
                 </button>
               </div>
             </div>

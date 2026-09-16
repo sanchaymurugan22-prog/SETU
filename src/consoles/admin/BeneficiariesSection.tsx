@@ -1,25 +1,23 @@
 import { useEffect, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   blocks,
   courses,
   districts,
   isFlaggedOrStalled,
-  lastContactLabel,
   loadBeneficiaries,
-  STATUS_LABEL,
   STATUS_ORDER,
   STATUS_TONE,
   type Beneficiary,
   type BeneficiaryStatus,
 } from '../../data/jharkhandBeneficiaries'
+import { formatLastContact } from '../../i18n/format'
 import { BeneficiaryJourney } from './BeneficiaryJourney'
 import '../../styles/beneficiaries.css'
 
 const PAGE_SIZE = 12
 
 type StatusFilter = 'all' | BeneficiaryStatus
-
-const ACTION_LABEL = { call: 'Schedule call', officer: 'Assign officer' } as const
 
 function matchesSearch(person: Beneficiary, term: string): boolean {
   if (!term) return true
@@ -33,6 +31,7 @@ function matchesSearch(person: Beneficiary, term: string): boolean {
 }
 
 export function BeneficiariesSection() {
+  const { t } = useTranslation()
   const all = loadBeneficiaries()
 
   const [search, setSearch] = useState('')
@@ -45,9 +44,11 @@ export function BeneficiariesSection() {
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [notice, setNotice] = useState<{ person: Beneficiary; action: 'call' | 'officer' } | null>(null)
 
+  const title = t('sections.admin.beneficiaries.title')
+
   useEffect(() => {
-    document.title = 'Beneficiaries · SETU'
-  }, [])
+    document.title = `${title} · SETU`
+  }, [title])
 
   const blockOptions = useMemo(() => blocks(district), [district])
 
@@ -99,33 +100,31 @@ export function BeneficiariesSection() {
     <>
       <header className="section-header ben-header">
         <div>
-          <h1>Beneficiaries</h1>
-          <p className="ben-subtitle">
-            {all.length} sample beneficiaries · {flaggedCount} AI-flagged or stalled · seeded from the gap-map blocks
-          </p>
+          <h1>{title}</h1>
+          <p className="ben-subtitle">{t('beneficiaries.subtitle', { total: all.length, flagged: flaggedCount })}</p>
         </div>
         <div className="ben-jurisdiction">
-          <span className="ben-jurisdiction-label">Jurisdiction</span>
-          <span className="ben-jurisdiction-value">Jharkhand · all 24 districts</span>
+          <span className="ben-jurisdiction-label">{t('gapMap.jurisdictionLabel')}</span>
+          <span className="ben-jurisdiction-value">{t('gapMap.jurisdictionValue')}</span>
         </div>
       </header>
 
       <div className="section-body ben-body">
         <div className="ben-filters">
           <label className="ben-search">
-            <span className="visually-hidden">Search beneficiaries</span>
+            <span className="visually-hidden">{t('beneficiaries.searchLabel')}</span>
             <input
               type="search"
               value={search}
-              placeholder="Search name, phone, village or SETU ID"
+              placeholder={t('beneficiaries.searchPlaceholder')}
               onChange={(event) => setSearch(event.target.value)}
             />
           </label>
 
           <label className="ben-select">
-            <span className="visually-hidden">District</span>
+            <span className="visually-hidden">{t('beneficiaries.filters.district')}</span>
             <select value={district} onChange={(event) => setDistrict(event.target.value)}>
-              <option value="all">District: all</option>
+              <option value="all">{t('beneficiaries.filters.districtAll')}</option>
               {districts().map((name) => (
                 <option key={name} value={name}>
                   {name}
@@ -135,9 +134,9 @@ export function BeneficiariesSection() {
           </label>
 
           <label className="ben-select">
-            <span className="visually-hidden">Block</span>
+            <span className="visually-hidden">{t('beneficiaries.filters.block')}</span>
             <select value={effectiveBlock} onChange={(event) => setBlock(event.target.value)}>
-              <option value="all">Block: all</option>
+              <option value="all">{t('beneficiaries.filters.blockAll')}</option>
               {blockOptions.map((name) => (
                 <option key={name} value={name}>
                   {name}
@@ -147,9 +146,9 @@ export function BeneficiariesSection() {
           </label>
 
           <label className="ben-select">
-            <span className="visually-hidden">Course</span>
+            <span className="visually-hidden">{t('beneficiaries.filters.course')}</span>
             <select value={course} onChange={(event) => setCourse(event.target.value)}>
-              <option value="all">Course: all</option>
+              <option value="all">{t('beneficiaries.filters.courseAll')}</option>
               {courses().map((name) => (
                 <option key={name} value={name}>
                   {name}
@@ -159,12 +158,12 @@ export function BeneficiariesSection() {
           </label>
 
           <label className="ben-select">
-            <span className="visually-hidden">Status</span>
+            <span className="visually-hidden">{t('beneficiaries.filters.status')}</span>
             <select value={status} onChange={(event) => setStatus(event.target.value as StatusFilter)}>
-              <option value="all">Status: all</option>
+              <option value="all">{t('beneficiaries.filters.statusAll')}</option>
               {STATUS_ORDER.map((name) => (
                 <option key={name} value={name}>
-                  {STATUS_LABEL[name]}
+                  {t(`status.${name}`)}
                 </option>
               ))}
             </select>
@@ -177,19 +176,19 @@ export function BeneficiariesSection() {
             onClick={() => setFlaggedOnly((on) => !on)}
           >
             <span className="ben-toggle-switch" aria-hidden="true" />
-            AI-flagged / stalled only
+            {t('beneficiaries.filters.flaggedOnly')}
             <span className="ben-toggle-count">{flaggedCount}</span>
           </button>
         </div>
 
         <div className="ben-status-row">
-          <span className="ben-status-label">Status</span>
+          <span className="ben-status-label">{t('beneficiaries.filters.status')}</span>
           <button
             type="button"
             className={status === 'all' ? 'ben-chip is-selected' : 'ben-chip'}
             onClick={() => setStatus('all')}
           >
-            All · {scoped.length}
+            {t('beneficiaries.chipAll', { count: scoped.length })}
           </button>
           {STATUS_ORDER.map((name) => (
             <button
@@ -198,46 +197,50 @@ export function BeneficiariesSection() {
               className={`ben-chip is-${STATUS_TONE[name]}${status === name ? ' is-selected' : ''}`}
               onClick={() => setStatus(status === name ? 'all' : name)}
             >
-              {STATUS_LABEL[name]} · {statusCounts.get(name) ?? 0}
+              {t('beneficiaries.chip', { label: t(`status.${name}`), count: statusCounts.get(name) ?? 0 })}
             </button>
           ))}
         </div>
 
         {notice && (
           <div className="gap-notice" role="status">
-            <span className="gap-notice-action">{ACTION_LABEL[notice.action]}</span>
+            <span className="gap-notice-action">
+              {notice.action === 'call'
+                ? t('beneficiaries.journey.scheduleCall')
+                : t('beneficiaries.journey.assignOfficer')}
+            </span>
             <span>
-              {notice.person.name} · {notice.person.beneficiaryId} — recorded in this session only. Scheduling and
-              officer assignment arrive with the Admin Flags section.
+              {t('beneficiaries.journey.notice', {
+                name: notice.person.name,
+                id: notice.person.beneficiaryId,
+              })}
             </span>
             <button type="button" className="link-button" onClick={() => setNotice(null)}>
-              Dismiss
+              {t('common.dismiss')}
             </button>
           </div>
         )}
 
         <div className={selected ? 'ben-layout has-panel' : 'ben-layout'}>
-          <section className="ben-table-panel" aria-label="Beneficiary list">
+          <section className="ben-table-panel" aria-label={t('beneficiaries.listAria')}>
             <div className="ben-table-head" aria-hidden="true">
-              <span>Name</span>
-              <span>District · block · village</span>
-              <span>Recommended course</span>
-              <span>Status</span>
-              <span>Last contact</span>
-              <span>Flags</span>
+              <span>{t('beneficiaries.headers.name')}</span>
+              <span>{t('beneficiaries.headers.location')}</span>
+              <span>{t('beneficiaries.headers.course')}</span>
+              <span>{t('beneficiaries.headers.status')}</span>
+              <span>{t('beneficiaries.headers.lastContact')}</span>
+              <span>{t('beneficiaries.headers.flags')}</span>
             </div>
 
             {rows.length === 0 ? (
-              <p className="ben-empty">No beneficiaries match these filters.</p>
+              <p className="ben-empty">{t('beneficiaries.empty')}</p>
             ) : (
               <ul className="ben-rows">
                 {rows.map((person) => (
                   <li key={person.beneficiaryId}>
                     <button
                       type="button"
-                      className={
-                        selectedId === person.beneficiaryId ? 'ben-row is-selected' : 'ben-row'
-                      }
+                      className={selectedId === person.beneficiaryId ? 'ben-row is-selected' : 'ben-row'}
                       onClick={() =>
                         setSelectedId(selectedId === person.beneficiaryId ? null : person.beneficiaryId)
                       }
@@ -253,16 +256,18 @@ export function BeneficiariesSection() {
                       </span>
                       <span className="ben-cell">{person.course}</span>
                       <span className="ben-cell">
-                        <span className={`chip is-${STATUS_TONE[person.status]}`}>{STATUS_LABEL[person.status]}</span>
+                        <span className={`chip is-${STATUS_TONE[person.status]}`}>{t(`status.${person.status}`)}</span>
                       </span>
-                      <span className="ben-cell is-muted">{lastContactLabel(person.lastContactDays)}</span>
+                      <span className="ben-cell is-muted">{formatLastContact(t, person.lastContactDays)}</span>
                       <span className="ben-cell">
                         {person.aiFlags.length > 0 ? (
-                          <span className="chip is-flag">AI · {person.aiFlags.length}</span>
+                          <span className="chip is-flag">
+                            {t('beneficiaries.flagsAi', { count: person.aiFlags.length })}
+                          </span>
                         ) : person.isStalled ? (
-                          <span className="chip is-stalled">Stalled</span>
+                          <span className="chip is-stalled">{t('beneficiaries.flagsStalled')}</span>
                         ) : (
-                          <span className="is-muted">—</span>
+                          <span className="is-muted">{t('common.none')}</span>
                         )}
                       </span>
                     </button>
@@ -274,9 +279,13 @@ export function BeneficiariesSection() {
             <div className="ben-pagination">
               <span className="ben-count">
                 {filtered.length === 0
-                  ? 'No results'
-                  : `Showing ${(currentPage - 1) * PAGE_SIZE + 1}–${Math.min(currentPage * PAGE_SIZE, filtered.length)} of ${filtered.length}`}
-                {filtered.length !== all.length && ` · ${all.length} total`}
+                  ? t('common.noResults')
+                  : t('common.showing', {
+                      from: (currentPage - 1) * PAGE_SIZE + 1,
+                      to: Math.min(currentPage * PAGE_SIZE, filtered.length),
+                      total: filtered.length,
+                    })}
+                {filtered.length !== all.length && ` · ${t('common.totalSuffix', { total: all.length })}`}
               </span>
               <div className="ben-pages">
                 <button
@@ -285,7 +294,7 @@ export function BeneficiariesSection() {
                   disabled={currentPage === 1}
                   onClick={() => setPage(currentPage - 1)}
                 >
-                  Prev
+                  {t('common.prev')}
                 </button>
                 {Array.from({ length: pageCount }, (_, index) => index + 1).map((number) => (
                   <button
@@ -303,7 +312,7 @@ export function BeneficiariesSection() {
                   disabled={currentPage === pageCount}
                   onClick={() => setPage(currentPage + 1)}
                 >
-                  Next
+                  {t('common.next')}
                 </button>
               </div>
             </div>

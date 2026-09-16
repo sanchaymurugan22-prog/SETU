@@ -7,6 +7,8 @@ import { GapMapSection } from './consoles/admin/GapMapSection'
 import { ConsoleLayout } from './consoles/ConsoleLayout'
 import { CONSOLES } from './consoles/consoles'
 import { SectionPlaceholder } from './consoles/SectionPlaceholder'
+import { LanguageProvider } from './language/LanguageProvider'
+import { LanguageScreen } from './pages/LanguageScreen'
 import { LoginPage } from './pages/LoginPage'
 import { SplashGate } from './pages/SplashScreen'
 
@@ -19,41 +21,44 @@ const SECTION_VIEWS: Record<string, ComponentType> = {
 export default function App() {
   return (
     <AuthProvider>
-      <SplashGate>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/" element={<HomeRedirect />} />
+      <LanguageProvider>
+        <SplashGate>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/language" element={<LanguageScreen />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/" element={<HomeRedirect />} />
 
-            {Object.values(CONSOLES).map((definition) => (
-              <Route
-                key={definition.role}
-                path={definition.basePath}
-                element={
-                  <RequireRole role={definition.role}>
-                    <ConsoleLayout definition={definition} />
-                  </RequireRole>
-                }
-              >
-                <Route index element={<Navigate to={definition.sections[0]!.path} replace />} />
-                {definition.sections.map((section) => {
-                  const View = SECTION_VIEWS[`${definition.role}/${section.path}`]
-                  return (
-                    <Route
-                      key={section.path}
-                      path={section.path}
-                      element={View ? <View /> : <SectionPlaceholder section={section} />}
-                    />
-                  )
-                })}
-                <Route path="*" element={<Navigate to={definition.basePath} replace />} />
-              </Route>
-            ))}
+              {Object.values(CONSOLES).map((definition) => (
+                <Route
+                  key={definition.role}
+                  path={definition.basePath}
+                  element={
+                    <RequireRole role={definition.role}>
+                      <ConsoleLayout definition={definition} />
+                    </RequireRole>
+                  }
+                >
+                  <Route index element={<Navigate to={definition.sections[0]!.path} replace />} />
+                  {definition.sections.map((section) => {
+                    const View = SECTION_VIEWS[`${definition.role}/${section.path}`]
+                    return (
+                      <Route
+                        key={section.path}
+                        path={section.path}
+                        element={View ? <View /> : <SectionPlaceholder role={definition.role} section={section} />}
+                      />
+                    )
+                  })}
+                  <Route path="*" element={<Navigate to={definition.basePath} replace />} />
+                </Route>
+              ))}
 
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </BrowserRouter>
-      </SplashGate>
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </BrowserRouter>
+        </SplashGate>
+      </LanguageProvider>
     </AuthProvider>
   )
 }

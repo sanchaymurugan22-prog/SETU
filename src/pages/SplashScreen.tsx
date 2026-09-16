@@ -1,4 +1,5 @@
 import { useEffect, useState, type ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 import { SetuMark } from '../components/SetuMark'
 
 /** How long the splash holds on first load, and how long it takes to fade. */
@@ -6,6 +7,8 @@ const SPLASH_VISIBLE_MS = 3000
 const SPLASH_FADE_MS = 450
 
 export function SplashScreen() {
+  const { t } = useTranslation()
+
   return (
     <div className="splash" role="status" aria-live="polite">
       <div className="splash-center">
@@ -15,12 +18,12 @@ export function SplashScreen() {
           सेतु
         </div>
         <div className="splash-divider" />
-        <div className="splash-tagline">Skill Empowerment Through Unified-voice</div>
+        <div className="splash-tagline">{t('splash.tagline')}</div>
         <div className="splash-loading">
           <span />
           <span />
           <span />
-          Loading
+          {t('splash.loading')}
         </div>
       </div>
     </div>

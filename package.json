@@ -6,17 +6,20 @@
   "scripts": {
     "dev": "vite",
     "dev:emulator": "firebase emulators:exec --project demo-setu --only auth,firestore \"node scripts/seed-emulator.mjs && vite --mode emulator\"",
-    "build": "tsc -b && vite build",
+    "build": "npm run i18n:check && tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview",
     "test:rules": "firebase emulators:exec --project demo-setu --only firestore \"vitest run tests --testTimeout=20000\"",
-    "deploy:rules": "firebase deploy --only firestore:rules,firestore:indexes"
+    "deploy:rules": "firebase deploy --only firestore:rules,firestore:indexes",
+    "i18n:check": "node scripts/check-i18n.mjs"
   },
   "dependencies": {
     "firebase": "^12.19.0",
+    "i18next": "^26.4.2",
     "leaflet": "^1.9.4",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
+    "react-i18next": "^17.0.14",
     "react-leaflet": "^5.0.0",
     "react-router-dom": "^7.18.4"
   },

@@ -1,28 +1,29 @@
 import { useEffect, type ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useAuth } from '../auth/AuthContext'
+import { useSignOut } from '../auth/useSignOut'
 import { SetuMark } from '../components/SetuMark'
 
 /** Shown to a signed-in account that cannot enter any console. */
 export function AccessProblemPage() {
-  const { state, signOut } = useAuth()
+  const { t } = useTranslation()
+  const { state } = useAuth()
+  const signOut = useSignOut()
 
   useEffect(() => {
-    document.title = 'Account access · SETU'
+    document.title = `SETU`
   }, [])
 
   let title: string
   let body: ReactNode
   switch (state.status) {
     case 'no-profile':
-      title = 'No console assigned'
+      title = t('access.noConsoleTitle')
       body = (
         <>
-          <p>
-            You are signed in as <strong>{state.user.email}</strong>, but this account has no SETU role. An
-            administrator needs to create its record in the <code>users</code> collection.
-          </p>
+          <p>{t('access.noConsoleBody', { email: state.user.email ?? '' })}</p>
           <dl className="notice-details">
-            <dt>User UID</dt>
+            <dt>{t('access.uidLabel')}</dt>
             <dd>
               <code>{state.user.uid}</code>
             </dd>
@@ -31,23 +32,15 @@ export function AccessProblemPage() {
       )
       break
     case 'inactive':
-      title = 'Account deactivated'
-      body = (
-        <p>
-          The account <strong>{state.staff.email}</strong> has been deactivated by an administrator. Contact your
-          administrator to restore access.
-        </p>
-      )
+      title = t('access.inactiveTitle')
+      body = <p>{t('access.inactiveBody', { email: state.staff.email })}</p>
       break
     case 'error':
-      title = 'Could not load your account'
+      title = t('access.errorTitle')
       body = (
         <>
           <p>{state.message}</p>
-          <p className="muted">
-            If this mentions missing or insufficient permissions, check that the Firestore security rules are
-            published and that your <code>users</code> record exists.
-          </p>
+          <p className="muted">{t('access.errorHint')}</p>
         </>
       )
       break
@@ -66,7 +59,7 @@ export function AccessProblemPage() {
           <h1>{title}</h1>
           {body}
           <button type="button" className="btn btn-primary" onClick={() => void signOut()}>
-            Sign out
+            {t('common.signOut')}
           </button>
         </div>
       </div>

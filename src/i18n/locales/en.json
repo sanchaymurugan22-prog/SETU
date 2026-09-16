@@ -1,0 +1,324 @@
+{
+  "common": {
+    "ministry": "Ministry of Social Justice and Empowerment",
+    "ministryLine1": "Ministry of Social Justice",
+    "ministryLine2": "and Empowerment",
+    "government": "Government of India",
+    "continue": "Continue",
+    "save": "Save",
+    "cancel": "Cancel",
+    "dismiss": "Dismiss",
+    "close": "Close",
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "prev": "Prev",
+    "next": "Next",
+    "all": "All",
+    "loading": "Loading",
+    "none": "—",
+    "noResults": "No results",
+    "showing": "Showing {{from}}–{{to}} of {{total}}",
+    "totalSuffix": "{{total}} total",
+    "emblemPlaceholder": "MoSJE emblem"
+  },
+  "time": {
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "daysAgo": "{{count}} days ago",
+    "weeksAgo": "{{count}} weeks ago",
+    "monthsAgo": "{{count}} months ago"
+  },
+  "status": {
+    "new": "New",
+    "recommended": "Recommended",
+    "enrolled": "Enrolled",
+    "attending": "Attending",
+    "irregular": "Irregular",
+    "completed": "Completed",
+    "certified": "Certified",
+    "placed": "Placed",
+    "trained-unplaced": "Unplaced",
+    "dropped": "Dropped"
+  },
+  "roles": {
+    "executive": "Call Executive",
+    "resourcePerson": "Resource Person",
+    "admin": "Administrator"
+  },
+  "splash": {
+    "tagline": "Skill Empowerment Through Unified-voice",
+    "loading": "Loading"
+  },
+  "language": {
+    "screenTitle": "Choose your language",
+    "screenNote": "This sets the language of this console. The language SETU speaks to beneficiaries on calls is set separately, inside the console.",
+    "hint": "You can change this later from any console, without signing out.",
+    "interfaceLabel": "Interface language",
+    "callLabel": "Call language",
+    "interfaceDialogEyebrow": "Console display",
+    "interfaceDialogTitle": "Change interface language",
+    "interfaceDialogNote": "This changes the language of this console only. It does not change what SETU speaks to beneficiaries.",
+    "callDialogEyebrow": "Calls and messages",
+    "callDialogTitle": "Change call language",
+    "callDialogNote": "SETU speaks this language on beneficiary calls and writes SMS and WhatsApp reports in it. The console display is set separately.",
+    "saveLanguage": "Save language",
+    "chooseAria": "Language"
+  },
+  "login": {
+    "eyebrow": "Official access",
+    "title": "Sign in",
+    "subtitle": "For departmental staff only. Beneficiaries do not sign in — they reach SETU by phone.",
+    "panelTitle": "The bridge, staffed.",
+    "panelBody": "Sign in with your official credentials. SETU reads your role and opens the right console — no menu to navigate.",
+    "panelBodySecondary": "Every entry you make here reaches someone who cannot read this screen. Skilling by voice, in ten languages, for anyone with a phone.",
+    "emailLabel": "Official email",
+    "passwordLabel": "Password",
+    "forgotPassword": "Forgot password?",
+    "show": "Show",
+    "hide": "Hide",
+    "keepSignedIn": "Keep me signed in on this device",
+    "submitting": "Signing in…",
+    "routedNote": "You will be routed to your console automatically based on your assigned role.",
+    "legal": "Unauthorised access to this system is an offence under the Information Technology Act, 2000.",
+    "resetSent": "If {{email}} has a SETU account, a password reset link has been sent to it.",
+    "resetNeedsEmail": "Enter your official email first, then choose “Forgot password?”.",
+    "errors": {
+      "invalidCredential": "Email or password is incorrect.",
+      "invalidEmail": "That is not a valid email address.",
+      "userDisabled": "This account has been disabled in Firebase Authentication.",
+      "tooManyRequests": "Too many attempts. Wait a few minutes and try again.",
+      "network": "Could not reach the sign-in service. Check your connection.",
+      "unknown": "Sign-in failed ({{code}})."
+    }
+  },
+  "access": {
+    "noConsoleTitle": "No console assigned",
+    "noConsoleBody": "You are signed in as {{email}}, but this account has no SETU role. An administrator needs to create its record in the users collection.",
+    "uidLabel": "User UID",
+    "inactiveTitle": "Account deactivated",
+    "inactiveBody": "The account {{email}} has been deactivated by an administrator. Contact your administrator to restore access.",
+    "errorTitle": "Could not load your account",
+    "errorHint": "If this mentions missing or insufficient permissions, check that the Firestore security rules are published and that your users record exists."
+  },
+  "console": {
+    "groups": {
+      "Sections": "Sections",
+      "Trainer": "Trainer",
+      "Expert": "Expert"
+    },
+    "titles": {
+      "executive": "Call Console",
+      "resourcePerson": "Resource Person Console",
+      "admin": "Admin Console"
+    },
+    "badges": {
+      "executive": "Call console",
+      "resourcePerson": "Resource person",
+      "admin": "Admin console"
+    }
+  },
+  "sections": {
+    "executive": {
+      "waiting": {
+        "title": "Waiting Calls",
+        "summary": "Queue of escalated calls, then the active call and a mandatory report."
+      },
+      "completed": {
+        "title": "Completed Calls",
+        "summary": "AI reports from calls you handled. Beneficiary identity stays hidden."
+      }
+    },
+    "resourcePerson": {
+      "beneficiaries": {
+        "title": "Beneficiaries",
+        "summary": "Your trainees: attendance, status updates and completion recommendations."
+      },
+      "materials": {
+        "title": "Course Materials",
+        "summary": "Schedule and timings, location or online link, and course materials."
+      },
+      "waiting": {
+        "title": "Waiting Calls",
+        "summary": "Callback cases transferred from the Call Console."
+      },
+      "completed": {
+        "title": "Completed Calls",
+        "summary": "AI reports from your own expert calls. Identity hidden."
+      },
+      "milestones": {
+        "title": "Milestones",
+        "summary": "Trainees you trained to completion, with their reports."
+      }
+    },
+    "admin": {
+      "beneficiaries": {
+        "title": "Beneficiaries",
+        "summary": "Every beneficiary, the flagged filter, and each full journey."
+      },
+      "call-executives": {
+        "title": "Call Executives",
+        "summary": "All call executives: add accounts, view activity, deactivate."
+      },
+      "resource-persons": {
+        "title": "Resource Persons",
+        "summary": "All resource persons, and their courses and centres."
+      },
+      "calls": {
+        "title": "Calls",
+        "summary": "Executive, resource person and AI calls, with the automation funnel."
+      },
+      "follow-ups": {
+        "title": "Follow-up Reports",
+        "summary": "Every automated follow-up call: count, purpose, outcome."
+      },
+      "courses-centres": {
+        "title": "Courses & Centres",
+        "summary": "Courses, centres, seat counts and auto-allotment."
+      },
+      "flags": {
+        "title": "Admin Flags",
+        "summary": "Cases flagged by resource persons: act and assign officers."
+      },
+      "gap-map": {
+        "title": "Opportunity Gap Map",
+        "summary": "Block-level demand versus availability, plus outcome analytics."
+      }
+    }
+  },
+  "placeholder": {
+    "eyebrow": "Not built yet",
+    "note": "This section is an empty shell. Its features arrive in a later build step."
+  },
+  "gapMap": {
+    "subtitle": "Block-level demand and placement gaps · {{count}} blocks flagged in this window",
+    "jurisdictionLabel": "Jurisdiction",
+    "jurisdictionValue": "Jharkhand · all 24 districts",
+    "windowLabel": "Time window",
+    "window": {
+      "30": "Last 30 days",
+      "90": "Last 90 days",
+      "365": "Last 12 months"
+    },
+    "deltaUp": "▲ {{points}} pts vs previous period",
+    "deltaDown": "▼ {{points}} pts vs previous period",
+    "cards": {
+      "enrollmentLabel": "Enrollment rate",
+      "enrollmentFoot": "{{enrolled}} of {{callers}} callers enrolled",
+      "completionLabel": "Completion rate",
+      "completionFoot": "{{completed}} finished their course",
+      "placementLabel": "Placement rate",
+      "placementBelow": "Below the {{target}}% state target",
+      "placementAbove": "At or above the {{target}}% state target",
+      "unplacedLabel": "Trained, unplaced",
+      "unplacedDelta": "Completed minus placed, statewide",
+      "unplacedFoot": "{{count}} blocks flagged with no local jobs",
+      "demandLabel": "Course demand",
+      "demandFoot": "Top {{shown}} of {{total}} trades requested in flagged blocks",
+      "dialectLabel": "Dialect gaps",
+      "dialectDelta": "Below {{threshold}}% voice accuracy",
+      "dialectFoot": "Rolling 12 months, not affected by the window"
+    },
+    "legend": {
+      "title": "Block-level gap map",
+      "demand": "Demand, no centre · {{count}}",
+      "unplaced": "Trained, no local jobs · {{count}}",
+      "note": "Marker size = people affected · click a marker for actions",
+      "mapAria": "Block-level gap map"
+    },
+    "priority": {
+      "title": "Priority gaps",
+      "count": "{{total}} flagged · top {{shown}}",
+      "foot": "Select a block to centre the map on it and open its actions.",
+      "demandLine": "{{count}} want {{course}} · no centre in block",
+      "unplacedLine": "{{count}} trained in {{course}} · no local jobs",
+      "metaDemand": "Nearest centre {{km}} km",
+      "metaUnplaced": "{{placed}} of {{trained}} placed",
+      "flaggedDaysAgo": "flagged {{days}} days ago"
+    },
+    "popup": {
+      "district": "{{district}} district",
+      "demandTag": "Demand, no centre",
+      "unplacedTag": "Trained, no local jobs",
+      "wantCourse": "Want this course",
+      "centresInBlock": "Centres in block",
+      "nearestCentre": "Nearest centre",
+      "km": "{{km}} km",
+      "trained": "Trained",
+      "placed": "Placed",
+      "unplaced": "Unplaced",
+      "recommendedAction": "Recommended action"
+    },
+    "actions": {
+      "raiseProposal": "Raise proposal",
+      "assignOfficer": "Assign officer"
+    },
+    "notice": "{{block}} · {{district}} — recorded in this session only. The sanction and assignment workflow arrives with the Admin Flags section."
+  },
+  "beneficiaries": {
+    "subtitle": "{{total}} sample beneficiaries · {{flagged}} AI-flagged or stalled · seeded from the gap-map blocks",
+    "searchLabel": "Search beneficiaries",
+    "searchPlaceholder": "Search name, phone, village or SETU ID",
+    "filters": {
+      "districtAll": "District: all",
+      "blockAll": "Block: all",
+      "courseAll": "Course: all",
+      "statusAll": "Status: all",
+      "district": "District",
+      "block": "Block",
+      "course": "Course",
+      "status": "Status",
+      "flaggedOnly": "AI-flagged / stalled only"
+    },
+    "chipAll": "All · {{count}}",
+    "chip": "{{label}} · {{count}}",
+    "headers": {
+      "name": "Name",
+      "location": "District · block · village",
+      "course": "Recommended course",
+      "status": "Status",
+      "lastContact": "Last contact",
+      "flags": "Flags"
+    },
+    "listAria": "Beneficiary list",
+    "empty": "No beneficiaries match these filters.",
+    "flagsAi": "AI · {{count}}",
+    "flagsStalled": "Stalled",
+    "journey": {
+      "eyebrow": "Full journey",
+      "aria": "Full journey for {{name}}",
+      "tabs": {
+        "timeline": "Timeline",
+        "calls": "Calls · {{count}}",
+        "attendance": "Attendance",
+        "outcome": "Outcome"
+      },
+      "facts": {
+        "location": "Location",
+        "primaryPhone": "Primary phone",
+        "secondaryPhone": "Secondary phone",
+        "education": "Education",
+        "currentWork": "Current work",
+        "lastContact": "Last contact"
+      },
+      "noSecondary": "None · basic phone only",
+      "notEnrolled": "Not enrolled yet — attendance starts once a seat is allotted and the first session is held.",
+      "attendanceLabel": "sessions attended · {{held}} held so far at {{centre}}",
+      "present": "Present",
+      "absent": "Absent",
+      "sessionTitle": "Session {{number}}",
+      "outcome": {
+        "currentStatus": "Current status",
+        "outcome": "Outcome",
+        "course": "Recommended course",
+        "centre": "Centre",
+        "interests": "Interests recorded"
+      },
+      "noCentre": "No centre in this block yet",
+      "scheduleCall": "Schedule call",
+      "assignOfficer": "Assign officer",
+      "notice": "{{name}} · {{id}} — recorded in this session only. Scheduling and officer assignment arrive with the Admin Flags section.",
+      "flagChip": "AI: {{flag}}",
+      "stalled": "Stalled"
+    }
+  }
+}

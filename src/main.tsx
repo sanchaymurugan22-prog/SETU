@@ -1,6 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './styles/index.css'
+import './i18n'
 import { missingFirebaseEnv } from './lib/env'
 import { ConfigErrorPage } from './pages/ConfigErrorPage'
 

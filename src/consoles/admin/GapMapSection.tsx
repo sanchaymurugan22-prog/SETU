@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   courseDemand,
   DEFAULT_WINDOW,
@@ -17,24 +18,21 @@ import '../../styles/gap-map.css'
 
 const SEVERITY_BADGE: Record<BlockGap['severity'], string> = { high: 'P1', medium: 'P2', low: 'P3' }
 
-const ACTION_LABEL: Record<GapAction, string> = { proposal: 'Raise proposal', officer: 'Assign officer' }
-
 function percent(part: number, whole: number): number {
   return whole === 0 ? 0 : Math.round((part / whole) * 100)
 }
 
-function deltaText(points: number): string {
-  return `${points >= 0 ? '▲' : '▼'} ${Math.abs(points).toFixed(1)} pts vs previous period`
-}
-
 export function GapMapSection() {
+  const { t } = useTranslation()
   const [windowDays, setWindowDays] = useState<WindowDays>(DEFAULT_WINDOW)
   const [focus, setFocus] = useState<FocusRequest | null>(null)
   const [notice, setNotice] = useState<{ gap: BlockGap; action: GapAction } | null>(null)
 
+  const title = t('sections.admin.gap-map.title')
+
   useEffect(() => {
-    document.title = 'Opportunity Gap Map · SETU'
-  }, [])
+    document.title = `${title} · SETU`
+  }, [title])
 
   const gaps = useMemo(() => gapsInWindow(windowDays), [windowDays])
   const totals = statewideTotals(windowDays)
@@ -51,27 +49,30 @@ export function GapMapSection() {
   const topDemand = demandByCourse[0]?.people ?? 1
   const priorityGaps = gaps.slice(0, 6)
 
+  const delta = (points: number) =>
+    points >= 0
+      ? t('gapMap.deltaUp', { points: Math.abs(points).toFixed(1) })
+      : t('gapMap.deltaDown', { points: Math.abs(points).toFixed(1) })
+
   return (
     <>
       <header className="section-header gap-header">
         <div>
-          <h1>Opportunity Gap Map</h1>
-          <p className="gap-subtitle">
-            Block-level demand and placement gaps · {gaps.length} blocks flagged in this window
-          </p>
+          <h1>{title}</h1>
+          <p className="gap-subtitle">{t('gapMap.subtitle', { count: gaps.length })}</p>
         </div>
 
         <div className="gap-controls">
           <div className="gap-jurisdiction">
-            <span className="gap-jurisdiction-label">Jurisdiction</span>
-            <span className="gap-jurisdiction-value">Jharkhand · all 24 districts</span>
+            <span className="gap-jurisdiction-label">{t('gapMap.jurisdictionLabel')}</span>
+            <span className="gap-jurisdiction-value">{t('gapMap.jurisdictionValue')}</span>
           </div>
           <label className="gap-window">
-            <span className="visually-hidden">Time window</span>
+            <span className="visually-hidden">{t('gapMap.windowLabel')}</span>
             <select value={windowDays} onChange={(event) => setWindowDays(Number(event.target.value) as WindowDays)}>
               {TIME_WINDOWS.map((option) => (
                 <option key={option.days} value={option.days}>
-                  {option.label}
+                  {t(`gapMap.window.${option.days}`, { defaultValue: option.label })}
                 </option>
               ))}
             </select>
@@ -82,66 +83,73 @@ export function GapMapSection() {
       <div className="section-body gap-body">
         <div className="gap-stats">
           <article className="gap-card">
-            <span className="gap-card-label">Enrollment rate</span>
+            <span className="gap-card-label">{t('gapMap.cards.enrollmentLabel')}</span>
             <span className="gap-card-value">
               {enrollmentRate}
               <span className="gap-card-unit">%</span>
             </span>
-            <span className="gap-card-delta is-up">{deltaText(totals.enrollmentDelta)}</span>
+            <span className="gap-card-delta is-up">{delta(totals.enrollmentDelta)}</span>
             <div className="gap-bar">
               <span style={{ width: `${enrollmentRate}%` }} />
             </div>
             <span className="gap-card-foot">
-              {formatNumber(totals.enrolled)} of {formatNumber(totals.callers)} callers enrolled
+              {t('gapMap.cards.enrollmentFoot', {
+                enrolled: formatNumber(totals.enrolled),
+                callers: formatNumber(totals.callers),
+              })}
             </span>
           </article>
 
           <article className="gap-card">
-            <span className="gap-card-label">Completion rate</span>
+            <span className="gap-card-label">{t('gapMap.cards.completionLabel')}</span>
             <span className="gap-card-value">
               {completionRate}
               <span className="gap-card-unit">%</span>
             </span>
             <span className={`gap-card-delta ${totals.completionDelta >= 0 ? 'is-up' : 'is-down'}`}>
-              {deltaText(totals.completionDelta)}
+              {delta(totals.completionDelta)}
             </span>
             <div className="gap-bar">
               <span style={{ width: `${completionRate}%` }} />
             </div>
-            <span className="gap-card-foot">{formatNumber(totals.completed)} finished their course</span>
+            <span className="gap-card-foot">
+              {t('gapMap.cards.completionFoot', { completed: formatNumber(totals.completed) })}
+            </span>
           </article>
 
           <article className="gap-card is-alert">
-            <span className="gap-card-label">Placement rate</span>
+            <span className="gap-card-label">{t('gapMap.cards.placementLabel')}</span>
             <span className="gap-card-value">
               {placementRate}
               <span className="gap-card-unit">%</span>
             </span>
             <span className={`gap-card-delta ${totals.placementDelta >= 0 ? 'is-up' : 'is-down'}`}>
-              {deltaText(totals.placementDelta)}
+              {delta(totals.placementDelta)}
             </span>
             <div className="gap-bar is-alert">
               <span style={{ width: `${placementRate}%` }} />
             </div>
             <span className="gap-card-foot">
               {placementRate < PLACEMENT_TARGET
-                ? `Below the ${PLACEMENT_TARGET}% state target`
-                : `At or above the ${PLACEMENT_TARGET}% state target`}
+                ? t('gapMap.cards.placementBelow', { target: PLACEMENT_TARGET })
+                : t('gapMap.cards.placementAbove', { target: PLACEMENT_TARGET })}
             </span>
           </article>
 
           <article className="gap-card is-alert">
-            <span className="gap-card-label">Trained, unplaced</span>
+            <span className="gap-card-label">{t('gapMap.cards.unplacedLabel')}</span>
             <span className="gap-card-value is-alert">{formatNumber(unplaced)}</span>
-            <span className="gap-card-delta">Completed minus placed, statewide</span>
+            <span className="gap-card-delta">{t('gapMap.cards.unplacedDelta')}</span>
             <div className="gap-bar is-alert">
               <span style={{ width: `${percent(unplaced, totals.completed)}%` }} />
             </div>
-            <span className="gap-card-foot">{unplacedBlocks.length} blocks flagged with no local jobs</span>
+            <span className="gap-card-foot">
+              {t('gapMap.cards.unplacedFoot', { count: unplacedBlocks.length })}
+            </span>
           </article>
 
           <article className="gap-card">
-            <span className="gap-card-label">Course demand</span>
+            <span className="gap-card-label">{t('gapMap.cards.demandLabel')}</span>
             <div className="gap-demand-list">
               {demandByCourse.slice(0, 4).map((entry) => (
                 <div className="gap-demand-row" key={entry.course}>
@@ -154,14 +162,17 @@ export function GapMapSection() {
               ))}
             </div>
             <span className="gap-card-foot">
-              Top {Math.min(4, demandByCourse.length)} of {demandByCourse.length} trades requested in flagged blocks
+              {t('gapMap.cards.demandFoot', {
+                shown: Math.min(4, demandByCourse.length),
+                total: demandByCourse.length,
+              })}
             </span>
           </article>
 
           <article className="gap-card is-warn">
-            <span className="gap-card-label">Dialect gaps</span>
+            <span className="gap-card-label">{t('gapMap.cards.dialectLabel')}</span>
             <span className="gap-card-value">{dialectGaps.length}</span>
-            <span className="gap-card-delta">Below {DIALECT_THRESHOLD}% voice accuracy</span>
+            <span className="gap-card-delta">{t('gapMap.cards.dialectDelta', { threshold: DIALECT_THRESHOLD })}</span>
             <div className="gap-dialect-list">
               {dialectGaps.slice(0, 3).map((entry) => (
                 <div className="gap-dialect-row" key={entry.dialect}>
@@ -170,46 +181,45 @@ export function GapMapSection() {
                 </div>
               ))}
             </div>
-            <span className="gap-card-foot">Rolling 12 months, not affected by the window</span>
+            <span className="gap-card-foot">{t('gapMap.cards.dialectFoot')}</span>
           </article>
         </div>
 
         {notice && (
           <div className="gap-notice" role="status">
-            <span className="gap-notice-action">{ACTION_LABEL[notice.action]}</span>
-            <span>
-              {notice.gap.block} · {notice.gap.district} — recorded in this session only. The sanction and assignment
-              workflow arrives with the Admin Flags section.
+            <span className="gap-notice-action">
+              {notice.action === 'proposal' ? t('gapMap.actions.raiseProposal') : t('gapMap.actions.assignOfficer')}
             </span>
+            <span>{t('gapMap.notice', { block: notice.gap.block, district: notice.gap.district })}</span>
             <button type="button" className="link-button" onClick={() => setNotice(null)}>
-              Dismiss
+              {t('common.dismiss')}
             </button>
           </div>
         )}
 
         <div className="gap-layout">
-          <section className="gap-map-panel" aria-label="Block-level gap map">
+          <section className="gap-map-panel" aria-label={t('gapMap.legend.mapAria')}>
             <div className="gap-legend">
-              <span className="gap-legend-title">Block-level gap map</span>
+              <span className="gap-legend-title">{t('gapMap.legend.title')}</span>
               <span className="gap-legend-item">
                 <span className="gap-swatch is-demand" aria-hidden="true" />
-                Demand, no centre · {demandBlocks.length}
+                {t('gapMap.legend.demand', { count: demandBlocks.length })}
               </span>
               <span className="gap-legend-item">
                 <span className="gap-swatch is-unplaced" aria-hidden="true" />
-                Trained, no local jobs · {unplacedBlocks.length}
+                {t('gapMap.legend.unplaced', { count: unplacedBlocks.length })}
               </span>
-              <span className="gap-legend-note">Marker size = people affected · click a marker for actions</span>
+              <span className="gap-legend-note">{t('gapMap.legend.note')}</span>
             </div>
 
             <GapMap gaps={gaps} focus={focus} onAction={(gap, action) => setNotice({ gap, action })} />
           </section>
 
-          <aside className="gap-priority" aria-label="Priority gaps">
+          <aside className="gap-priority" aria-label={t('gapMap.priority.title')}>
             <div className="gap-priority-head">
-              <span className="gap-priority-title">Priority gaps</span>
+              <span className="gap-priority-title">{t('gapMap.priority.title')}</span>
               <span className="gap-priority-count">
-                {gaps.length} flagged · top {priorityGaps.length}
+                {t('gapMap.priority.count', { total: gaps.length, shown: priorityGaps.length })}
               </span>
             </div>
 
@@ -228,14 +238,14 @@ export function GapMapSection() {
                       </span>
                       <span className="gap-priority-detail">
                         {gap.gapType === 'no-centre'
-                          ? `${gap.demandCount} want ${gap.course} · no centre in block`
-                          : `${gap.unplacedCount} trained in ${gap.course} · no local jobs`}
+                          ? t('gapMap.priority.demandLine', { count: gap.demandCount, course: gap.course })
+                          : t('gapMap.priority.unplacedLine', { count: gap.unplacedCount, course: gap.course })}
                       </span>
                       <span className="gap-priority-meta">
                         {gap.gapType === 'no-centre'
-                          ? `Nearest centre ${gap.nearestCentreKm} km`
-                          : `${gap.placedCount} of ${gap.trainedCount} placed`}{' '}
-                        · flagged {gap.flaggedDaysAgo} days ago
+                          ? t('gapMap.priority.metaDemand', { km: gap.nearestCentreKm })
+                          : t('gapMap.priority.metaUnplaced', { placed: gap.placedCount, trained: gap.trainedCount })}{' '}
+                        · {t('gapMap.priority.flaggedDaysAgo', { days: gap.flaggedDaysAgo })}
                       </span>
                     </span>
                     <span className={`gap-priority-badge is-${gap.severity}`}>{SEVERITY_BADGE[gap.severity]}</span>
@@ -244,7 +254,7 @@ export function GapMapSection() {
               ))}
             </ul>
 
-            <p className="gap-priority-foot">Select a block to centre the map on it and open its actions.</p>
+            <p className="gap-priority-foot">{t('gapMap.priority.foot')}</p>
           </aside>
         </div>
       </div>

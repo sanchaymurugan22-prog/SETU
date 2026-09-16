@@ -1,19 +1,15 @@
 import { useState } from 'react'
-import {
-  lastContactLabel,
-  STATUS_LABEL,
-  STATUS_TONE,
-  type Beneficiary,
-  type CallRecord,
-} from '../../data/jharkhandBeneficiaries'
+import { useTranslation } from 'react-i18next'
+import { formatLastContact } from '../../i18n/format'
+import { STATUS_TONE, type Beneficiary, type CallRecord } from '../../data/jharkhandBeneficiaries'
 
 const TABS = ['timeline', 'calls', 'attendance', 'outcome'] as const
 type Tab = (typeof TABS)[number]
 
-const HANDLED_BY_LABEL: Record<CallRecord['handledBy'], string> = {
+const HANDLED_BY_KEY: Record<CallRecord['handledBy'], string> = {
   ai: 'AI',
-  executive: 'Executive',
-  resourcePerson: 'Resource person',
+  executive: 'roles.executive',
+  resourcePerson: 'roles.resourcePerson',
 }
 
 /** The full journey for one beneficiary: profile, timeline, calls, attendance, outcome. */
@@ -26,60 +22,61 @@ export function BeneficiaryJourney({
   onClose: () => void
   onAction: (person: Beneficiary, action: 'call' | 'officer') => void
 }) {
+  const { t } = useTranslation()
   const [tab, setTab] = useState<Tab>('timeline')
 
   return (
-    <aside className="journey" aria-label={`Full journey for ${person.name}`}>
+    <aside className="journey" aria-label={t('beneficiaries.journey.aria', { name: person.name })}>
       <div className="journey-head">
         <div>
-          <span className="journey-eyebrow">Full journey</span>
+          <span className="journey-eyebrow">{t('beneficiaries.journey.eyebrow')}</span>
           <h2>{person.name}</h2>
           <span className="journey-id">
             {person.beneficiaryId} · {person.age} {person.gender} · {person.preferredLanguage}
           </span>
         </div>
-        <button type="button" className="journey-close" onClick={onClose} aria-label="Close journey panel">
+        <button type="button" className="journey-close" onClick={onClose} aria-label={t('common.close')}>
           ✕
         </button>
       </div>
 
       <div className="journey-summary">
         <div className="journey-chips">
-          <span className={`chip is-${STATUS_TONE[person.status]}`}>{STATUS_LABEL[person.status]}</span>
+          <span className={`chip is-${STATUS_TONE[person.status]}`}>{t(`status.${person.status}`)}</span>
           {person.aiFlags.map((flag) => (
             <span className="chip is-flag" key={flag}>
-              AI: {flag}
+              {t('beneficiaries.journey.flagChip', { flag })}
             </span>
           ))}
-          {person.isStalled && <span className="chip is-stalled">Stalled</span>}
+          {person.isStalled && <span className="chip is-stalled">{t('beneficiaries.journey.stalled')}</span>}
         </div>
 
         <dl className="journey-facts">
           <div>
-            <dt>Location</dt>
+            <dt>{t('beneficiaries.journey.facts.location')}</dt>
             <dd>
               {person.district} · {person.block} · {person.village}
             </dd>
           </div>
           <div>
-            <dt>Primary phone</dt>
+            <dt>{t('beneficiaries.journey.facts.primaryPhone')}</dt>
             <dd>{person.primaryNumber}</dd>
           </div>
           <div>
-            <dt>Secondary phone</dt>
-            <dd>{person.secondaryNumber ?? 'None · basic phone only'}</dd>
+            <dt>{t('beneficiaries.journey.facts.secondaryPhone')}</dt>
+            <dd>{person.secondaryNumber ?? t('beneficiaries.journey.noSecondary')}</dd>
           </div>
           <div>
-            <dt>Education</dt>
+            <dt>{t('beneficiaries.journey.facts.education')}</dt>
             <dd>{person.educationLevel}</dd>
           </div>
           <div>
-            <dt>Current work</dt>
+            <dt>{t('beneficiaries.journey.facts.currentWork')}</dt>
             <dd>{person.currentWork}</dd>
           </div>
           <div>
-            <dt>Last contact</dt>
-            <dd>{lastContactLabel(person.lastContactDays)}</dd>
+            <dt>{t('beneficiaries.journey.facts.lastContact')}</dt>
+            <dd>{formatLastContact(t, person.lastContactDays)}</dd>
           </div>
         </dl>
       </div>
@@ -94,7 +91,9 @@ export function BeneficiaryJourney({
             className={tab === name ? 'journey-tab is-active' : 'journey-tab'}
             onClick={() => setTab(name)}
           >
-            {name === 'calls' ? `Calls · ${person.calls.length}` : name[0]!.toUpperCase() + name.slice(1)}
+            {name === 'calls'
+              ? t('beneficiaries.journey.tabs.calls', { count: person.calls.length })
+              : t(`beneficiaries.journey.tabs.${name}`)}
           </button>
         ))}
       </div>
@@ -130,7 +129,7 @@ export function BeneficiaryJourney({
               <li key={`${call.when}-${index}`}>
                 <div className="call-head">
                   <span className={`chip is-${call.handledBy === 'ai' ? 'cyan' : 'neutral'}`}>
-                    {HANDLED_BY_LABEL[call.handledBy]}
+                    {call.handledBy === 'ai' ? 'AI' : t(HANDLED_BY_KEY[call.handledBy])}
                   </span>
                   <span className="call-when">{call.when}</span>
                 </div>
@@ -150,51 +149,58 @@ export function BeneficiaryJourney({
                   <span className="attendance-total"> / {person.attendance.total}</span>
                 </span>
                 <span className="attendance-label">
-                  sessions attended · {person.attendance.sessions.length} held so far at {person.centre}
+                  {t('beneficiaries.journey.attendanceLabel', {
+                    held: person.attendance.sessions.length,
+                    centre: person.centre,
+                  })}
                 </span>
               </div>
               <div className="session-grid">
                 {person.attendance.sessions.map((mark, index) => (
-                  <span key={index} className={`session-box is-${mark}`} title={`Session ${index + 1}: ${mark}`}>
+                  <span
+                    key={index}
+                    className={`session-box is-${mark}`}
+                    title={`${t('beneficiaries.journey.sessionTitle', { number: index + 1 })}: ${
+                      mark === 'present' ? t('beneficiaries.journey.present') : t('beneficiaries.journey.absent')
+                    }`}
+                  >
                     {index + 1}
                   </span>
                 ))}
               </div>
               <div className="attendance-key">
                 <span>
-                  <span className="session is-present" aria-hidden="true" /> Present
+                  <span className="session is-present" aria-hidden="true" /> {t('beneficiaries.journey.present')}
                 </span>
                 <span>
-                  <span className="session is-absent" aria-hidden="true" /> Absent
+                  <span className="session is-absent" aria-hidden="true" /> {t('beneficiaries.journey.absent')}
                 </span>
               </div>
             </div>
           ) : (
-            <p className="journey-empty">
-              Not enrolled yet — attendance starts once a seat is allotted and the first session is held.
-            </p>
+            <p className="journey-empty">{t('beneficiaries.journey.notEnrolled')}</p>
           ))}
 
         {tab === 'outcome' && (
           <div className="outcome-view">
             <div className="outcome-row">
-              <span className="outcome-label">Current status</span>
-              <span className={`chip is-${STATUS_TONE[person.status]}`}>{STATUS_LABEL[person.status]}</span>
+              <span className="outcome-label">{t('beneficiaries.journey.outcome.currentStatus')}</span>
+              <span className={`chip is-${STATUS_TONE[person.status]}`}>{t(`status.${person.status}`)}</span>
             </div>
             <div className="outcome-row">
-              <span className="outcome-label">Outcome</span>
+              <span className="outcome-label">{t('beneficiaries.journey.outcome.outcome')}</span>
               <span className="outcome-value">{person.outcome}</span>
             </div>
             <div className="outcome-row">
-              <span className="outcome-label">Recommended course</span>
+              <span className="outcome-label">{t('beneficiaries.journey.outcome.course')}</span>
               <span className="outcome-value">{person.course}</span>
             </div>
             <div className="outcome-row">
-              <span className="outcome-label">Centre</span>
-              <span className="outcome-value">{person.centre ?? 'No centre in this block yet'}</span>
+              <span className="outcome-label">{t('beneficiaries.journey.outcome.centre')}</span>
+              <span className="outcome-value">{person.centre ?? t('beneficiaries.journey.noCentre')}</span>
             </div>
             <div className="outcome-row">
-              <span className="outcome-label">Interests recorded</span>
+              <span className="outcome-label">{t('beneficiaries.journey.outcome.interests')}</span>
               <span className="outcome-value">{person.interests.join(', ')}</span>
             </div>
           </div>
@@ -203,10 +209,10 @@ export function BeneficiaryJourney({
 
       <div className="journey-actions">
         <button type="button" className="btn btn-primary btn-small" onClick={() => onAction(person, 'call')}>
-          Schedule call
+          {t('beneficiaries.journey.scheduleCall')}
         </button>
         <button type="button" className="btn btn-outline btn-small" onClick={() => onAction(person, 'officer')}>
-          Assign officer
+          {t('beneficiaries.journey.assignOfficer')}
         </button>
       </div>
     </aside>
