@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="_ds/broadsheet-c7013e8c-fc8c-4413-8c66-417cc1808630/styles.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600&display=swap">
+<script src="_ds/broadsheet-c7013e8c-fc8c-4413-8c66-417cc1808630/_ds_bundle.js"></script>
+<style>
+  body { margin: 0; }
+  a { color: #006786; text-decoration: none; border-bottom: 1px solid #99e0ff; }
+  a:hover { color: #004961; border-bottom-color: #006786; }
+</style>
+</helmet>
+
+<div style="background: var(--color-bg); color: var(--color-text); font-family: var(--font-body); padding: 56px 60px 90px; display: flex; flex-direction: column; gap: var(--space-4); width: 1720px; box-sizing: border-box">
+
+  <header style="display: flex; flex-direction: column; gap: var(--space-3); max-width: 950px">
+    <div style="border-top: 5px solid var(--color-text); padding-top: 4px">
+      <div style="border-top: 1px solid var(--color-text); padding-top: var(--space-3); display: flex; align-items: baseline; gap: var(--space-4); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-neutral-700)">
+        <span>Resource person console</span>
+        <span style="color: #aa0b56">Beneficiaries · trainer hat</span>
+        <span style="margin-left: auto">1600 × 1000 · desktop, light theme</span>
+      </div>
+    </div>
+    <h1 style="font-family: var(--font-heading); font-size: 52px; line-height: 1.05; letter-spacing: -0.02em; margin: 0; max-width: 24ch">The people you teach.</h1>
+  </header>
+
+  <div style="width: 1600px; height: 1000px; box-sizing: border-box; background: #ffffff; box-shadow: var(--shadow-md); display: flex; overflow: hidden">
+
+    <nav style="flex: 0 0 272px; background: #0a303e; display: flex; flex-direction: column">
+      <div style="padding: 22px 22px 20px; display: flex; align-items: center; gap: 11px; border-bottom: 1px solid #004961">
+        <svg viewBox="0 0 64 64" width="34" height="34" role="img" aria-label="SETU mark">
+          <path d="M14 46 Q32 28 50 46" fill="none" stroke="#99e0ff" stroke-width="5" stroke-linecap="round"></path>
+          <path d="M14 46 Q32 15 50 46" fill="none" stroke="#62c5ee" stroke-width="3.4" stroke-linecap="round"></path>
+          <path d="M14 46 Q32 3 50 46" fill="none" stroke="#e9f8ff" stroke-width="2.4" stroke-linecap="round"></path>
+          <path d="M4 50 H18 M46 50 H60" fill="none" stroke="#f3f2f2" stroke-width="6"></path>
+        </svg>
+        <span style="font-family: var(--font-heading); font-weight: 600; font-size: 23px; letter-spacing: 0.16em; color: #f3f2f2">SETU</span>
+        <span style="margin-left: auto; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #62c5ee; text-align: right; line-height: 1.4">Resource<br>person</span>
+      </div>
+
+      <div style="padding: 20px 0 8px; display: flex; flex-direction: column">
+        <span style="font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #62c5ee; padding: 0 22px 10px">Trainer</span>
+        <div style="display: flex; align-items: center; gap: 13px; padding: 15px 22px; background: #004961">
+          <span style="width: 3px; height: 22px; background: #0088b0; flex: none"></span>
+          <span style="font-family: var(--font-heading); font-weight: 600; font-size: 16px; color: #ffffff; flex: 1">Beneficiaries</span>
+          <span style="font-size: 12.5px; background: #0088b0; color: #ffffff; padding: 2px 8px">52</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 13px; padding: 13px 22px">
+          <span style="width: 3px; height: 20px; background: transparent; flex: none"></span>
+          <span style="font-size: 15.5px; color: #cbeeff; flex: 1">Course Materials</span>
+          <span style="font-size: 12.5px; color: #62c5ee">14</span>
+        </div>
+
+        <span style="font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #62c5ee; padding: 18px 22px 10px">Expert</span>
+        <div style="display: flex; align-items: center; gap: 13px; padding: 13px 22px">
+          <span style="width: 3px; height: 20px; background: transparent; flex: none"></span>
+          <span style="font-size: 15.5px; color: #cbeeff; flex: 1">Waiting Calls</span>
+          <span style="font-size: 12.5px; background: #aa0b56; color: #ffffff; padding: 2px 8px">3</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 13px; padding: 13px 22px">
+          <span style="width: 3px; height: 20px; background: transparent; flex: none"></span>
+          <span style="font-size: 15.5px; color: #cbeeff; flex: 1">Completed Calls</span>
+          <span style="font-size: 12.5px; color: #62c5ee">61</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 13px; padding: 13px 22px">
+          <span style="width: 3px; height: 20px; background: transparent; flex: none"></span>
+          <span style="font-size: 15.5px; color: #cbeeff; flex: 1">Milestones</span>
+          <span style="font-size: 12.5px; color: #62c5ee">7</span>
+        </div>
+      </div>
+
+      <div style="margin: 20px 22px 0; background: #004961; padding: 14px; display: flex; flex-direction: column; gap: 8px">
+        <span style="font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: #99e0ff">Next session</span>
+        <span style="font-family: var(--font-heading); font-weight: 600; font-size: 19px; line-height: 1.15; color: #ffffff">Today · 10:00</span>
+        <span style="font-size: 11.5px; color: #cbeeff; line-height: 1.45">Tailoring L1 · batch RM-04<br>Attendance opens in 12 min</span>
+      </div>
+
+      <div style="margin-top: auto; padding: 20px 22px; border-top: 1px solid #004961; display: flex; align-items: center; gap: 11px">
+        <span style="width: 34px; height: 34px; background: #0088b0; display: grid; place-items: center; font-family: var(--font-heading); font-weight: 600; font-size: 14px; color: #ffffff; flex: none">SD</span>
+        <div style="display: flex; flex-direction: column; gap: 2px">
+          <span style="font-size: 14px; color: #f3f2f2">S. Devi</span>
+          <span style="font-size: 11.5px; color: #62c5ee">Resource Person · Rampur</span>
+        </div>
+      </div>
+    </nav>
+
+    <main style="flex: 1; display: flex; flex-direction: column; min-width: 0">
+
+      <div style="flex: none; padding: 17px 28px; border-bottom: 1px solid #d7d3d3; display: flex; align-items: center; gap: 18px">
+        <div style="display: flex; flex-direction: column; gap: 3px">
+          <span style="font-family: var(--font-heading); font-weight: 600; font-size: 25px; line-height: 1.1; color: #0a303e">Beneficiaries</span>
+          <span style="font-size: 12.5px; color: #605d5d">52 trainees · Tailoring L1 &amp; L2 · Rampur SHG Centre, Gumla</span>
+        </div>
+        <div style="margin-left: auto; display: flex; align-items: center; gap: 10px">
+          <span style="font-size: 12.5px; color: #201e1d; border: 1px solid #d7d3d3; padding: 10px 14px; white-space: nowrap">Batch: RM-04 ▾</span>
+          <span style="font-size: 12.5px; color: #201e1d; border: 1px solid #d7d3d3; padding: 10px 14px; white-space: nowrap">Status: All ▾</span>
+          <span style="font-family: var(--font-heading); font-weight: 600; font-size: 12.5px; letter-spacing: 0.1em; text-transform: uppercase; color: #ffffff; background: #0088b0; padding: 11px 18px; white-space: nowrap">Open attendance</span>
+        </div>
+      </div>
+
+      <div style="flex: none; padding: 13px 28px; border-bottom: 1px solid #d7d3d3; background: #e9f8ff; display: flex; align-items: center; gap: 14px">
+        <span style="width: 10px; height: 10px; border-radius: 50%; background: #0088b0; flex: none"></span>
+        <span style="font-size: 13.5px; color: #0a303e">Session <strong>Tailoring L1 · RM-04</strong> starts today at 10:00. Its attendance sheet opens automatically at the scheduled time and closes at 12:00.</span>
+        <span style="margin-left: auto; font-size: 12.5px; color: #0a303e; background: #ffffff; padding: 7px 12px; white-space: nowrap">15 Sep · 10:00–12:00</span>
+      </div>
+
+      <div style="flex: 1; min-height: 0; display: flex">
+
+        <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; border-right: 1px solid #d7d3d3">
+
+          <div style="flex: none; padding: 12px 24px; border-bottom: 1px solid #d7d3d3; display: flex; align-items: center; gap: 11px">
+            <div style="flex: 1; border: 1px solid #9b9797; background: #ffffff; padding: 9px 12px; display: flex; align-items: center; gap: 9px">
+              <span style="font-size: 13px; color: #605d5d; flex: none">⌕</span>
+              <span style="font-size: 14px; color: #201e1d; flex: 1">Search trainee name or SETU ID</span>
+            </div>
+            <span style="font-size: 12px; color: #ffffff; background: #0a303e; padding: 8px 12px; white-space: nowrap">All · 30</span>
+            <span style="font-size: 12px; color: #201e1d; background: #edbb00; padding: 8px 12px; white-space: nowrap">Irregular · 4</span>
+            <span style="font-size: 12px; color: #201e1d; background: #eae9e9; padding: 8px 12px; white-space: nowrap">Completed · 3</span>
+          </div>
+
+          <div style="flex: none; display: grid; grid-template-columns: 1.35fr 1.4fr 0.95fr 1fr 1.25fr; gap: 12px; padding: 10px 24px; background: #eae9e9; border-bottom: 1px solid #9b9797; align-items: center">
+            <span style="font-size: 10.5px; letter-spacing: 0.11em; text-transform: uppercase; color: #0a303e">Trainee</span>
+            <span style="font-size: 10.5px; letter-spacing: 0.11em; text-transform: uppercase; color: #0a303e">Village · phone</span>
+            <span style="font-size: 10.5px; letter-spacing: 0.11em; text-transform: uppercase; color: #0a303e">Attendance</span>
+            <span style="font-size: 10.5px; letter-spacing: 0.11em; text-transform: uppercase; color: #0a303e">Status</span>
+            <span style="font-size: 10.5px; letter-spacing: 0.11em; text-transform: uppercase; color: #0a303e">Actions</span>
+          </div>
+
+          <div style="flex: 1; min-height: 0; display: flex; flex-direction: column">
+
+            <div style="display: grid; grid-template-columns: 1.35fr 1.4fr 0.95fr 1fr 1.25fr; gap: 12px; padding: 11px 24px; border-bottom: 1px solid #eae9e9; align-items: center; background: #e9f8ff; border-left: 3px solid #0088b0">
+              <div style="display: flex; flex-direction: column; gap: 1px; min-width: 0">
+                <span style="font-family: var(--font-heading); font-weight: 600; font-size: 14px; color: #0a303e">Sunita Devi</span>
+                <span style="font-size: 11.5px; color: #605d5d">SETU-JH-104718 · 34 F</span>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 1px; min-width: 0">
+                <span style="font-size: 12.5px; color: #201e1d">Barwadih</span>
+                <span style="font-size: 11.5px; color: #605d5d">+91 94310 24718</span>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 3px">
+                <span style="font-size: 12.5px; color: #201e1d">18 / 24</span>
+                <div style="display: flex; height: 7px; background: #eae9e9"><span style="width: 75%; background: #edbb00"></span></div>
+              </div>
+              <span style="font-size: 12px; color: #201e1d; background: #edbb00; padding: 4px 9px; justify-self: start; white-space: nowrap">Irregular</span>
+              <div style="display: flex; gap: 7px">
+                <span style="font-size: 12px; color: #ffffff; background: #0088b0; padding: 6px 11px; white-space: nowrap">Update</span>
+                <span style="font-size: 12px; color: #aa0b56; border: 1px solid #aa0b56; padding: 6px 11px; white-space: nowrap">Flag to Admin</span>
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1.35fr 1.4fr 0.95fr 1fr 1.25fr; gap: 12px; padding: 11px 24px; border-bottom: 1px solid #eae9e9; align-items: center">
+              <div style="display: flex; flex-direction: column; gap: 1px; min-width: 0">
+                <span style="font-family: var(--font-heading); font-weight: 600; font-size: 14px; color: #0a303e">Phulmani Kumari</span>
+                <span style="font-size: 11.5px; color: #605d5d">SETU-JH-104690 · 21 F</span>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 1px; min-width: 0">
+                <span style="font-size: 12.5px; color: #201e1d">Kutmu</span>
+                <span style="font-size: 11.5px; color: #605d5d">+91 90065 14690</span>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 3px">
+                <span style="font-size: 12.5px; color: #201e1d">23 / 24</span>
+                <div style="display: flex; height: 7px; background: #eae9e9"><span style="width: 96%; background: #0088b0"></span></div>
+              </div>
+              <span style="font-size: 12px; color: #0a303e; background: #e9f8ff; padding: 4px 9px; justify-self: start; white-space: nowrap">Attending</span>
+              <div style="display: flex; gap: 7px">
+                <span style="font-size: 12px; color: #ffffff; background: #0088b0; padding: 6px 11px; white-space: nowrap">Update</span>
+                <span style="font-size: 12px; color: #605d5d; border: 1px solid #d7d3d3; padding: 6px 11px; white-space: nowrap">Flag to Admin</span>
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1.35fr 1.4fr 0.95fr 1fr 1.25fr; gap: 12px; padding: 11px 24px; border-bottom: 1px solid #eae9e9; align-items: center">
+              <div style="display: flex; flex-direction: column; gap: 1px; min-width: 0">
+                <span style="font-family: var(--font-heading); font-weight: 600; font-size: 14px; color: #0a303e">Sita Kumari</span>
+                <span style="font-size: 11.5px; color: #605d5d">SETU-JH-104610 · 19 F</span>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 1px; min-width: 0">
+                <span style="font-size: 12.5px; color: #201e1d">Dhab</span>
+                <span style="font-size: 11.5px; color: #605d5d">+91 93348 10610</span>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 3px">
+                <span style="font-size: 12.5px; color: #201e1d">24 / 24</span>
+                <div style="display: flex; height: 7px; background: #eae9e9"><span style="width: 100%; background: #006786"></span></div>
+              </div>
+              <span style="font-size: 12px; color: #ffffff; background: #006786; padding: 4px 9px; justify-self: start; white-space: nowrap">Certified</span>
+              <div style="display: flex; gap: 7px">
+                <span style="font-size: 12px; color: #ffffff; background: #0088b0; padding: 6px 11px; white-space: nowrap">Update</span>
+                <span style="font-size: 12px; color: #605d5d; border: 1px solid #d7d3d3; padding: 6px 11px; white-space: nowrap">Flag to Admin</span>
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1.35fr 1.4fr 0.95fr 1fr 1.25fr; gap: 12px; padding: 11px 24px; border-bottom: 1px solid #eae9e9; align-items: center">
+              <div style="display: flex; flex-direction: column; gap: 1px; min-width: 0">
+                <span style="font-family: var(--font-heading); font-weight: 600; font-size: 14px; color: #0a303e">Kamla Devi</span>
+                <span style="font-size: 11.5px; color: #605d5d">SETU-JH-104571 · 29 F</span>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 1px; min-width: 0">
+                <span style="font-size: 12.5px; color: #201e1d">Nawadih</span>
+                <span style="font-size: 11.5px; color: #605d5d">+91 94711 04571</span>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 3px">
+                <span style="font-size: 12.5px; color: #201e1d">2 / 24</span>
+                <div style="display: flex; height: 7px; background: #eae9e9"><span style="width: 8%; background: #0088b0"></span></div>
+              </div>
+              <span style="font-size: 12px; color: #0a303e; background: #e9f8ff; padding: 4px 9px; justify-self: start; white-space: nowrap">Enrolled</span>
+              <div style="display: flex; gap: 7px">
+                <span style="font-size: 12px; color: #ffffff; background: #0088b0; padding: 6px 11px; white-space: nowrap">Update</span>
+                <span style="font-size: 12px; color: #605d5d; border: 1px solid #d7d3d3; padding: 6px 11px; white-space: nowrap">Flag to Admin</span>
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1.35fr 1.4fr 0.95fr 1fr 1.25fr; gap: 12px; padding: 11px 24px; border-bottom: 1px solid #eae9e9; align-items: center">
+              <div style="display: flex; flex-direction: column; gap: 1px; min-width: 0">
+                <span style="font-family: var(--font-heading); font-weight: 600; font-size: 14px; color: #0a303e">Rekha Baraik</span>
+                <span style="font-size: 11.5px; color: #605d5d">SETU-JH-104531 · 33 F</span>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 1px; min-width: 0">
+                <span style="font-size: 12.5px; color: #201e1d">Serengdag</span>
+                <span style="font-size: 11.5px; color: #605d5d">+91 90023 84531</span>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 3px">
+                <span style="font-size: 12.5px; color: #201e1d">14 / 24</span>
+                <div style="display: flex; height: 7px; background: #eae9e9"><span style="width: 58%; background: #edbb00"></span></div>
+              </div>
+              <span style="font-size: 12px; color: #201e1d; background: #edbb00; padding: 4px 9px; justify-self: start; white-space: nowrap">Irregular</span>
+              <div style="display: flex; gap: 7px">
+                <span style="font-size: 12px; color: #ffffff; background: #0088b0; padding: 6px 11px; white-space: nowrap">Update</span>
+                <span style="font-size: 12px; color: #aa0b56; border: 1px solid #aa0b56; padding: 6px 11px; white-space: nowrap">Flag to Admin</span>
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1.35fr 1.4fr 0.95fr 1fr 1.25fr; gap: 12px; padding: 11px 24px; border-bottom: 1px solid #eae9e9; align-items: center">
+              <div style="display: flex; flex-direction: column; gap: 1px; min-width: 0">
+                <span style="font-family: var(--font-heading); font-weight: 600; font-size: 14px; color: #0a303e">Anjali Oraon</span>
+                <span style="font-size: 11.5px; color: #605d5d">SETU-JH-104512 · 26 F</span>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 1px; min-width: 0">
+                <span style="font-size: 12.5px; color: #201e1d">Barwadih</span>
+                <span style="font-size: 11.5px; color: #605d5d">+91 94318 84512</span>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 3px">
+                <span style="font-size: 12.5px; color: #201e1d">24 / 24</span>
+                <div style="display: flex; height: 7px; background: #eae9e9"><span style="width: 100%; background: #0088b0"></span></div>
+              </div>
+              <span style="font-size: 12px; color: #201e1d; background: #eae9e9; padding: 4px 9px; justify-self: start; white-space: nowrap">Completed</span>
+              <div style="display: flex; gap: 7px">
+                <span style="font-size: 12px; color: #ffffff; background: #0088b0; padding: 6px 11px; white-space: nowrap">Update</span>
+                <span style="font-size: 12px; color: #605d5d; border: 1px solid #d7d3d3; padding: 6px 11px; white-space: nowrap">Flag to Admin</span>
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1.35fr 1.4fr 0.95fr 1fr 1.25fr; gap: 12px; padding: 11px 24px; border-bottom: 1px solid #eae9e9; align-items: center">
+              <div style="display: flex; flex-direction: column; gap: 1px; min-width: 0">
+                <span style="font-family: var(--font-heading); font-weight: 600; font-size: 14px; color: #0a303e">Manju Bhagat</span>
+                <span style="font-size: 11.5px; color: #605d5d">SETU-JH-104498 · 31 F</span>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 1px; min-width: 0">
+                <span style="font-size: 12.5px; color: #201e1d">Kutmu</span>
+                <span style="font-size: 11.5px; color: #605d5d">+91 93041 74498</span>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 3px">
+                <span style="font-size: 12.5px; color: #201e1d">6 / 24</span>
+                <div style="display: flex; height: 7px; background: #eae9e9"><span style="width: 25%; background: #aa0b56"></span></div>
+              </div>
+              <span style="font-size: 12px; color: #ffffff; background: #d6006c; padding: 4px 9px; justify-self: start; white-space: nowrap">Dropped</span>
+              <div style="display: flex; gap: 7px">
+                <span style="font-size: 12px; color: #ffffff; background: #0088b0; padding: 6px 11px; white-space: nowrap">Update</span>
+                <span style="font-size: 12px; color: #aa0b56; border: 1px solid #aa0b56; padding: 6px 11px; white-space: nowrap">Flag to Admin</span>
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1.35fr 1.4fr 0.95fr 1fr 1.25fr; gap: 12px; padding: 11px 24px; border-bottom: 1px solid #eae9e9; align-items: center">
+              <div style="display: flex; flex-direction: column; gap: 1px; min-width: 0">
+                <span style="font-family: var(--font-heading); font-weight: 600; font-size: 14px; color: #0a303e">Lalita Kachhap</span>
+                <span style="font-size: 11.5px; color: #605d5d">SETU-JH-104480 · 23 F</span>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 1px; min-width: 0">
+                <span style="font-size: 12.5px; color: #201e1d">Nawadih</span>
+                <span style="font-size: 11.5px; color: #605d5d">+91 90068 24480</span>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 3px">
+                <span style="font-size: 12.5px; color: #201e1d">21 / 24</span>
+                <div style="display: flex; height: 7px; background: #eae9e9"><span style="width: 88%; background: #0088b0"></span></div>
+              </div>
+              <span style="font-size: 12px; color: #0a303e; background: #e9f8ff; padding: 4px 9px; justify-self: start; white-space: nowrap">Attending</span>
+              <div style="display: flex; gap: 7px">
+                <span style="font-size: 12px; color: #ffffff; background: #0088b0; padding: 6px 11px; white-space: nowrap">Update</span>
+                <span style="font-size: 12px; color: #605d5d; border: 1px solid #d7d3d3; padding: 6px 11px; white-space: nowrap">Flag to Admin</span>
+              </div>
+            </div>
+
+
+            <div style="display: grid; grid-template-columns: 1.35fr 1.4fr 0.95fr 1fr 1.25fr; gap: 12px; padding: 11px 24px; border-bottom: 1px solid #eae9e9; align-items: center">
+              <div style="display: flex; flex-direction: column; gap: 1px; min-width: 0">
+                <span style="font-family: var(--font-heading); font-weight: 600; font-size: 14px; color: #0a303e">Budhni Munda</span>
+                <span style="font-size: 11.5px; color: #605d5d">SETU-JH-104462 · 28 F</span>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 1px; min-width: 0">
+                <span style="font-size: 12.5px; color: #201e1d">Barwadih</span>
+                <span style="font-size: 11.5px; color: #605d5d">+91 94316 64462</span>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 3px">
+                <span style="font-size: 12.5px; color: #201e1d">20 / 24</span>
+                <div style="display: flex; height: 7px; background: #eae9e9"><span style="width: 83%; background: #0088b0"></span></div>
+              </div>
+              <span style="font-size: 12px; color: #0a303e; background: #e9f8ff; padding: 4px 9px; justify-self: start; white-space: nowrap">Attending</span>
+              <div style="display: flex; gap: 7px">
+                <span style="font-size: 12px; color: #ffffff; background: #0088b0; padding: 6px 11px; white-space: nowrap">Update</span>
+                <span style="font-size: 12px; color: #605d5d; border: 1px solid #d7d3d3; padding: 6px 11px; white-space: nowrap">Flag to Admin</span>
+              </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1.35fr 1.4fr 0.95fr 1fr 1.25fr; gap: 12px; padding: 11px 24px; border-bottom: 1px solid #eae9e9; align-items: center">
+              <div style="display: flex; flex-direction: column; gap: 1px; min-width: 0">
+                <span style="font-family: var(--font-heading); font-weight: 600; font-size: 14px; color: #0a303e">Pushpa Devi</span>
+                <span style="font-size: 11.5px; color: #605d5d">SETU-JH-104441 · 37 F</span>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 1px; min-width: 0">
+                <span style="font-size: 12.5px; color: #201e1d">Serengdag</span>
+                <span style="font-size: 11.5px; color: #605d5d">+91 93340 24441</span>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 3px">
+                <span style="font-size: 12.5px; color: #201e1d">4 / 24</span>
+                <div style="display: flex; height: 7px; background: #eae9e9"><span style="width: 17%; background: #0088b0"></span></div>
+              </div>
+              <span style="font-size: 12px; color: #0a303e; background: #e9f8ff; padding: 4px 9px; justify-self: start; white-space: nowrap">Enrolled</span>
+              <div style="display: flex; gap: 7px">
+                <span style="font-size: 12px; color: #ffffff; background: #0088b0; padding: 6px 11px; white-space: nowrap">Update</span>
+                <span style="font-size: 12px; color: #605d5d; border: 1px solid #d7d3d3; padding: 6px 11px; white-space: nowrap">Flag to Admin</span>
+              </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1.35fr 1.4fr 0.95fr 1fr 1.25fr; gap: 12px; padding: 11px 24px; align-items: center">
+              <div style="display: flex; flex-direction: column; gap: 1px; min-width: 0">
+                <span style="font-family: var(--font-heading); font-weight: 600; font-size: 14px; color: #0a303e">Chandmani Lohra</span>
+                <span style="font-size: 11.5px; color: #605d5d">SETU-JH-104425 · 22 F</span>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 1px; min-width: 0">
+                <span style="font-size: 12.5px; color: #201e1d">Kutmu</span>
+                <span style="font-size: 11.5px; color: #605d5d">+91 90067 74425</span>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 3px">
+                <span style="font-size: 12.5px; color: #201e1d">22 / 24</span>
+                <div style="display: flex; height: 7px; background: #eae9e9"><span style="width: 92%; background: #0088b0"></span></div>
+              </div>
+              <span style="font-size: 12px; color: #0a303e; background: #e9f8ff; padding: 4px 9px; justify-self: start; white-space: nowrap">Attending</span>
+              <div style="display: flex; gap: 7px">
+                <span style="font-size: 12px; color: #ffffff; background: #0088b0; padding: 6px 11px; white-space: nowrap">Update</span>
+                <span style="font-size: 12px; color: #605d5d; border: 1px solid #d7d3d3; padding: 6px 11px; white-space: nowrap">Flag to Admin</span>
+              </div>
+            </div>
+
+          </div>
+
+          <div style="flex: none; border-top: 1px solid #d7d3d3; padding: 11px 24px; display: flex; align-items: center; gap: 14px">
+            <span style="font-size: 12.5px; color: #605d5d">Showing 11 of 30 in batch RM-04 · 52 across both batches</span>
+            <span style="margin-left: auto; font-size: 12.5px; color: #605d5d">Attendance saved 09:44</span>
+          </div>
+        </div>
+
+        <aside style="flex: 0 0 440px; display: flex; flex-direction: column; min-height: 0">
+
+          <div style="flex: none; background: #0a303e; padding: 15px 20px; display: flex; align-items: flex-start; gap: 12px">
+            <div style="display: flex; flex-direction: column; gap: 3px; flex: 1; min-width: 0">
+              <span style="font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: #99e0ff">Update status</span>
+              <span style="font-family: var(--font-heading); font-weight: 600; font-size: 20px; line-height: 1.15; color: #ffffff">Sunita Devi</span>
+              <span style="font-size: 12px; color: #cbeeff">Tailoring L1 · RM-04 · 18 of 24 attended</span>
+            </div>
+            <span style="font-size: 15px; color: #99e0ff; flex: none">✕</span>
+          </div>
+
+          <div style="flex: none; padding: 14px 20px; border-bottom: 1px solid #d7d3d3; display: flex; flex-direction: column; gap: 10px">
+            <span style="font-size: 10.5px; letter-spacing: 0.13em; text-transform: uppercase; color: #605d5d">Fixed stages</span>
+            <div style="display: flex; align-items: center; gap: 0">
+              <span style="font-size: 11.5px; color: #ffffff; background: #006786; padding: 5px 9px; white-space: nowrap">Enrolled</span>
+              <span style="width: 9px; height: 1px; background: #9b9797; flex: none"></span>
+              <span style="font-size: 11.5px; color: #ffffff; background: #006786; padding: 5px 9px; white-space: nowrap">Attending</span>
+              <span style="width: 9px; height: 1px; background: #9b9797; flex: none"></span>
+              <span style="font-size: 11.5px; color: #201e1d; background: #edbb00; padding: 5px 9px; white-space: nowrap">Irregular</span>
+              <span style="width: 9px; height: 1px; background: #9b9797; flex: none"></span>
+              <span style="font-size: 11.5px; color: #201e1d; background: #eae9e9; padding: 5px 9px; white-space: nowrap">Completed</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 9px">
+              <span style="font-size: 11.5px; color: #201e1d; background: #eae9e9; padding: 5px 9px; white-space: nowrap">Certified</span>
+              <span style="font-size: 11.5px; color: #201e1d; background: #eae9e9; padding: 5px 9px; white-space: nowrap">Dropped</span>
+              <span style="font-size: 11.5px; color: #605d5d">· current stage is Irregular</span>
+            </div>
+          </div>
+
+          <div style="flex: 1; min-height: 0; padding: 15px 20px; display: flex; flex-direction: column; gap: 14px">
+
+            <div style="display: flex; flex-direction: column; gap: 6px">
+              <span style="font-size: 10.5px; letter-spacing: 0.13em; text-transform: uppercase; color: #605d5d">Move to stage</span>
+              <div style="border: 2px solid #0088b0; background: #ffffff; padding: 10px 12px; display: flex; align-items: center; gap: 10px">
+                <span style="font-size: 14.5px; color: #201e1d; flex: 1">Completed</span>
+                <span style="font-size: 11px; color: #0088b0; flex: none">▾</span>
+              </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 6px">
+              <div style="display: flex; align-items: baseline; gap: 8px">
+                <span style="font-size: 10.5px; letter-spacing: 0.13em; text-transform: uppercase; color: #605d5d">Description</span>
+                <span style="font-size: 11px; color: #aa0b56">Required</span>
+              </div>
+              <div style="border: 1px solid #9b9797; background: #ffffff; padding: 11px 12px; min-height: 60px">
+                <span style="font-size: 13.5px; line-height: 1.5; color: #201e1d">Completed all 24 sessions after the transfer to the morning batch. Finished the blouse and salwar modules; machine work is steady.</span>
+              </div>
+              <span style="font-size: 11.5px; color: #605d5d">Every stage change needs a description. It is written to her record and read back to her by voice.</span>
+            </div>
+
+            <div style="background: #e9f8ff; padding: 12px 14px; display: flex; gap: 11px; align-items: flex-start">
+              <span style="width: 9px; height: 9px; border-radius: 50%; background: #0088b0; flex: none; margin-top: 5px"></span>
+              <span style="font-size: 13px; line-height: 1.45; color: #0a303e">Setting <strong>Completed</strong> generates her certificate automatically and sends it by SMS and WhatsApp in Hindi.</span>
+            </div>
+
+            <div style="border-top: 1px solid #eae9e9; padding-top: 13px; display: flex; flex-direction: column; gap: 11px">
+              <div style="display: flex; align-items: baseline; gap: 8px">
+                <span style="font-size: 10.5px; letter-spacing: 0.13em; text-transform: uppercase; color: #605d5d">Future recommendations</span>
+                <span style="font-size: 11px; color: #aa0b56">Required on completion</span>
+              </div>
+
+              <div style="display: flex; flex-direction: column; gap: 5px">
+                <span style="font-size: 11.5px; color: #605d5d">Next upskilling course</span>
+                <div style="border: 1px solid #9b9797; background: #ffffff; padding: 10px 12px; display: flex; align-items: center; gap: 10px">
+                  <span style="font-size: 14px; color: #201e1d; flex: 1">Tailoring L2 · Satgawan Centre</span>
+                  <span style="font-size: 11px; color: #605d5d; flex: none">▾</span>
+                </div>
+              </div>
+
+              <div style="display: flex; flex-direction: column; gap: 5px">
+                <span style="font-size: 11.5px; color: #605d5d">Job recommendation</span>
+                <div style="border: 1px solid #9b9797; background: #ffffff; padding: 10px 12px; display: flex; align-items: center; gap: 10px">
+                  <span style="font-size: 14px; color: #201e1d; flex: 1">Rampur SHG garment cluster · piece work</span>
+                  <span style="font-size: 11px; color: #605d5d; flex: none">▾</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="flex: none; border-top: 1px solid #d7d3d3; padding: 14px 20px; display: flex; align-items: center; gap: 10px">
+            <span style="font-size: 12px; color: #605d5d; flex: 1; line-height: 1.4">Certificate issues on save.</span>
+            <span style="font-size: 12.5px; letter-spacing: 0.1em; text-transform: uppercase; color: #aa0b56; border: 1px solid #aa0b56; padding: 11px 15px; white-space: nowrap">Flag to Admin</span>
+            <span style="font-family: var(--font-heading); font-weight: 600; font-size: 12.5px; letter-spacing: 0.1em; text-transform: uppercase; color: #ffffff; background: #0a303e; padding: 12px 18px; white-space: nowrap">Save status</span>
+          </div>
+        </aside>
+      </div>
+    </main>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}"></script>
+</body>
+</html>

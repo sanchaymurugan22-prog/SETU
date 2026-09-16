@@ -1,0 +1,303 @@
+rules_version = '2';
+
+// SETU — Firestore security rules.
+//
+// Enforces SETU-SPEC.md Part 7 (visibility, routing, privacy).
+// Roles live in users/{uid}.role. Custom claims would need a server, and SETU runs
+// on the Spark plan with no Cloud Functions, so every check reads the users record.
+//
+// Beneficiary privacy is enforced with a lock: accepting a call sets
+// beneficiaries/{id}.activeHandler to the official, in the same batch that claims the
+// call. Identity is readable only while that lock is held, editable only while the call
+// is 'active', and hidden again when the report is sent and the lock released.
+//
+// Call lifecycle (calls/{id}.status): waiting → active → report-review → completed.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ───────── Identity ─────────
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function me() {
+      return request.auth.uid;
+    }
+
+    function staffPath() {
+      return /databases/$(database)/documents/users/$(request.auth.uid);
+    }
+
+    // An active official with a valid role. Every rule below builds on this.
+    function isStaff() {
+      return signedIn()
+        && exists(staffPath())
+        && get(staffPath()).data.get('isActive', false) == true
+        && get(staffPath()).data.get('role', '') in ['executive', 'resourcePerson', 'admin'];
+    }
+
+    function hasRole(role) {
+      return isStaff() && get(staffPath()).data.role == role;
+    }
+
+    function isAdmin() {
+      return hasRole('admin');
+    }
+
+    function isExecutive() {
+      return hasRole('executive');
+    }
+
+    function isResourcePerson() {
+      return hasRole('resourcePerson');
+    }
+
+    // The write touches only these top-level fields.
+    function changesOnly(fields) {
+      return request.resource.data.diff(resource.data).affectedKeys().hasOnly(fields);
+    }
+
+    function callPath(callId) {
+      return /databases/$(database)/documents/calls/$(callId);
+    }
+
+    // ───────── users ─────────
+
+    match /users/{userId} {
+      // Anyone signed in may read their own record (so the app can explain a missing or
+      // deactivated account). Active staff may read the staff directory.
+      allow read: if signedIn() && (me() == userId || isStaff());
+
+      // Only admins create accounts or change roles. Deactivate rather than delete.
+      allow create, update: if isAdmin()
+        && request.resource.data.role in ['executive', 'resourcePerson', 'admin']
+        && request.resource.data.isActive is bool;
+      allow delete: if false;
+    }
+
+    // ───────── beneficiaries ─────────
+
+    match /beneficiaries/{beneficiaryId} {
+
+      function heldByMe(data) {
+        return data.get('activeHandler', null) == me();
+      }
+
+      function isMyTrainee(data) {
+        return isResourcePerson() && data.get('assignedResourcePerson', null) == me();
+      }
+
+      // Accepting a call: take the lock in the same batch that claims the call.
+      function takesLock() {
+        let call = getAfter(callPath(request.resource.data.activeCallId)).data;
+        return resource.data.get('activeHandler', null) == null
+          && request.resource.data.activeHandler == me()
+          && changesOnly(['activeHandler', 'activeCallId'])
+          && call.handledBy == me()
+          && call.status == 'active'
+          && call.beneficiaryId == beneficiaryId;
+      }
+
+      // Spec 4.1 Stage 2: correct AI-captured data, only while the call is active.
+      function editsDuringCall() {
+        return heldByMe(resource.data)
+          && getAfter(callPath(resource.data.activeCallId)).data.status == 'active'
+          && changesOnly([
+            'name', 'age', 'gender', 'primaryNumber', 'secondaryNumber',
+            'hasWhatsAppPrimary', 'hasWhatsAppSecondary', 'isBasicPhoneOnly',
+            'preferredLanguage', 'location', 'profile', 'consent',
+            'recommendation', 'rejectedCourses', 'updatedAt'
+          ]);
+      }
+
+      // Sending the report releases the lock; identity is hidden again.
+      function releasesLock() {
+        return heldByMe(resource.data)
+          && request.resource.data.get('activeHandler', null) == null
+          && request.resource.data.get('activeCallId', null) == null
+          && changesOnly(['activeHandler', 'activeCallId'])
+          && getAfter(callPath(resource.data.activeCallId)).data.status == 'completed';
+      }
+
+      // Spec 5.1: a trainer maintains status and recommendations for their own trainees.
+      function trainerUpdate() {
+        return isMyTrainee(resource.data)
+          && changesOnly(['currentStatus', 'statusHistory', 'completionRecommendation', 'flags', 'updatedAt']);
+      }
+
+      allow read: if isAdmin()
+        || (isStaff() && heldByMe(resource.data))
+        || isMyTrainee(resource.data);
+
+      allow create: if isAdmin();
+      allow update: if isAdmin()
+        || (isStaff() && (takesLock() || editsDuringCall() || releasesLock() || trainerUpdate()));
+      allow delete: if false;
+    }
+
+    // ───────── calls ─────────
+
+    match /calls/{callId} {
+
+      function mayHandle(data) {
+        return (isExecutive() && data.callType == 'executive')
+          || (isResourcePerson() && data.callType == 'resourcePerson' && data.get('assignedTo', null) == me());
+      }
+
+      // Accept is the only queue action; the first official to accept wins.
+      function accepts() {
+        return mayHandle(resource.data)
+          && resource.data.status == 'waiting'
+          && resource.data.get('handledBy', null) == null
+          && request.resource.data.status == 'active'
+          && request.resource.data.handledBy == me()
+          && changesOnly(['status', 'handledBy', 'startedAt']);
+      }
+
+      // During the call: record a transfer; ending it moves to mandatory report review.
+      function updatesActiveCall() {
+        return resource.data.get('handledBy', null) == me()
+          && resource.data.status == 'active'
+          && request.resource.data.status in ['active', 'report-review']
+          && changesOnly(['status', 'endedAt', 'duration', 'transferredTo', 'transferReason', 'outcome']);
+      }
+
+      // Report review: edit and send. Once 'completed' the call is locked.
+      function reviewsReport() {
+        return resource.data.get('handledBy', null) == me()
+          && resource.data.status == 'report-review'
+          && request.resource.data.status in ['report-review', 'completed']
+          && changesOnly(['status', 'editedReport', 'reportSentAt', 'reportChannels', 'outcome']);
+      }
+
+      // Spec 7.2: a resource person receives cases only as callbacks from an executive's active call.
+      function createsTransfer() {
+        let source = get(callPath(request.resource.data.transferredFromCallId)).data;
+        let target = get(/databases/$(database)/documents/users/$(request.resource.data.assignedTo)).data;
+        return isExecutive()
+          && request.resource.data.callType == 'resourcePerson'
+          && request.resource.data.subType in ['course-related', 'common-related']
+          && request.resource.data.status == 'waiting'
+          && request.resource.data.get('handledBy', null) == null
+          && source.handledBy == me()
+          && source.status == 'active'
+          && source.beneficiaryId == request.resource.data.beneficiaryId
+          && target.role == 'resourcePerson'
+          && target.isActive == true;
+      }
+
+      // Call documents carry no beneficiary identity (that lives in /private), so the
+      // queue is visible to every executive. AI calls are admin-only.
+      allow read: if isAdmin()
+        || (isExecutive() && resource.data.callType == 'executive'
+            && (resource.data.status == 'waiting' || resource.data.get('handledBy', null) == me()))
+        || (isResourcePerson() && resource.data.callType == 'resourcePerson'
+            && resource.data.get('assignedTo', null) == me());
+
+      allow create: if isAdmin() || createsTransfer();
+      allow update: if isAdmin()
+        || (isStaff() && (accepts() || updatesActiveCall() || reviewsReport()));
+      allow delete: if false;
+
+      // Transcript, AI context and call notes can identify the beneficiary, so they follow
+      // the same rule as the beneficiary record: visible to the handler only during the
+      // call and report review.
+      match /private/{docId} {
+        function parentCall() {
+          return get(callPath(callId)).data;
+        }
+
+        allow read: if isAdmin()
+          || (isStaff() && parentCall().get('handledBy', null) == me()
+              && parentCall().status in ['active', 'report-review']);
+
+        // Admin (AI escalation) writes context; an executive may attach context to their own transfer.
+        allow create: if isAdmin()
+          || (isExecutive()
+              && getAfter(callPath(callId)).data.callType == 'resourcePerson'
+              && get(callPath(getAfter(callPath(callId)).data.transferredFromCallId)).data.handledBy == me());
+
+        allow update: if isAdmin()
+          || (isStaff() && parentCall().get('handledBy', null) == me()
+              && parentCall().status == 'active'
+              && changesOnly(['notes']));
+        allow delete: if false;
+      }
+    }
+
+    // ───────── followUps ─────────
+
+    // Automated AI follow-up records — admin only (spec 7.1).
+    match /followUps/{followUpId} {
+      allow read, create, update: if isAdmin();
+      allow delete: if false;
+    }
+
+    // ───────── courses & centres ─────────
+
+    match /courses/{courseId} {
+      allow read: if isStaff();
+      allow create, update: if isAdmin();
+      allow delete: if false;
+    }
+
+    match /centres/{centreId} {
+      allow read: if isStaff();
+      allow create: if isAdmin();
+      // Spec 5.2: the trainer sets their own centre's schedule and online link.
+      allow update: if isAdmin()
+        || (isResourcePerson()
+            && resource.data.get('assignedResourcePerson', null) == me()
+            && changesOnly(['schedule', 'onlineLink', 'updatedAt']));
+      allow delete: if false;
+    }
+
+    // ───────── attendance ─────────
+
+    match /attendance/{attendanceId} {
+      function trainsAt(centreId) {
+        return get(/databases/$(database)/documents/centres/$(centreId)).data
+          .get('assignedResourcePerson', null) == me();
+      }
+
+      allow read: if isAdmin() || (isResourcePerson() && resource.data.markedBy == me());
+      allow create: if isAdmin()
+        || (isResourcePerson()
+            && request.resource.data.markedBy == me()
+            && trainsAt(request.resource.data.centreId));
+      allow update: if isAdmin()
+        || (isResourcePerson()
+            && resource.data.markedBy == me()
+            && request.resource.data.markedBy == me()
+            && request.resource.data.centreId == resource.data.centreId
+            && trainsAt(resource.data.centreId));
+      allow delete: if false;
+    }
+
+    // ───────── adminFlags ─────────
+
+    match /adminFlags/{flagId} {
+      allow read: if isAdmin() || (isResourcePerson() && resource.data.raisedBy == me());
+      // Spec 5.1: Flag to Admin, for the trainer's own trainees.
+      allow create: if isAdmin()
+        || (isResourcePerson()
+            && request.resource.data.raisedBy == me()
+            && request.resource.data.status == 'open'
+            && get(/databases/$(database)/documents/beneficiaries/$(request.resource.data.beneficiaryId)).data
+                 .get('assignedResourcePerson', null) == me());
+      allow update: if isAdmin();
+      allow delete: if false;
+    }
+
+    // ───────── gapData ─────────
+
+    match /gapData/{gapId} {
+      allow read, create, update: if isAdmin();
+      allow delete: if false;
+    }
+
+    // Anything not matched above is denied.
+  }
+}

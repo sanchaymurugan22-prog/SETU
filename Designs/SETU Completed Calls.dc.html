@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="_ds/broadsheet-c7013e8c-fc8c-4413-8c66-417cc1808630/styles.css">
+<script src="_ds/broadsheet-c7013e8c-fc8c-4413-8c66-417cc1808630/_ds_bundle.js"></script>
+<style>
+  body { margin: 0; }
+  a { color: #006786; text-decoration: none; border-bottom: 1px solid #99e0ff; }
+  a:hover { color: #004961; border-bottom-color: #006786; }
+</style>
+</helmet>
+
+<div style="background: var(--color-bg); color: var(--color-text); font-family: var(--font-body); padding: 56px 60px 90px; display: flex; flex-direction: column; gap: var(--space-4); width: 1720px; box-sizing: border-box">
+
+  <header style="display: flex; flex-direction: column; gap: var(--space-3); max-width: 950px">
+    <div style="border-top: 5px solid var(--color-text); padding-top: 4px">
+      <div style="border-top: 1px solid var(--color-text); padding-top: var(--space-3); display: flex; align-items: baseline; gap: var(--space-4); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-neutral-700)">
+        <span>Call console</span>
+        <span style="color: #aa0b56">Completed calls</span>
+        <span style="margin-left: auto">1600 × 1000 · desktop, light theme</span>
+      </div>
+    </div>
+    <h1 style="font-family: var(--font-heading); font-size: 52px; line-height: 1.05; letter-spacing: -0.02em; margin: 0; max-width: 24ch">Your own calls, reports only.</h1>
+  </header>
+
+  <div style="width: 1600px; height: 1000px; box-sizing: border-box; background: #ffffff; box-shadow: var(--shadow-md); display: flex; overflow: hidden">
+
+    <nav style="flex: 0 0 272px; background: #0a303e; display: flex; flex-direction: column">
+      <div style="padding: 22px 22px 20px; display: flex; align-items: center; gap: 11px; border-bottom: 1px solid #004961">
+        <svg viewBox="0 0 64 64" width="34" height="34" role="img" aria-label="SETU mark">
+          <path d="M14 46 Q32 28 50 46" fill="none" stroke="#99e0ff" stroke-width="5" stroke-linecap="round"></path>
+          <path d="M14 46 Q32 15 50 46" fill="none" stroke="#62c5ee" stroke-width="3.4" stroke-linecap="round"></path>
+          <path d="M14 46 Q32 3 50 46" fill="none" stroke="#e9f8ff" stroke-width="2.4" stroke-linecap="round"></path>
+          <path d="M4 50 H18 M46 50 H60" fill="none" stroke="#f3f2f2" stroke-width="6"></path>
+        </svg>
+        <span style="font-family: var(--font-heading); font-weight: 600; font-size: 23px; letter-spacing: 0.16em; color: #f3f2f2">SETU</span>
+        <span style="margin-left: auto; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #62c5ee; text-align: right; line-height: 1.4">Call<br>console</span>
+      </div>
+
+      <div style="padding: 20px 0 8px; display: flex; flex-direction: column">
+        <span style="font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #62c5ee; padding: 0 22px 12px">Sections</span>
+        <div style="display: flex; align-items: center; gap: 13px; padding: 13px 22px">
+          <span style="width: 3px; height: 20px; background: transparent; flex: none"></span>
+          <span style="font-size: 15.5px; color: #cbeeff; flex: 1">Waiting Calls</span>
+          <span style="font-size: 12.5px; color: #62c5ee">13</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 13px; padding: 15px 22px; background: #004961">
+          <span style="width: 3px; height: 22px; background: #0088b0; flex: none"></span>
+          <span style="font-family: var(--font-heading); font-weight: 600; font-size: 16px; color: #ffffff; flex: 1">Completed Calls</span>
+          <span style="font-size: 12.5px; background: #0088b0; color: #ffffff; padding: 2px 8px">38</span>
+        </div>
+      </div>
+
+      <div style="margin: 20px 22px 0; background: #004961; padding: 14px; display: flex; flex-direction: column; gap: 10px">
+        <span style="font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: #99e0ff">Your shift</span>
+        <div style="display: flex; align-items: baseline; gap: 8px">
+          <span style="font-family: var(--font-heading); font-weight: 600; font-size: 24px; line-height: 1; color: #ffffff">38</span>
+          <span style="font-size: 12px; color: #cbeeff">reports sent</span>
+        </div>
+        <div style="display: flex; align-items: baseline; gap: 8px">
+          <span style="font-family: var(--font-heading); font-weight: 600; font-size: 24px; line-height: 1; color: #ffffff">4:12</span>
+          <span style="font-size: 12px; color: #cbeeff">avg. duration</span>
+        </div>
+      </div>
+
+      <div style="margin-top: auto; padding: 20px 22px; border-top: 1px solid #004961; display: flex; align-items: center; gap: 11px">
+        <span style="width: 34px; height: 34px; background: #0088b0; display: grid; place-items: center; font-family: var(--font-heading); font-weight: 600; font-size: 14px; color: #ffffff; flex: none">AM</span>
+        <div style="display: flex; flex-direction: column; gap: 2px">
+          <span style="font-size: 14px; color: #f3f2f2">A. Mahato</span>
+          <span style="font-size: 11.5px; color: #62c5ee">Call Executive · Hindi, Kurukh</span>
+        </div>
+      </div>
+    </nav>
+
+    <main style="flex: 1; display: flex; flex-direction: column; min-width: 0">
+
+      <div style="flex: none; padding: 18px 28px; border-bottom: 1px solid #d7d3d3; display: flex; align-items: center; gap: 18px">
+        <div style="display: flex; flex-direction: column; gap: 3px">
+          <span style="font-family: var(--font-heading); font-weight: 600; font-size: 25px; line-height: 1.1; color: #0a303e">Completed Calls</span>
+          <span style="font-size: 12.5px; color: #605d5d">38 calls you handled · 12–15 Sep 2026</span>
+        </div>
+        <div style="margin-left: auto; display: flex; align-items: center; gap: 12px">
+          <div style="display: flex; align-items: center; gap: 10px; background: #e9f8ff; padding: 9px 14px">
+            <span style="width: 9px; height: 9px; border-radius: 50%; background: #0088b0; flex: none"></span>
+            <span style="font-size: 12.5px; color: #0a303e; white-space: nowrap">Identity hidden · report content only</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 10px; background: #eae9e9; padding: 9px 14px">
+            <span style="font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: #605d5d">Scope</span>
+            <span style="width: 1px; height: 15px; background: #d7d3d3; flex: none"></span>
+            <span style="font-family: var(--font-heading); font-weight: 600; font-size: 13px; color: #0a303e; white-space: nowrap">Your calls only</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="flex: none; padding: 14px 28px; border-bottom: 1px solid #d7d3d3; display: flex; align-items: center; gap: 11px; flex-wrap: wrap">
+        <div style="flex: 1 1 280px; min-width: 220px; border: 1px solid #9b9797; background: #ffffff; padding: 10px 13px; display: flex; align-items: center; gap: 10px">
+          <span style="font-size: 13px; color: #605d5d; flex: none">⌕</span>
+          <span style="font-size: 14px; color: #201e1d; flex: 1">Search report text, course or call reference</span>
+        </div>
+        <span style="font-size: 12.5px; color: #ffffff; background: #0a303e; padding: 9px 13px; white-space: nowrap">Last 7 days</span>
+        <span style="font-size: 12.5px; color: #201e1d; border: 1px solid #d7d3d3; padding: 9px 13px; white-space: nowrap">Today</span>
+        <span style="font-size: 12.5px; color: #201e1d; border: 1px solid #d7d3d3; padding: 9px 13px; white-space: nowrap">This month</span>
+        <span style="font-size: 12.5px; color: #201e1d; border: 1px solid #9b9797; padding: 9px 13px; white-space: nowrap">12 Sep – 15 Sep ▾</span>
+        <span style="font-size: 12.5px; color: #201e1d; border: 1px solid #d7d3d3; padding: 9px 13px; white-space: nowrap">Outcome: All ▾</span>
+        <span style="font-size: 12.5px; color: #201e1d; border: 1px solid #d7d3d3; padding: 9px 13px; white-space: nowrap">Course: All ▾</span>
+      </div>
+
+      <div style="flex: none; display: grid; grid-template-columns: 0.82fr 2.2fr 1.15fr 2.05fr 1.15fr; gap: 16px; padding: 10px 28px; background: #eae9e9; border-bottom: 1px solid #9b9797; align-items: center">
+        <span style="font-size: 10.5px; letter-spacing: 0.11em; text-transform: uppercase; color: #0a303e">Date · duration</span>
+        <span style="font-size: 10.5px; letter-spacing: 0.11em; text-transform: uppercase; color: #0a303e">What was discussed</span>
+        <span style="font-size: 10.5px; letter-spacing: 0.11em; text-transform: uppercase; color: #0a303e">Course recommended</span>
+        <span style="font-size: 10.5px; letter-spacing: 0.11em; text-transform: uppercase; color: #0a303e">Actions taken</span>
+        <span style="font-size: 10.5px; letter-spacing: 0.11em; text-transform: uppercase; color: #0a303e">Outcome</span>
+      </div>
+
+      <div style="flex: 1; min-height: 0; display: flex; flex-direction: column">
+
+        <div style="display: grid; grid-template-columns: 0.82fr 2.2fr 1.15fr 2.05fr 1.15fr; gap: 16px; padding: 14px 28px; border-bottom: 1px solid #eae9e9; align-items: start">
+          <div style="display: flex; flex-direction: column; gap: 3px">
+            <span style="font-family: var(--font-heading); font-weight: 600; font-size: 14.5px; color: #0a303e">15 Sep · 09:58</span>
+            <span style="font-size: 12.5px; color: #605d5d">06:18 · ref CR-7841</span>
+          </div>
+          <span style="font-size: 13.5px; line-height: 1.45; color: #201e1d">Could not continue tailoring classes — the allotted centre is 41 km away and bus fare is unaffordable. Still wants to finish; mornings only.</span>
+          <span style="font-size: 13.5px; line-height: 1.45; color: #201e1d">Tailoring L1 · nearer block centre</span>
+          <div style="display: flex; flex-direction: column; gap: 4px">
+            <span style="font-size: 13px; line-height: 1.4; color: #201e1d">· Seat moved to morning batch</span>
+            <span style="font-size: 13px; line-height: 1.4; color: #201e1d">· Travel-cost constraint recorded</span>
+            <span style="font-size: 13px; line-height: 1.4; color: #605d5d">· Resource person to confirm by 20 Sep</span>
+          </div>
+          <span style="font-size: 12.5px; color: #ffffff; background: #006786; padding: 5px 10px; justify-self: start">Transferred to nearer centre</span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 0.82fr 2.2fr 1.15fr 2.05fr 1.15fr; gap: 16px; padding: 14px 28px; border-bottom: 1px solid #eae9e9; align-items: start">
+          <div style="display: flex; flex-direction: column; gap: 3px">
+            <span style="font-family: var(--font-heading); font-weight: 600; font-size: 14.5px; color: #0a303e">15 Sep · 09:31</span>
+            <span style="font-size: 12.5px; color: #605d5d">03:02 · ref CR-7840</span>
+          </div>
+          <span style="font-size: 13.5px; line-height: 1.45; color: #201e1d">Asked whether the welding certificate is recognised outside the state, and whether any placement help follows training.</span>
+          <span style="font-size: 13.5px; line-height: 1.45; color: #201e1d">Welding L2 · continued as allotted</span>
+          <div style="display: flex; flex-direction: column; gap: 4px">
+            <span style="font-size: 13px; line-height: 1.4; color: #201e1d">· Certificate validity explained</span>
+            <span style="font-size: 13px; line-height: 1.4; color: #201e1d">· Added to placement-drive list</span>
+          </div>
+          <span style="font-size: 12.5px; color: #201e1d; background: #eae9e9; padding: 5px 10px; justify-self: start">Question answered</span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 0.82fr 2.2fr 1.15fr 2.05fr 1.15fr; gap: 16px; padding: 14px 28px; border-bottom: 1px solid #eae9e9; align-items: start">
+          <div style="display: flex; flex-direction: column; gap: 3px">
+            <span style="font-family: var(--font-heading); font-weight: 600; font-size: 14.5px; color: #0a303e">14 Sep · 16:47</span>
+            <span style="font-size: 12.5px; color: #605d5d">08:41 · ref CR-7822</span>
+          </div>
+          <span style="font-size: 13.5px; line-height: 1.45; color: #201e1d">Trained welder with no work since certification. Reported no employer within reach and asked whether any other trade could be taken up.</span>
+          <span style="font-size: 13.5px; line-height: 1.45; color: #201e1d">Retained welding · added mobile repair as second option</span>
+          <div style="display: flex; flex-direction: column; gap: 4px">
+            <span style="font-size: 13px; line-height: 1.4; color: #201e1d">· Flagged as trained-but-unplaced</span>
+            <span style="font-size: 13px; line-height: 1.4; color: #201e1d">· Block gap escalated to district</span>
+            <span style="font-size: 13px; line-height: 1.4; color: #605d5d">· Callback booked for 28 Sep</span>
+          </div>
+          <span style="font-size: 12.5px; color: #ffffff; background: #aa0b56; padding: 5px 10px; justify-self: start">Escalated · no local jobs</span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 0.82fr 2.2fr 1.15fr 2.05fr 1.15fr; gap: 16px; padding: 14px 28px; border-bottom: 1px solid #eae9e9; align-items: start">
+          <div style="display: flex; flex-direction: column; gap: 3px">
+            <span style="font-family: var(--font-heading); font-weight: 600; font-size: 14.5px; color: #0a303e">14 Sep · 14:12</span>
+            <span style="font-size: 12.5px; color: #605d5d">02:26 · ref CR-7815</span>
+          </div>
+          <span style="font-size: 13.5px; line-height: 1.45; color: #201e1d">Wanted to change from driving to electrical wiring after the family's vehicle plan fell through.</span>
+          <span style="font-size: 13.5px; line-height: 1.45; color: #201e1d">Electrical wiring · block centre, seats free</span>
+          <div style="display: flex; flex-direction: column; gap: 4px">
+            <span style="font-size: 13px; line-height: 1.4; color: #201e1d">· Course changed on record</span>
+            <span style="font-size: 13px; line-height: 1.4; color: #201e1d">· Driving queue place released</span>
+          </div>
+          <span style="font-size: 12.5px; color: #0a303e; background: #e9f8ff; padding: 5px 10px; justify-self: start">Re-enrolled</span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 0.82fr 2.2fr 1.15fr 2.05fr 1.15fr; gap: 16px; padding: 14px 28px; border-bottom: 1px solid #eae9e9; align-items: start">
+          <div style="display: flex; flex-direction: column; gap: 3px">
+            <span style="font-family: var(--font-heading); font-weight: 600; font-size: 14.5px; color: #0a303e">13 Sep · 11:05</span>
+            <span style="font-size: 12.5px; color: #605d5d">04:54 · ref CR-7788</span>
+          </div>
+          <span style="font-size: 13.5px; line-height: 1.45; color: #201e1d">Dialect not recognised by the system on three attempts. Caller asked for course options near her block and for the class timing.</span>
+          <span style="font-size: 13.5px; line-height: 1.45; color: #201e1d">Food processing · women's centre</span>
+          <div style="display: flex; flex-direction: column; gap: 4px">
+            <span style="font-size: 13px; line-height: 1.4; color: #201e1d">· Enrolled in afternoon batch</span>
+            <span style="font-size: 13px; line-height: 1.4; color: #201e1d">· Kurukh sample logged for the voice model</span>
+          </div>
+          <span style="font-size: 12.5px; color: #ffffff; background: #006786; padding: 5px 10px; justify-self: start">Enrolled</span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 0.82fr 2.2fr 1.15fr 2.05fr 1.15fr; gap: 16px; padding: 14px 28px; border-bottom: 1px solid #eae9e9; align-items: start">
+          <div style="display: flex; flex-direction: column; gap: 3px">
+            <span style="font-family: var(--font-heading); font-weight: 600; font-size: 14.5px; color: #0a303e">12 Sep · 15:38</span>
+            <span style="font-size: 12.5px; color: #605d5d">05:10 · ref CR-7754</span>
+          </div>
+          <span style="font-size: 13.5px; line-height: 1.45; color: #201e1d">Third attendance follow-up. Caller had stopped attending after a family illness and was unsure whether the seat was still held.</span>
+          <span style="font-size: 13.5px; line-height: 1.45; color: #201e1d">Tailoring L2 · same centre, restart</span>
+          <div style="display: flex; flex-direction: column; gap: 4px">
+            <span style="font-size: 13px; line-height: 1.4; color: #201e1d">· Seat confirmed held for 30 days</span>
+            <span style="font-size: 13px; line-height: 1.4; color: #201e1d">· Transferred to resource person</span>
+          </div>
+          <span style="font-size: 12.5px; color: #201e1d; background: #eae9e9; padding: 5px 10px; justify-self: start">Follow-up closed</span>
+        </div>
+
+
+        <div style="display: grid; grid-template-columns: 0.82fr 2.2fr 1.15fr 2.05fr 1.15fr; gap: 16px; padding: 14px 28px; border-bottom: 1px solid #eae9e9; align-items: start">
+          <div style="display: flex; flex-direction: column; gap: 3px">
+            <span style="font-family: var(--font-heading); font-weight: 600; font-size: 14.5px; color: #0a303e">12 Sep · 12:20</span>
+            <span style="font-size: 12.5px; color: #605d5d">03:47 · ref CR-7749</span>
+          </div>
+          <span style="font-size: 13.5px; line-height: 1.45; color: #201e1d">Asked whether classes cost anything and whether a certificate is issued at the end. Had been told by a neighbour that a fee was payable.</span>
+          <span style="font-size: 13.5px; line-height: 1.45; color: #201e1d">Mobile repair · block trade centre</span>
+          <div style="display: flex; flex-direction: column; gap: 4px">
+            <span style="font-size: 13px; line-height: 1.4; color: #201e1d">· Confirmed training is free of cost</span>
+            <span style="font-size: 13px; line-height: 1.4; color: #201e1d">· Enrolled in the next batch</span>
+          </div>
+          <span style="font-size: 12.5px; color: #ffffff; background: #006786; padding: 5px 10px; justify-self: start">Enrolled</span>
+        </div>
+        <div style="display: grid; grid-template-columns: 0.82fr 2.2fr 1.15fr 2.05fr 1.15fr; gap: 16px; padding: 14px 28px; align-items: start">
+          <div style="display: flex; flex-direction: column; gap: 3px">
+            <span style="font-family: var(--font-heading); font-weight: 600; font-size: 14.5px; color: #0a303e">12 Sep · 10:04</span>
+            <span style="font-size: 12.5px; color: #605d5d">06:02 · ref CR-7741</span>
+          </div>
+          <span style="font-size: 13.5px; line-height: 1.45; color: #201e1d">Dissatisfied with the allotted batch timing, which clashed with daily wage work. Asked to be moved or removed from the list.</span>
+          <span style="font-size: 13.5px; line-height: 1.45; color: #201e1d">Masonry · evening batch, same centre</span>
+          <div style="display: flex; flex-direction: column; gap: 4px">
+            <span style="font-size: 13px; line-height: 1.4; color: #201e1d">· Moved to evening batch</span>
+            <span style="font-size: 13px; line-height: 1.4; color: #201e1d">· Dissatisfaction noted for the centre</span>
+            <span style="font-size: 13px; line-height: 1.4; color: #201e1d">· Transferred to resource person</span>
+          </div>
+          <span style="font-size: 12.5px; color: #201e1d; background: #eae9e9; padding: 5px 10px; justify-self: start">Resolved on call</span>
+        </div>
+
+      </div>
+
+      <div style="flex: none; border-top: 1px solid #d7d3d3; padding: 12px 28px; display: flex; align-items: center; gap: 14px">
+        <span style="font-size: 12.5px; color: #605d5d">Showing 8 of 38 reports you sent</span>
+        <div style="margin-left: auto; display: flex; align-items: center; gap: 7px">
+          <span style="font-size: 12.5px; color: #605d5d; border: 1px solid #d7d3d3; padding: 6px 11px">Prev</span>
+          <span style="font-size: 12.5px; color: #ffffff; background: #0a303e; padding: 6px 11px">1</span>
+          <span style="font-size: 12.5px; color: #201e1d; border: 1px solid #d7d3d3; padding: 6px 11px">2</span>
+          <span style="font-size: 12.5px; color: #201e1d; border: 1px solid #d7d3d3; padding: 6px 11px">7</span>
+          <span style="font-size: 12.5px; color: #201e1d; border: 1px solid #9b9797; padding: 6px 11px">Next</span>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}"></script>
+</body>
+</html>
