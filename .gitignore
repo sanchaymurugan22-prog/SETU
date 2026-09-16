@@ -24,6 +24,9 @@ firebase-debug.log*
 firestore-debug.log*
 ui-debug.log*
 
+# Local editor / tooling config (dev-server launch settings)
+.claude/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
