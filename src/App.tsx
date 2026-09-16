@@ -2,6 +2,7 @@ import type { ComponentType } from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { AuthProvider } from './auth/AuthProvider'
 import { HomeRedirect, RequireRole } from './auth/RequireRole'
+import { BeneficiariesSection } from './consoles/admin/BeneficiariesSection'
 import { GapMapSection } from './consoles/admin/GapMapSection'
 import { ConsoleLayout } from './consoles/ConsoleLayout'
 import { CONSOLES } from './consoles/consoles'
@@ -11,6 +12,7 @@ import { SplashGate } from './pages/SplashScreen'
 
 /** Sections that are built. Anything absent still renders its placeholder. */
 const SECTION_VIEWS: Record<string, ComponentType> = {
+  'admin/beneficiaries': BeneficiariesSection,
   'admin/gap-map': GapMapSection,
 }
 
