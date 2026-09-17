@@ -25,6 +25,7 @@ const SAME_ALLOWED = new Set([
   'callConsole.report.smsPrimary',
   'callConsole.report.whatsappPrimary',
   'detection.confidenceShort',
+  'detection.contestedPair',
 ])
 
 function flatten(value, prefix = '', out = new Map()) {

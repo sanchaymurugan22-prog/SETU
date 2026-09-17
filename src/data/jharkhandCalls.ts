@@ -11,7 +11,7 @@
  */
 
 import { loadBeneficiaries, type Beneficiary } from './jharkhandBeneficiaries'
-import { detected, type DetectionRecord } from './languageDetections'
+import { detected } from './languageDetections'
 import type { LanguageDetection } from '../lib/languageDetection'
 
 export type ReasonTag =
@@ -87,6 +87,12 @@ export interface QueuedCall {
   detection: LanguageDetection
   reasonTag: ReasonTag
   reasonDetail: string
+  /**
+   * The caller's first utterance after the bilingual greeting, once a telephony layer
+   * records it. Undefined in the seeded demo, which is what makes detection fall back to
+   * the stored record instead of calling Bhashini.
+   */
+  audioSample?: Blob
   /** Set only on resource-person cases, which arrive by transfer from the Call Console. */
   subType?: CallSubType
   /** Who sent the case over, shown so the expert knows where it came from. */
@@ -151,7 +157,7 @@ const QUEUE: QueuedCall[] = [
   {
     callId: 'call-q-1',
     beneficiaryId: kurukhCaller.beneficiaryId,
-    detection: detected(kurukhCaller.preferredLanguage, 0.52),
+    detection: detected(kurukhCaller.preferredLanguage, 1),
     district: kurukhCaller.district,
     block: kurukhCaller.block,
     reasonTag: 'ai-low-confidence',
@@ -182,7 +188,7 @@ const QUEUE: QueuedCall[] = [
   {
     callId: 'call-q-2',
     beneficiaryId: unplacedWelder.beneficiaryId,
-    detection: detected(unplacedWelder.preferredLanguage, 0.93),
+    detection: detected(unplacedWelder.preferredLanguage, 2),
     district: unplacedWelder.district,
     block: unplacedWelder.block,
     reasonTag: 'beneficiary-requested-human',
@@ -212,7 +218,7 @@ const QUEUE: QueuedCall[] = [
   {
     callId: 'call-q-3',
     beneficiaryId: drivingCaller.beneficiaryId,
-    detection: detected(drivingCaller.preferredLanguage, 0.9),
+    detection: detected(drivingCaller.preferredLanguage, 3),
     district: drivingCaller.district,
     block: drivingCaller.block,
     reasonTag: 'course-question',
@@ -240,7 +246,7 @@ const QUEUE: QueuedCall[] = [
   {
     callId: 'call-q-4',
     beneficiaryId: unplacedTailor.beneficiaryId,
-    detection: detected(unplacedTailor.preferredLanguage, 0.88),
+    detection: detected(unplacedTailor.preferredLanguage, 4),
     district: unplacedTailor.district,
     block: unplacedTailor.block,
     reasonTag: 'followup-unable-to-manage',
@@ -265,7 +271,7 @@ const QUEUE: QueuedCall[] = [
   {
     callId: 'call-q-5',
     beneficiaryId: santaliCaller.beneficiaryId,
-    detection: detected(santaliCaller.preferredLanguage, 0.38),
+    detection: detected(santaliCaller.preferredLanguage, 5),
     district: santaliCaller.district,
     block: santaliCaller.block,
     reasonTag: 'ai-low-confidence',
@@ -293,7 +299,7 @@ const QUEUE: QueuedCall[] = [
   {
     callId: 'call-q-6',
     beneficiaryId: beautyCaller.beneficiaryId,
-    detection: detected(beautyCaller.preferredLanguage, 0.95),
+    detection: detected(beautyCaller.preferredLanguage, 6),
     district: beautyCaller.district,
     block: beautyCaller.block,
     reasonTag: 'beneficiary-requested-human',
@@ -318,7 +324,7 @@ const QUEUE: QueuedCall[] = [
   {
     callId: 'call-q-7',
     beneficiaryId: foodCaller.beneficiaryId,
-    detection: detected(foodCaller.preferredLanguage, 0.91),
+    detection: detected(foodCaller.preferredLanguage, 7),
     district: foodCaller.district,
     block: foodCaller.block,
     reasonTag: 'course-question',
@@ -343,7 +349,7 @@ const QUEUE: QueuedCall[] = [
   {
     callId: 'call-q-8',
     beneficiaryId: wiringCaller.beneficiaryId,
-    detection: detected(wiringCaller.preferredLanguage, 0.86),
+    detection: detected(wiringCaller.preferredLanguage, 8),
     district: wiringCaller.district,
     block: wiringCaller.block,
     reasonTag: 'followup-unable-to-manage',
@@ -368,7 +374,7 @@ const QUEUE: QueuedCall[] = [
   {
     callId: 'call-q-9',
     beneficiaryId: mobileCaller.beneficiaryId,
-    detection: detected(mobileCaller.preferredLanguage, 0.46),
+    detection: detected(mobileCaller.preferredLanguage, 9),
     district: mobileCaller.district,
     block: mobileCaller.block,
     reasonTag: 'ai-low-confidence',
@@ -396,7 +402,7 @@ const COMPLETED: CompletedCall[] = [
   {
     callId: 'call-c-1',
     ref: 'CR-7841',
-    detection: detected('Kurukh', 0.55),
+    detection: detected('Kurukh', 10),
     whenLabel: '15 Sep · 09:58',
     daysAgo: 1,
     durationSeconds: 378,
@@ -409,7 +415,7 @@ const COMPLETED: CompletedCall[] = [
   {
     callId: 'call-c-2',
     ref: 'CR-7840',
-    detection: detected('Hindi', 0.94),
+    detection: detected('Hindi', 11),
     whenLabel: '15 Sep · 09:31',
     daysAgo: 1,
     durationSeconds: 182,
@@ -422,7 +428,7 @@ const COMPLETED: CompletedCall[] = [
   {
     callId: 'call-c-3',
     ref: 'CR-7822',
-    detection: detected('Hindi', 0.92),
+    detection: detected('Hindi', 12),
     whenLabel: '14 Sep · 16:47',
     daysAgo: 2,
     durationSeconds: 521,
@@ -435,7 +441,7 @@ const COMPLETED: CompletedCall[] = [
   {
     callId: 'call-c-4',
     ref: 'CR-7815',
-    detection: detected('Hindi', 0.9),
+    detection: detected('Hindi', 13),
     whenLabel: '14 Sep · 14:12',
     daysAgo: 2,
     durationSeconds: 146,
@@ -447,7 +453,7 @@ const COMPLETED: CompletedCall[] = [
   {
     callId: 'call-c-5',
     ref: 'CR-7788',
-    detection: detected('Kurukh', 0.59),
+    detection: detected('Kurukh', 14),
     whenLabel: '13 Sep · 11:05',
     daysAgo: 3,
     durationSeconds: 294,
@@ -460,7 +466,7 @@ const COMPLETED: CompletedCall[] = [
   {
     callId: 'call-c-6',
     ref: 'CR-7754',
-    detection: detected('Hindi', 0.93),
+    detection: detected('Hindi', 15),
     whenLabel: '12 Sep · 15:38',
     daysAgo: 4,
     durationSeconds: 310,
@@ -473,7 +479,7 @@ const COMPLETED: CompletedCall[] = [
   {
     callId: 'call-c-7',
     ref: 'CR-7749',
-    detection: detected('Magahi', 0.71),
+    detection: detected('Magahi', 16),
     whenLabel: '12 Sep · 12:20',
     daysAgo: 4,
     durationSeconds: 227,
@@ -486,7 +492,7 @@ const COMPLETED: CompletedCall[] = [
   {
     callId: 'call-c-8',
     ref: 'CR-7741',
-    detection: detected('Ho', 0.74),
+    detection: detected('Ho', 17),
     whenLabel: '12 Sep · 10:04',
     daysAgo: 4,
     durationSeconds: 362,
@@ -524,7 +530,7 @@ const RP_QUEUE: QueuedCall[] = [
     beneficiaryId: unplacedWelder.beneficiaryId,
     district: unplacedWelder.district,
     block: unplacedWelder.block,
-    detection: detected(unplacedWelder.preferredLanguage, 0.93),
+    detection: detected(unplacedWelder.preferredLanguage, 18),
     reasonTag: 'course-question',
     reasonDetail: 'Asked what a welding certificate is worth outside the state',
     subType: 'course-related',
@@ -553,7 +559,7 @@ const RP_QUEUE: QueuedCall[] = [
     beneficiaryId: kurukhCaller.beneficiaryId,
     district: kurukhCaller.district,
     block: kurukhCaller.block,
-    detection: detected(kurukhCaller.preferredLanguage, 0.58),
+    detection: detected(kurukhCaller.preferredLanguage, 19),
     reasonTag: 'beneficiary-requested-human',
     reasonDetail: 'Dissatisfied with the batch after the transfer',
     subType: 'common-related',
@@ -582,7 +588,7 @@ const RP_QUEUE: QueuedCall[] = [
     beneficiaryId: drivingCaller.beneficiaryId,
     district: drivingCaller.district,
     block: drivingCaller.block,
-    detection: detected(drivingCaller.preferredLanguage, 0.9),
+    detection: detected(drivingCaller.preferredLanguage, 20),
     reasonTag: 'course-question',
     reasonDetail: 'Wants to know if a different trade suits him better',
     subType: 'course-related',
@@ -612,7 +618,7 @@ const RP_COMPLETED: CompletedCall[] = [
     callId: 'call-rpc-1',
     ref: 'RP-2214',
     subType: 'course-related',
-    detection: detected('Hindi', 0.92),
+    detection: detected('Hindi', 21),
     whenLabel: '16 Sep · 15:20',
     daysAgo: 1,
     durationSeconds: 412,
@@ -626,7 +632,7 @@ const RP_COMPLETED: CompletedCall[] = [
     callId: 'call-rpc-2',
     ref: 'RP-2208',
     subType: 'common-related',
-    detection: detected('Kurukh', 0.57),
+    detection: detected('Kurukh', 22),
     whenLabel: '15 Sep · 11:48',
     daysAgo: 2,
     durationSeconds: 566,
@@ -640,7 +646,7 @@ const RP_COMPLETED: CompletedCall[] = [
     callId: 'call-rpc-3',
     ref: 'RP-2201',
     subType: 'course-related',
-    detection: detected('Hindi', 0.94),
+    detection: detected('Hindi', 23),
     whenLabel: '14 Sep · 09:15',
     daysAgo: 3,
     durationSeconds: 245,
@@ -653,7 +659,7 @@ const RP_COMPLETED: CompletedCall[] = [
     callId: 'call-rpc-4',
     ref: 'RP-2196',
     subType: 'common-related',
-    detection: detected('Ho', 0.74),
+    detection: detected('Ho', 24),
     whenLabel: '13 Sep · 16:02',
     daysAgo: 4,
     durationSeconds: 388,
@@ -676,12 +682,8 @@ export function loadResourcePersonCompleted(): CompletedCall[] {
 }
 
 /** Detection records from every call this console knows about, for the dialect-gap figures. */
-export function callDetections(): DetectionRecord[] {
-  return [...QUEUE, ...COMPLETED, ...RP_QUEUE, ...RP_COMPLETED].map((call) => ({
-    languageCode: call.detection.languageCode,
-    languageName: call.detection.languageName,
-    confidence: call.detection.confidence,
-  }))
+export function callDetections(): LanguageDetection[] {
+  return [...QUEUE, ...COMPLETED, ...RP_QUEUE, ...RP_COMPLETED].map((call) => call.detection)
 }
 
 /** Calls waiting longer than this are shown as over target. */

@@ -8,6 +8,8 @@ import {
   type TransferReason,
 } from '../../data/jharkhandCalls'
 import type { Beneficiary } from '../../data/jharkhandBeneficiaries'
+import { bhashiniConfigFromEnv } from '../../lib/env'
+import { createCallDetector } from '../../lib/languageDetection'
 import {
   CallSessionContext,
   type ActiveCall,
@@ -77,6 +79,14 @@ export function CallSessionProvider({
   const [draft, setDraft] = useState<ReportDraft | null>(null)
   const [available, setAvailable] = useState(true)
   const [openedAt] = useState(() => Date.now())
+  // Live two-model detection when credentials and call audio are both present; the seeded
+  // record otherwise. Built once, so the same detector serves every call in the session.
+  const [detector] = useState(() =>
+    createCallDetector(
+      (callId) => queueSource().find((call) => call.callId === callId)?.detection,
+      bhashiniConfigFromEnv(),
+    ),
+  )
   const [now, setNow] = useState(() => Date.now())
   const sentCount = useRef(0)
 
@@ -126,6 +136,21 @@ export function CallSessionProvider({
         if (!call) return
         const beneficiary = beneficiaryForCall(call.beneficiaryId)
         setQueue((entries) => entries.filter((entry) => entry.callId !== callId))
+
+        // The caller has already answered the bilingual greeting by the time an executive
+        // picks up, so detection runs on accept. With telephony wired in, sample.audio is
+        // that first utterance; until then the detector returns the seeded record.
+        void detector
+          .detect({ callId, audio: call.audioSample })
+          .then((detection) =>
+            setState((current) =>
+              current && current.call.callId === callId
+                ? { ...current, call: { ...current.call, detection } }
+                : current,
+            ),
+          )
+          .catch(() => undefined)
+
         setState({
           call,
           beneficiary,
@@ -188,7 +213,20 @@ export function CallSessionProvider({
         setDraft(null)
       },
     }),
-    [allowTransfer, available, completed, draft, elapsedOf, queue, refPrefix, report, state, toActive, waitedSeconds],
+    [
+      allowTransfer,
+      available,
+      completed,
+      detector,
+      draft,
+      elapsedOf,
+      queue,
+      refPrefix,
+      report,
+      state,
+      toActive,
+      waitedSeconds,
+    ],
   )
 
   return <CallSessionContext.Provider value={value}>{children}</CallSessionContext.Provider>

@@ -1064,3 +1064,70 @@ span.call-chip button {
   line-height: 1.45;
   color: var(--grey-700);
 }
+
+/* ── Two-model detection ── */
+
+.call-models {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 8px 0 6px;
+  padding: 8px 10px;
+  background: var(--white);
+  border: 1px solid var(--grey-300);
+}
+
+.call-model-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 12px;
+}
+
+.call-model-name {
+  color: var(--grey-700);
+}
+
+.call-model-answer {
+  font-weight: 600;
+}
+
+.call-agreement {
+  font-family: var(--font-heading);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 7px;
+}
+
+.call-agreement.is-agreed {
+  background: var(--cyan-100);
+  color: var(--teal);
+}
+
+.call-agreement.is-contested {
+  background: var(--pink-50);
+  color: var(--magenta-ink);
+}
+
+.call-agreement.is-unconfirmed {
+  background: var(--grey-200);
+  color: var(--grey-700);
+}
+
+.call-contested {
+  display: block;
+  margin-top: 3px;
+  font-size: 11px;
+  color: var(--magenta-ink);
+}
+
+.call-detected-caveat {
+  display: block;
+  margin-top: 6px;
+  font-size: 11px;
+  font-style: italic;
+  color: var(--grey-700);
+}

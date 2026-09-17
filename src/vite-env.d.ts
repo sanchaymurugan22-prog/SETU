@@ -9,8 +9,9 @@ interface ImportMetaEnv {
   readonly VITE_FIREBASE_APP_ID?: string
   /** "true" routes Auth and Firestore to the local emulators (npm run dev:emulator). */
   readonly VITE_USE_EMULATORS?: string
-  readonly VITE_BHASHINI_USER_ID?: string
-  readonly VITE_BHASHINI_API_KEY?: string
+  readonly VITE_BHASHINI_APP_ID?: string
+  readonly VITE_BHASHINI_UDYAT_KEY?: string
+  readonly VITE_BHASHINI_INFERENCE_KEY?: string
 }
 
 interface ImportMeta {

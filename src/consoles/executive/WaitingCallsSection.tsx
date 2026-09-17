@@ -9,7 +9,7 @@ import {
   type QueuedCall,
   type ReasonTag,
 } from '../../data/jharkhandCalls'
-import { isDialectGap } from '../../lib/languageDetection'
+import { isDialectGap, languageNameFor } from '../../lib/languageDetection'
 import { ActiveCallPanel } from './ActiveCallPanel'
 import { useCallSession } from './CallSessionContext'
 
@@ -204,6 +204,14 @@ export function WaitingCallsSection({
                           {t('detection.confidenceShort', { score: call.detection.confidence.toFixed(2) })}
                         </span>
                       </span>
+                      {call.detection.secondary && isDialectGap(call.detection) && (
+                        <span className="call-contested">
+                          {t('detection.contestedPair', {
+                            primary: call.detection.languageName,
+                            secondary: languageNameFor(call.detection.secondary.langCode),
+                          })}
+                        </span>
+                      )}
                       <span className="call-where-place">
                         {call.district}, {call.block}
                       </span>

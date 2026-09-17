@@ -210,8 +210,8 @@
       "unplacedFoot": "{{count}} blocks flagged with no local jobs",
       "demandLabel": "Course demand",
       "demandFoot": "Top {{shown}} of {{total}} trades requested in flagged blocks",
-      "dialectLabel": "Dialect gaps",
-      "dialectDelta": "Below {{threshold}}% voice accuracy"
+      "dialectLabel": "Contested detections",
+      "dialectDelta": "Of {{calls}} calls, models disagreed"
     },
     "legend": {
       "title": "Block-level gap map",
@@ -462,10 +462,21 @@
     "confidence": "Detected with {{score}} confidence",
     "confidenceShort": "· {{score}}",
     "dialectGap": "Dialect gap",
-    "lowNote": "Below the {{threshold}} threshold — the call was routed to a human and the sample logged as a dialect gap.",
-    "goodNote": "The rest of the call continues in this language.",
+    "primaryModel": "IIT Mandi model",
+    "secondaryModel": "Bhashini ALD model",
+    "noAnswer": "No answer",
+    "agreement": {
+      "agreed": "Models agree",
+      "contested": "Models disagree",
+      "unconfirmed": "One model only"
+    },
+    "agreedNote": "Both detectors named the same language, so the call continues in it.",
+    "contestedNote": "The two detectors named different languages. In testing that meant the caller speaks something Bhashini does not support, so the call was logged as a dialect gap.",
+    "unconfirmedNote": "Only one detector answered, so the result could not be cross-checked.",
+    "contestedPair": "{{primary}} ↔ {{secondary}}",
+    "synthesisCaveat": "Agreement was measured on synthesised audio; real recordings are still needed.",
     "headerDetected": "Detected language · block",
-    "dialectFoot": "Mean detection confidence per language, across every call"
+    "dialectFoot": "Counted from calls where the two detection models named different languages"
   },
   "resourcePerson": {
     "centreLabel": "Centre",

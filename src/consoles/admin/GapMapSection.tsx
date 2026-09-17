@@ -1,11 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { callDetections } from '../../data/jharkhandCalls'
-import { dialectAccuracy } from '../../data/languageDetections'
+import { contestedPairs, contestedShare, corpusDetections } from '../../data/languageDetections'
 import {
   courseDemand,
   DEFAULT_WINDOW,
-  DIALECT_THRESHOLD,
   formatNumber,
   gapsInWindow,
   PLACEMENT_TARGET,
@@ -46,12 +45,12 @@ export function GapMapSection() {
 
   const demandBlocks = gaps.filter((gap) => gap.gapType === 'no-centre')
   const unplacedBlocks = gaps.filter((gap) => gap.gapType === 'no-local-jobs')
-  // Dialect gaps are the languages SETU hears least reliably, averaged from the
-  // confidence the detector reported on every call.
-  const dialectGaps = useMemo(
-    () => dialectAccuracy(callDetections()).filter((entry) => entry.accuracy < DIALECT_THRESHOLD),
-    [],
-  )
+  // A dialect gap is a call the two detection models disagreed about. Confidence is not
+  // used: an unsupported language comes back wrong AND confident, so only the contest
+  // between the two models reveals it.
+  const detections = useMemo(() => [...corpusDetections(), ...callDetections()], [])
+  const contested = useMemo(() => contestedShare(detections), [detections])
+  const contestedBy = useMemo(() => contestedPairs(detections), [detections])
   const topDemand = demandByCourse[0]?.people ?? 1
   const priorityGaps = gaps.slice(0, 6)
 
@@ -177,13 +176,18 @@ export function GapMapSection() {
 
           <article className="gap-card is-warn">
             <span className="gap-card-label">{t('gapMap.cards.dialectLabel')}</span>
-            <span className="gap-card-value">{dialectGaps.length}</span>
-            <span className="gap-card-delta">{t('gapMap.cards.dialectDelta', { threshold: DIALECT_THRESHOLD })}</span>
+            <span className="gap-card-value">
+              {contested}
+              <span className="gap-card-unit">%</span>
+            </span>
+            <span className="gap-card-delta">{t('gapMap.cards.dialectDelta', { calls: detections.length })}</span>
             <div className="gap-dialect-list">
-              {dialectGaps.slice(0, 3).map((entry) => (
-                <div className="gap-dialect-row" key={entry.dialect}>
-                  <span>{entry.dialect}</span>
-                  <span className={entry.accuracy < 70 ? 'is-alert' : 'is-warn'}>{entry.accuracy}%</span>
+              {contestedBy.slice(0, 3).map((entry) => (
+                <div className="gap-dialect-row" key={`${entry.primaryCode}-${entry.secondaryCode}`}>
+                  <span>
+                    {entry.primaryName} ↔ {entry.secondaryName}
+                  </span>
+                  <span className="is-warn">{entry.calls}</span>
                 </div>
               ))}
             </div>

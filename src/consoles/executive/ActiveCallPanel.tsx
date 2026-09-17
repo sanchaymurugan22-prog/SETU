@@ -8,7 +8,7 @@ import {
   type TransferReason,
 } from '../../data/jharkhandCalls'
 import { useCallSession } from './CallSessionContext'
-import { BILINGUAL_GREETING, DETECTION_THRESHOLD, isDialectGap } from '../../lib/languageDetection'
+import { BILINGUAL_GREETING, isDialectGap, languageNameFor } from '../../lib/languageDetection'
 
 /** Stage 2. Identity is visible and every field is editable — but only while the call runs. */
 export function ActiveCallPanel() {
@@ -234,15 +234,46 @@ export function ActiveCallPanel() {
             </div>
             <div className="call-detected-row">
               <span className="call-detected-language">{call.detection.languageName}</span>
-              <span className="call-detected-confidence">
-                {t('detection.confidence', { score: call.detection.confidence.toFixed(2) })}
+              <span className={`call-agreement is-${call.detection.agreement}`}>
+                {t(`detection.agreement.${call.detection.agreement}`)}
               </span>
+            </div>
+            <div className="call-models">
+              <div className="call-model-row">
+                <span className="call-model-name">{t('detection.primaryModel')}</span>
+                <span className="call-model-answer">
+                  {languageNameFor(call.detection.primary.langCode)}
+                  <span className="call-confidence">
+                    {t('detection.confidenceShort', { score: call.detection.primary.langScore.toFixed(2) })}
+                  </span>
+                </span>
+              </div>
+              <div className="call-model-row">
+                <span className="call-model-name">{t('detection.secondaryModel')}</span>
+                <span className="call-model-answer">
+                  {call.detection.secondary ? (
+                    <>
+                      {languageNameFor(call.detection.secondary.langCode)}
+                      <span className="call-confidence">
+                        {t('detection.confidenceShort', {
+                          score: call.detection.secondary.langScore.toFixed(2),
+                        })}
+                      </span>
+                    </>
+                  ) : (
+                    t('detection.noAnswer')
+                  )}
+                </span>
+              </div>
             </div>
             <span className="call-detected-note">
               {isDialectGap(call.detection)
-                ? t('detection.lowNote', { threshold: DETECTION_THRESHOLD.toFixed(2) })
-                : t('detection.goodNote')}
+                ? t('detection.contestedNote')
+                : call.detection.agreement === 'agreed'
+                  ? t('detection.agreedNote')
+                  : t('detection.unconfirmedNote')}
             </span>
+            <span className="call-detected-caveat">{t('detection.synthesisCaveat')}</span>
           </div>
 
           <span className="call-ai-title">{t('callConsole.active.aiTitle')}</span>

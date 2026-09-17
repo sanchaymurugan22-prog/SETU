@@ -572,7 +572,6 @@ const STATEWIDE: Record<WindowDays, StatewideTotals> = {
   },
 }
 
-export const DIALECT_THRESHOLD = 80
 export const PLACEMENT_TARGET = 55
 
 /** Swap this for a Firestore query on `gapData` when the collection is populated. */

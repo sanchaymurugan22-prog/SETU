@@ -7,6 +7,7 @@ import {
   type CallSubType,
   type OutcomeKey,
 } from '../../data/jharkhandCalls'
+import { isDialectGap, languageNameFor } from '../../lib/languageDetection'
 import { useCallSession } from './CallSessionContext'
 
 type Period = 'all' | 'today' | 'week' | 'month'
@@ -160,6 +161,14 @@ export function CompletedCallsSection({
                         {t('detection.confidenceShort', { score: call.detection.confidence.toFixed(2) })}
                       </span>
                     </span>
+                    {call.detection.secondary && isDialectGap(call.detection) && (
+                      <span className="call-contested">
+                        {t('detection.contestedPair', {
+                          primary: call.detection.languageName,
+                          secondary: languageNameFor(call.detection.secondary.langCode),
+                        })}
+                      </span>
+                    )}
                     {call.daysAgo === 0 && <span className="chip is-cyan">{t('callConsole.completed.justSent')}</span>}
                   </span>
                   <span className="call-discussed">{call.discussion}</span>
