@@ -29,6 +29,11 @@ export const REASON_TAGS: ReasonTag[] = [
 
 export type TransferReason = 'course-question' | 'person-specific' | 'dissatisfaction'
 
+/** Resource-person cases are split in two, as the spec requires. */
+export type CallSubType = 'course-related' | 'common-related'
+
+export const CALL_SUB_TYPES: CallSubType[] = ['course-related', 'common-related']
+
 export const TRANSFER_REASONS: TransferReason[] = ['course-question', 'person-specific', 'dissatisfaction']
 
 export type OutcomeKey =
@@ -82,6 +87,10 @@ export interface QueuedCall {
   detection: LanguageDetection
   reasonTag: ReasonTag
   reasonDetail: string
+  /** Set only on resource-person cases, which arrive by transfer from the Call Console. */
+  subType?: CallSubType
+  /** Who sent the case over, shown so the expert knows where it came from. */
+  transferredFrom?: string
   /** Seconds waited when the console loaded; the queue ticks up from here. */
   waitedSeconds: number
   ai: AiContext
@@ -95,6 +104,7 @@ export interface QueuedCall {
 export interface CompletedCall {
   callId: string
   ref: string
+  subType?: CallSubType
   detection: LanguageDetection
   whenLabel: string
   daysAgo: number
@@ -508,9 +518,166 @@ export function formatDuration(totalSeconds: number): string {
   return `${minutes}:${String(seconds).padStart(2, '0')}`
 }
 
+const RP_QUEUE: QueuedCall[] = [
+  {
+    callId: 'call-rp-1',
+    beneficiaryId: unplacedWelder.beneficiaryId,
+    district: unplacedWelder.district,
+    block: unplacedWelder.block,
+    detection: detected(unplacedWelder.preferredLanguage, 0.93),
+    reasonTag: 'course-question',
+    reasonDetail: 'Asked what a welding certificate is worth outside the state',
+    subType: 'course-related',
+    transferredFrom: 'A. Mahato',
+    waitedSeconds: 214,
+    ai: {
+      callNumber: 6,
+      whenLabel: 'today, 10:36',
+      summary:
+        'Transferred by the Call Console: the caller wants a trade expert, not general support. He asks which employers recognise the certificate and what the work pays.',
+      recommendedCourse: unplacedWelder.course,
+      recommendedCentre: unplacedWelder.centre,
+      matchNote: 'Certified welder; no employer within 60 km',
+      confidence: 0.79,
+      transcript: [{ speaker: 'caller', text: 'यह सर्टिफिकेट कहाँ-कहाँ चलेगा?', lang: 'hi' }],
+      priorFlags: unplacedWelder.aiFlags,
+    },
+    draftDiscussion:
+      'Explained where the NSQF welding certificate is recognised, what fabricators in the district pay, and which employers hire at Level 2.',
+    draftActions: ['Certificate recognition explained', 'Added to the Bokaro employer panel list'],
+    draftOutcome: 'question-answered',
+    draftCourse: unplacedWelder.course,
+  },
+  {
+    callId: 'call-rp-2',
+    beneficiaryId: kurukhCaller.beneficiaryId,
+    district: kurukhCaller.district,
+    block: kurukhCaller.block,
+    detection: detected(kurukhCaller.preferredLanguage, 0.58),
+    reasonTag: 'beneficiary-requested-human',
+    reasonDetail: 'Dissatisfied with the batch after the transfer',
+    subType: 'common-related',
+    transferredFrom: 'A. Mahato',
+    waitedSeconds: 142,
+    ai: {
+      callNumber: 8,
+      whenLabel: 'today, 10:41',
+      summary:
+        'Transferred as a dissatisfaction case. The caller says the new batch timing still clashes with field work and she is considering stopping.',
+      recommendedCourse: kurukhCaller.course,
+      recommendedCentre: kurukhCaller.centre,
+      matchNote: 'Attendance falling; travel cost already recorded',
+      confidence: 0.61,
+      transcript: [{ speaker: 'caller', text: 'सुबह का समय भी नहीं हो पाता।', lang: 'hi' }],
+      priorFlags: kurukhCaller.aiFlags,
+    },
+    draftDiscussion:
+      'Talked through what is making attendance hard. Agreed to move her to the afternoon batch and to count two missed sessions as made up through practice at home.',
+    draftActions: ['Moved to the afternoon batch', 'Practice-at-home plan agreed'],
+    draftOutcome: 'resolved-on-call',
+    draftCourse: kurukhCaller.course,
+  },
+  {
+    callId: 'call-rp-3',
+    beneficiaryId: drivingCaller.beneficiaryId,
+    district: drivingCaller.district,
+    block: drivingCaller.block,
+    detection: detected(drivingCaller.preferredLanguage, 0.9),
+    reasonTag: 'course-question',
+    reasonDetail: 'Wants to know if a different trade suits him better',
+    subType: 'course-related',
+    transferredFrom: 'A. Mahato',
+    waitedSeconds: 47,
+    ai: {
+      callNumber: 4,
+      whenLabel: 'today, 10:44',
+      summary: 'Transferred for trade advice: the caller is unsure between driving and mobile repair.',
+      recommendedCourse: drivingCaller.course,
+      recommendedCentre: drivingCaller.centre,
+      matchNote: 'Interested in both; transport demand is seasonal here',
+      confidence: 0.72,
+      transcript: [{ speaker: 'caller', text: 'कौन सा काम ज़्यादा चलेगा?', lang: 'hi' }],
+      priorFlags: drivingCaller.aiFlags,
+    },
+    draftDiscussion:
+      'Compared earnings and seasonality for driving against mobile repair in his block, and what each course demands in time and cost.',
+    draftActions: ['Trade comparison explained', 'Caller will confirm his choice at the next follow-up'],
+    draftOutcome: 'question-answered',
+    draftCourse: drivingCaller.course,
+  },
+]
+
+const RP_COMPLETED: CompletedCall[] = [
+  {
+    callId: 'call-rpc-1',
+    ref: 'RP-2214',
+    subType: 'course-related',
+    detection: detected('Hindi', 0.92),
+    whenLabel: '16 Sep · 15:20',
+    daysAgo: 1,
+    durationSeconds: 412,
+    discussion:
+      'Trainee asked what the assessment covers and whether a missed module can be made up before certification.',
+    course: 'Tailoring L1 · assessment guidance',
+    actions: ['Assessment modules explained', 'Make-up session offered on Friday'],
+    outcome: 'question-answered',
+  },
+  {
+    callId: 'call-rpc-2',
+    ref: 'RP-2208',
+    subType: 'common-related',
+    detection: detected('Kurukh', 0.57),
+    whenLabel: '15 Sep · 11:48',
+    daysAgo: 2,
+    durationSeconds: 566,
+    discussion:
+      'Repeated dropout risk. Family wanted her to stop after two absences; she wanted to continue but could not say so at home.',
+    course: 'Tailoring L1 · retained',
+    actions: ['Spoke with the trainee about options', 'Home visit requested through the admin flag'],
+    outcome: 'followup-closed',
+  },
+  {
+    callId: 'call-rpc-3',
+    ref: 'RP-2201',
+    subType: 'course-related',
+    detection: detected('Hindi', 0.94),
+    whenLabel: '14 Sep · 09:15',
+    daysAgo: 3,
+    durationSeconds: 245,
+    discussion: 'Certified tailor asked which upskilling course to take next and whether it needs travel.',
+    course: 'Tailoring L2 · recommended',
+    actions: ['Next course explained', 'Seat held in the L2 batch'],
+    outcome: 'enrolled',
+  },
+  {
+    callId: 'call-rpc-4',
+    ref: 'RP-2196',
+    subType: 'common-related',
+    detection: detected('Ho', 0.74),
+    whenLabel: '13 Sep · 16:02',
+    daysAgo: 4,
+    durationSeconds: 388,
+    discussion:
+      'Trained but unplaced for four months. Wanted to know whether self-employment support exists instead of waiting for a job.',
+    course: 'Self-employment track discussed',
+    actions: ['Sewing-machine grant route explained', 'Escalated to the district for the placement drive'],
+    outcome: 'escalated-no-jobs',
+  },
+]
+
+/** Cases transferred to this resource person by the Call Console. */
+export function loadResourcePersonQueue(): QueuedCall[] {
+  return RP_QUEUE
+}
+
+/** This resource person's own completed expert calls. */
+export function loadResourcePersonCompleted(): CompletedCall[] {
+  return RP_COMPLETED
+}
+
 /** Detection records from every call this console knows about, for the dialect-gap figures. */
 export function callDetections(): DetectionRecord[] {
-  return [...QUEUE, ...COMPLETED].map((call) => ({
+  return [...QUEUE, ...COMPLETED, ...RP_QUEUE, ...RP_COMPLETED].map((call) => ({
     languageCode: call.detection.languageCode,
     languageName: call.detection.languageName,
     confidence: call.detection.confidence,

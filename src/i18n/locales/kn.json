@@ -466,5 +466,129 @@
     "goodNote": "ಉಳಿದ ಕರೆ ಇದೇ ಭಾಷೆಯಲ್ಲಿ ಮುಂದುವರಿಯುತ್ತದೆ.",
     "headerDetected": "ಗುರುತಿಸಿದ ಭಾಷೆ · ತಾಲೂಕು",
     "dialectFoot": "ಪ್ರತಿ ಕರೆಯಿಂದ, ಭಾಷೆವಾರು ಸರಾಸರಿ ಗುರುತಿಸುವಿಕೆ ವಿಶ್ವಾಸ"
+  },
+  "resourcePerson": {
+    "centreLabel": "ಕೇಂದ್ರ",
+    "days": {
+      "sun": "ಭಾನು",
+      "mon": "ಸೋಮ",
+      "tue": "ಮಂಗಳ",
+      "wed": "ಬುಧ",
+      "thu": "ಗುರು",
+      "fri": "ಶುಕ್ರ",
+      "sat": "ಶನಿ"
+    },
+    "attendance": {
+      "open": "{{course}} ತರಗತಿಯ ಹಾಜರಾತಿ ತೆರೆದಿದೆ — ಇಂದಿನ ಅವಧಿ {{from}}–{{to}}.",
+      "closed": "ಹಾಜರಾತಿ ಈಗ ಮುಚ್ಚಿದೆ. ಮುಂದಿನ ಅವಧಿ: {{day}} ರಂದು {{from}}ಕ್ಕೆ, {{course}}.",
+      "noSessions": "ಯಾವ ಅವಧಿಯೂ ನಿಗದಿಯಾಗಿಲ್ಲ. ದಿನ ಮತ್ತು ಸಮಯವನ್ನು ಕೋರ್ಸ್ ಸಾಮಗ್ರಿಯಲ್ಲಿ ಹೊಂದಿಸಿ.",
+      "locked": "ಅವಧಿಯ ಸಮಯಕ್ಕೆ ತೆರೆಯುತ್ತದೆ"
+    },
+    "trainees": {
+      "subtitle": "{{batches}} ಬ್ಯಾಚ್‌ಗಳಲ್ಲಿ {{count}} ತರಬೇತಿದಾರರು",
+      "searchLabel": "ತರಬೇತಿದಾರರನ್ನು ಹುಡುಕಿ",
+      "searchPlaceholder": "ಹೆಸರು, ಐಡಿ ಅಥವಾ ಹಳ್ಳಿಯಿಂದ ಹುಡುಕಿ",
+      "batchLabel": "ಬ್ಯಾಚ್",
+      "batchAll": "ಎಲ್ಲ ಬ್ಯಾಚ್‌ಗಳು",
+      "listAria": "ತರಬೇತಿದಾರರ ಪಟ್ಟಿ",
+      "empty": "ಈ ಫಿಲ್ಟರ್‌ಗಳಿಗೆ ಯಾರೂ ಸಿಗಲಿಲ್ಲ.",
+      "foot": "ನಿಗದಿತ ಅವಧಿ ಆರಂಭವಾದ ಕೂಡಲೇ ಹಾಜರಾತಿ ತಾನಾಗಿಯೇ ತೆರೆಯುತ್ತದೆ.",
+      "headers": {
+        "batch": "ಬ್ಯಾಚ್",
+        "attendance": "ಹಾಜರಾತಿ",
+        "today": "ಇಂದಿನ ಅವಧಿ"
+      },
+      "flag": "ಆಡಳಿತಕ್ಕೆ ತಿಳಿಸಿ",
+      "flagTitle": "ಆಡಳಿತಕ್ಕೆ ತಿಳಿಸಿ",
+      "flagHint": "ನಿಮ್ಮ ಕಾರಣ ಮತ್ತು ಟಿಪ್ಪಣಿಯೊಂದಿಗೆ ಈ ತರಬೇತಿದಾರರ ದಾಖಲೆಯನ್ನು ಆಡಳಿತ ನೋಡುತ್ತದೆ.",
+      "flagReason": "ಕಾರಣ",
+      "flagNote": "ಆಡಳಿತಕ್ಕೆ ಏನು ತಿಳಿಯಬೇಕು?",
+      "flagNotePlaceholder": "ನೀವು ಕಂಡದ್ದನ್ನು ಮತ್ತು ಬೇಕಾದ ನೆರವನ್ನು ಬರೆಯಿರಿ",
+      "flagNoteRequired": "ಕನಿಷ್ಠ ಒಂದು ಸಾಲು ಬರೆಯಿರಿ, ಆಗ ಆಡಳಿತಕ್ಕೆ ಏನು ಮಾಡಬೇಕೆಂದು ತಿಳಿಯುತ್ತದೆ.",
+      "flagSend": "ಕಳುಹಿಸಿ",
+      "flagsRaised": "ತಿಳಿಸಲಾಗಿದೆ",
+      "flagsRaisedLine": "{{count}} ಆಡಳಿತಕ್ಕೆ ಕಳುಹಿಸಲಾಗಿದೆ. ಇತ್ತೀಚಿನದು: {{name}} — {{reason}}.",
+      "panelAria": "{{name}} ಅವರ ದಾಖಲೆ",
+      "panelEyebrow": "ತರಬೇತಿದಾರರ ದಾಖಲೆ",
+      "facts": {
+        "course": "ಕೋರ್ಸ್",
+        "attendance": "ಹಾಜರಾತಿ"
+      },
+      "updateTitle": "ಸ್ಥಿತಿ ಬದಲಿಸಿ",
+      "descriptionLabel": "ವಿವರಣೆ (ಕಡ್ಡಾಯ)",
+      "descriptionPlaceholder": "ಈ ಸ್ಥಿತಿ ಏಕೆ? ಅವಧಿಗಳಲ್ಲಿ ನೀವು ಏನು ಕಂಡಿರಿ?",
+      "descriptionRequired": "ಸ್ಥಿತಿಯನ್ನು ಉಳಿಸುವ ಮೊದಲು ವಿವರಣೆ ಬರೆಯುವುದು ಕಡ್ಡಾಯ.",
+      "completionHint": "ಪೂರ್ಣಗೊಳಿಸುವಾಗ ಮುಂದಿನ ಕೋರ್ಸ್ ಮತ್ತು ಉದ್ಯೋಗ ಶಿಫಾರಸು ಬೇಕು. ಉಳಿಸಿದ ಕೂಡಲೇ ಪ್ರಮಾಣಪತ್ರ ಸಿದ್ಧವಾಗುತ್ತದೆ.",
+      "nextCourse": "ಮುಂದಿನ ಕೋರ್ಸ್",
+      "jobRecommendation": "ಉದ್ಯೋಗ ಶಿಫಾರಸು",
+      "saveStatus": "ಸ್ಥಿತಿ ಉಳಿಸಿ",
+      "saved": "ಸ್ಥಿತಿಯನ್ನು “{{status}}” ಎಂದು ಉಳಿಸಲಾಗಿದೆ.",
+      "savedWithCertificate": "ಸ್ಥಿತಿಯನ್ನು “{{status}}” ಎಂದು ಉಳಿಸಲಾಗಿದೆ. ಪ್ರಮಾಣಪತ್ರ ಸಿದ್ಧವಾಗಿದೆ.",
+      "certificateTitle": "ಪ್ರಮಾಣಪತ್ರ",
+      "certificateLine": "{{name}} ಅವರು PM-AJAY (GIA) ಅಡಿಯಲ್ಲಿ {{course}} ಪೂರ್ಣಗೊಳಿಸಿದ್ದಾರೆ.",
+      "certificateMeta": "{{centre}} · ತರಬೇತುದಾರರು {{trainer}}",
+      "historyTitle": "ಸ್ಥಿತಿಯ ಇತಿಹಾಸ"
+    },
+    "flagReason": {
+      "repeated-absence": "ಪದೇ ಪದೇ ಗೈರುಹಾಜರಿ",
+      "travel-cost": "ಪ್ರಯಾಣ ವೆಚ್ಚ",
+      "family-pressure": "ಕುಟುಂಬದ ಒತ್ತಡ",
+      "no-local-work": "ಹತ್ತಿರದಲ್ಲಿ ಕೆಲಸವಿಲ್ಲ",
+      "needs-field-visit": "ಕ್ಷೇತ್ರ ಭೇಟಿ ಅಗತ್ಯ"
+    },
+    "materials": {
+      "subtitle": "ನೀವು ನಡೆಸುವ {{count}} ಬ್ಯಾಚ್‌ಗಳು",
+      "scheduleDrivesAttendance": "ಹಾಜರಾತಿ ಯಾವಾಗ ತೆರೆಯುತ್ತದೆ ಎಂಬುದನ್ನು ಈ ಸಮಯಗಳೇ ನಿರ್ಧರಿಸುತ್ತವೆ.",
+      "scheduleTitle": "ವೇಳಾಪಟ್ಟಿ ಮತ್ತು ಸಮಯ",
+      "startTime": "ಆರಂಭ",
+      "endTime": "ಅಂತ್ಯ",
+      "modeLabel": "ವಿಧಾನ",
+      "mode": {
+        "in-person": "ಖುದ್ದಾಗಿ",
+        "online": "ಆನ್‌ಲೈನ್",
+        "hybrid": "ಮಿಶ್ರ"
+      },
+      "location": "ಸ್ಥಳ",
+      "onlineLink": "ಆನ್‌ಲೈನ್ ಕೊಂಡಿ",
+      "onlineLinkPlaceholder": "ಸಭೆಯ ಕೊಂಡಿಯನ್ನು ಇಲ್ಲಿ ಹಾಕಿ",
+      "materialsTitle": "ಕೋರ್ಸ್ ಸಾಮಗ್ರಿ",
+      "kind": {
+        "note": "ಪಠ್ಯ",
+        "link": "ಕೊಂಡಿ"
+      },
+      "materialTitle": "ಶೀರ್ಷಿಕೆ",
+      "materialUrl": "ಕೊಂಡಿ",
+      "materialText": "ಪಠ್ಯ",
+      "add": "ಸೇರಿಸಿ",
+      "addMaterial": "ಸಾಮಗ್ರಿ ಸೇರಿಸಿ",
+      "addError": "ಸಾಮಗ್ರಿಗೆ ಶೀರ್ಷಿಕೆ ಮತ್ತು ವಿಷಯ ಎರಡನ್ನೂ ಕೊಡಿ.",
+      "remove": "ತೆಗೆದುಹಾಕಿ"
+    },
+    "calls": {
+      "subTypeLabel": "ಪ್ರಕರಣದ ಬಗೆ",
+      "subType": {
+        "course-related": "ಕೋರ್ಸ್ ಸಂಬಂಧಿತ",
+        "common-related": "ಸಾಮಾನ್ಯ"
+      },
+      "transferredBy": "{{name}} ಅವರಿಂದ",
+      "transferOnly": "ಪ್ರಕರಣಗಳು ಕಾಲ್ ಕನ್ಸೋಲ್‌ನಿಂದ ವರ್ಗಾವಣೆಯಾಗಿ ಮಾತ್ರ ಬರುತ್ತವೆ.",
+      "waitingSubtitle": "{{count}} ಪ್ರಕರಣಗಳು ಕಾಯುತ್ತಿವೆ · ಅತಿ ಹೆಚ್ಚು {{longest}}",
+      "scopeValue": "ನಿಮ್ಮ ಸ್ವಂತ ತಜ್ಞ ಕರೆಗಳು"
+    },
+    "milestones": {
+      "subtitle": "{{total}}ರಲ್ಲಿ {{count}} ಮಂದಿ ತರಬೇತಿ ಪೂರ್ಣಗೊಳಿಸಿದ್ದಾರೆ",
+      "completedLabel": "ತರಬೇತಿ ಪೂರ್ಣ",
+      "completedFoot": "ಕೋರ್ಸ್ ಮುಗಿಸಿದವರು",
+      "certifiedLabel": "ನೀಡಿದ ಪ್ರಮಾಣಪತ್ರಗಳು",
+      "certifiedFoot": "ಪೂರ್ಣಗೊಂಡಾಗ ಸಿದ್ಧವಾಗುತ್ತವೆ",
+      "placedLabel": "ಕೆಲಸದಲ್ಲಿ",
+      "placedFoot": "ಉದ್ಯೋಗ ಅಥವಾ ಸ್ವಯಂ ಉದ್ಯೋಗ",
+      "awaitingLabel": "ಕೆಲಸಕ್ಕಾಗಿ ಕಾಯುತ್ತಿದ್ದಾರೆ",
+      "awaitingFoot": "ತರಬೇತಿ ಪಡೆದವರು, ಹತ್ತಿರ ಕೆಲಸವಿಲ್ಲ",
+      "empty": "ಇನ್ನೂ ಯಾವ ತರಬೇತಿದಾರರೂ ಕೋರ್ಸ್ ಪೂರ್ಣಗೊಳಿಸಿಲ್ಲ.",
+      "foot": "ಮೈಲಿಗಲ್ಲಿನ ಹಿಂದಿನ ದಾಖಲೆ ನೋಡಲು ಸಾಲನ್ನು ತೆರೆಯಿರಿ.",
+      "attendanceSub": "ಹಾಜರಾದ ಅವಧಿಗಳು",
+      "noCertificate": "ಇನ್ನೂ ನೀಡಿಲ್ಲ"
+    }
   }
 }

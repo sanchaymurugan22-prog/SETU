@@ -46,6 +46,8 @@ export interface CallSessionValue {
   draft: ReportDraft | null
   available: boolean
   setAvailable: (value: boolean) => void
+  /** False in the Resource Person console: a case transferred here is not passed on again. */
+  allowTransfer: boolean
   /** Seconds each queued call has waited, ticking up live. */
   waitedSeconds: (call: QueuedCall) => number
   accept: (callId: string) => void

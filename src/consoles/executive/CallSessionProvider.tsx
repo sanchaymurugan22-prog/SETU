@@ -47,13 +47,31 @@ function recordFrom(beneficiary: Beneficiary): EditableRecord {
   }
 }
 
+export interface CallSessionProviderProps {
+  children: ReactNode
+  /** Which queue this console works from. Defaults to the Call Console's own. */
+  queueSource?: () => QueuedCall[]
+  completedSource?: () => CompletedCall[]
+  /** Prefix for the reference number printed on a sent report. */
+  refPrefix?: string
+  /** The Resource Person console ends cases rather than transferring them on. */
+  allowTransfer?: boolean
+}
+
 /**
- * Holds one executive's call session. Mounted around the whole Call Console so the
+ * Holds one official's call session. Mounted around a whole call console so the
  * mandatory report modal survives moving between Waiting Calls and Completed Calls.
+ * The Resource Person console mounts the same provider with its own two loaders.
  */
-export function CallSessionProvider({ children }: { children: ReactNode }) {
-  const [queue, setQueue] = useState<QueuedCall[]>(loadQueue)
-  const [completed, setCompleted] = useState<CompletedCall[]>(loadCompleted)
+export function CallSessionProvider({
+  children,
+  queueSource = loadQueue,
+  completedSource = loadCompleted,
+  refPrefix = 'CR',
+  allowTransfer = true,
+}: CallSessionProviderProps) {
+  const [queue, setQueue] = useState<QueuedCall[]>(queueSource)
+  const [completed, setCompleted] = useState<CompletedCall[]>(completedSource)
   const [state, setState] = useState<CallState | null>(null)
   const [report, setReport] = useState<{ state: CallState; elapsedSeconds: number } | null>(null)
   const [draft, setDraft] = useState<ReportDraft | null>(null)
@@ -100,6 +118,7 @@ export function CallSessionProvider({ children }: { children: ReactNode }) {
       draft,
       available,
       setAvailable,
+      allowTransfer,
       waitedSeconds,
       accept: (callId: string) => {
         if (state || report) return
@@ -151,7 +170,8 @@ export function CallSessionProvider({ children }: { children: ReactNode }) {
         sentCount.current += 1
         const sent: CompletedCall = {
           callId: `${report.state.call.callId}-sent-${sentCount.current}`,
-          ref: `CR-79${String(10 + sentCount.current).padStart(2, '0')}`,
+          ref: `${refPrefix}-79${String(10 + sentCount.current).padStart(2, '0')}`,
+          subType: report.state.call.subType,
           // The detected language travels with the report; it was never a choice to make.
           detection: report.state.call.detection,
           whenLabel: `${new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })} · ${new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: false })}`,
@@ -168,7 +188,7 @@ export function CallSessionProvider({ children }: { children: ReactNode }) {
         setDraft(null)
       },
     }),
-    [available, completed, draft, elapsedOf, queue, report, state, toActive, waitedSeconds],
+    [allowTransfer, available, completed, draft, elapsedOf, queue, refPrefix, report, state, toActive, waitedSeconds],
   )
 
   return <CallSessionContext.Provider value={value}>{children}</CallSessionContext.Provider>

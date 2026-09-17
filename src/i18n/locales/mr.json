@@ -466,5 +466,129 @@
     "goodNote": "उर्वरित कॉल याच भाषेत चालतो.",
     "headerDetected": "ओळखलेली भाषा · तालुका",
     "dialectFoot": "प्रत्येक कॉलमधून, प्रति भाषा सरासरी ओळख खात्री"
+  },
+  "resourcePerson": {
+    "centreLabel": "केंद्र",
+    "days": {
+      "sun": "रवि",
+      "mon": "सोम",
+      "tue": "मंगळ",
+      "wed": "बुध",
+      "thu": "गुरु",
+      "fri": "शुक्र",
+      "sat": "शनि"
+    },
+    "attendance": {
+      "open": "{{course}} साठी हजेरी सुरू आहे — आजचे सत्र {{from}}–{{to}} आहे.",
+      "closed": "हजेरी सध्या बंद आहे. पुढील सत्र: {{day}} रोजी {{from}} वाजता, {{course}}.",
+      "noSessions": "कोणतेही सत्र ठरलेले नाही. दिवस आणि वेळ अभ्यासक्रम साहित्यात ठरवा.",
+      "locked": "सत्राच्या वेळी उघडेल"
+    },
+    "trainees": {
+      "subtitle": "{{batches}} तुकड्यांमध्ये {{count}} प्रशिक्षणार्थी",
+      "searchLabel": "प्रशिक्षणार्थी शोधा",
+      "searchPlaceholder": "नाव, आयडी किंवा गावाने शोधा",
+      "batchLabel": "तुकडी",
+      "batchAll": "सर्व तुकड्या",
+      "listAria": "प्रशिक्षणार्थी यादी",
+      "empty": "या फिल्टरनुसार कोणीही आढळले नाही.",
+      "foot": "ठरलेले सत्र सुरू होताच हजेरी आपोआप उघडते.",
+      "headers": {
+        "batch": "तुकडी",
+        "attendance": "हजेरी",
+        "today": "आजचे सत्र"
+      },
+      "flag": "प्रशासकाला कळवा",
+      "flagTitle": "प्रशासकाला कळवा",
+      "flagHint": "प्रशासक या प्रशिक्षणार्थीचा तपशील तुमच्या कारणासह आणि टिपणीसह पाहील.",
+      "flagReason": "कारण",
+      "flagNote": "प्रशासकाला काय माहीत असावे?",
+      "flagNotePlaceholder": "तुम्ही जे पाहिले आणि जी मदत हवी ते लिहा",
+      "flagNoteRequired": "किमान एक ओळ लिहा, म्हणजे प्रशासकाला काय करायचे ते कळेल.",
+      "flagSend": "पाठवा",
+      "flagsRaised": "कळवले",
+      "flagsRaisedLine": "{{count}} प्रशासकाला पाठवले. अलीकडचे: {{name}} — {{reason}}.",
+      "panelAria": "{{name}} यांचा तपशील",
+      "panelEyebrow": "प्रशिक्षणार्थी तपशील",
+      "facts": {
+        "course": "अभ्यासक्रम",
+        "attendance": "हजेरी"
+      },
+      "updateTitle": "स्थिती बदला",
+      "descriptionLabel": "वर्णन (आवश्यक)",
+      "descriptionPlaceholder": "ही स्थिती का? सत्रांमध्ये तुम्हाला काय दिसले?",
+      "descriptionRequired": "स्थिती जतन करण्यापूर्वी वर्णन लिहिणे आवश्यक आहे.",
+      "completionHint": "पूर्ण करताना पुढील अभ्यासक्रम आणि कामाची शिफारस द्यावी लागते. जतन करताच प्रमाणपत्र तयार होते.",
+      "nextCourse": "पुढील अभ्यासक्रम",
+      "jobRecommendation": "कामाची शिफारस",
+      "saveStatus": "स्थिती जतन करा",
+      "saved": "स्थिती “{{status}}” अशी जतन झाली.",
+      "savedWithCertificate": "स्थिती “{{status}}” अशी जतन झाली. प्रमाणपत्र तयार झाले.",
+      "certificateTitle": "प्रमाणपत्र",
+      "certificateLine": "{{name}} यांनी PM-AJAY (GIA) अंतर्गत {{course}} पूर्ण केला.",
+      "certificateMeta": "{{centre}} · प्रशिक्षक {{trainer}}",
+      "historyTitle": "स्थितीचा इतिहास"
+    },
+    "flagReason": {
+      "repeated-absence": "वारंवार गैरहजेरी",
+      "travel-cost": "प्रवास खर्च",
+      "family-pressure": "कौटुंबिक दबाव",
+      "no-local-work": "जवळपास काम नाही",
+      "needs-field-visit": "प्रत्यक्ष भेट आवश्यक"
+    },
+    "materials": {
+      "subtitle": "तुमच्या {{count}} तुकड्या",
+      "scheduleDrivesAttendance": "हीच वेळ ठरवते की हजेरी कधी उघडेल.",
+      "scheduleTitle": "वेळापत्रक आणि वेळा",
+      "startTime": "सुरू",
+      "endTime": "समाप्त",
+      "modeLabel": "पद्धत",
+      "mode": {
+        "in-person": "प्रत्यक्ष",
+        "online": "ऑनलाइन",
+        "hybrid": "मिश्र"
+      },
+      "location": "ठिकाण",
+      "onlineLink": "ऑनलाइन दुवा",
+      "onlineLinkPlaceholder": "मीटिंगचा दुवा इथे टाका",
+      "materialsTitle": "अभ्यासक्रम साहित्य",
+      "kind": {
+        "note": "मजकूर",
+        "link": "दुवा"
+      },
+      "materialTitle": "शीर्षक",
+      "materialUrl": "दुवा",
+      "materialText": "मजकूर",
+      "add": "जोडा",
+      "addMaterial": "साहित्य जोडा",
+      "addError": "साहित्याचे शीर्षक आणि मजकूर दोन्ही भरा.",
+      "remove": "काढा"
+    },
+    "calls": {
+      "subTypeLabel": "प्रकरणाचा प्रकार",
+      "subType": {
+        "course-related": "अभ्यासक्रमाशी संबंधित",
+        "common-related": "सर्वसाधारण"
+      },
+      "transferredBy": "{{name}} यांच्याकडून",
+      "transferOnly": "प्रकरणे फक्त कॉल कन्सोलवरून वर्ग होऊन येतात.",
+      "waitingSubtitle": "{{count}} प्रकरणे प्रतीक्षेत · सर्वाधिक {{longest}}",
+      "scopeValue": "तुमचे स्वतःचे तज्ज्ञ कॉल"
+    },
+    "milestones": {
+      "subtitle": "{{total}} पैकी {{count}} प्रशिक्षणार्थींनी प्रशिक्षण पूर्ण केले",
+      "completedLabel": "प्रशिक्षण पूर्ण",
+      "completedFoot": "ज्यांनी अभ्यासक्रम पूर्ण केला",
+      "certifiedLabel": "दिलेली प्रमाणपत्रे",
+      "certifiedFoot": "पूर्ण होताच तयार होतात",
+      "placedLabel": "कामावर",
+      "placedFoot": "नोकरी किंवा स्वयंरोजगार",
+      "awaitingLabel": "कामाच्या प्रतीक्षेत",
+      "awaitingFoot": "प्रशिक्षित, पण जवळ काम नाही",
+      "empty": "अजून कोणत्याही प्रशिक्षणार्थीने अभ्यासक्रम पूर्ण केलेला नाही.",
+      "foot": "टप्प्यामागील तपशील पाहण्यासाठी ओळ उघडा.",
+      "attendanceSub": "सत्रांना हजेरी",
+      "noCertificate": "अजून दिलेले नाही"
+    }
   }
 }

@@ -466,5 +466,129 @@
     "goodNote": "మిగిలిన కాల్ ఇదే భాషలో కొనసాగుతుంది.",
     "headerDetected": "గుర్తించిన భాష · మండలం",
     "dialectFoot": "ప్రతి కాల్ నుంచి, భాషకు సగటు గుర్తింపు నమ్మకం"
+  },
+  "resourcePerson": {
+    "centreLabel": "కేంద్రం",
+    "days": {
+      "sun": "ఆది",
+      "mon": "సోమ",
+      "tue": "మంగళ",
+      "wed": "బుధ",
+      "thu": "గురు",
+      "fri": "శుక్ర",
+      "sat": "శని"
+    },
+    "attendance": {
+      "open": "{{course}} కోసం హాజరు తెరిచి ఉంది — నేటి సెషన్ {{from}}–{{to}}.",
+      "closed": "హాజరు ఇప్పుడు మూసి ఉంది. తదుపరి సెషన్: {{day}} రోజు {{from}}కి, {{course}}.",
+      "noSessions": "ఏ సెషనూ షెడ్యూల్ కాలేదు. రోజులు, సమయాలు కోర్సు సామగ్రిలో పెట్టండి.",
+      "locked": "సెషన్ సమయానికి తెరుచుకుంటుంది"
+    },
+    "trainees": {
+      "subtitle": "{{batches}} బ్యాచ్‌లలో {{count}} శిక్షణార్థులు",
+      "searchLabel": "శిక్షణార్థులను వెతకండి",
+      "searchPlaceholder": "పేరు, ఐడీ లేదా గ్రామంతో వెతకండి",
+      "batchLabel": "బ్యాచ్",
+      "batchAll": "అన్ని బ్యాచ్‌లు",
+      "listAria": "శిక్షణార్థుల జాబితా",
+      "empty": "ఈ ఫిల్టర్లకు ఎవరూ దొరకలేదు.",
+      "foot": "షెడ్యూల్ చేసిన సెషన్ మొదలవగానే హాజరు తనంతట తానే తెరుచుకుంటుంది.",
+      "headers": {
+        "batch": "బ్యాచ్",
+        "attendance": "హాజరు",
+        "today": "నేటి సెషన్"
+      },
+      "flag": "అడ్మిన్‌కు తెలియజేయి",
+      "flagTitle": "అడ్మిన్‌కు తెలియజేయి",
+      "flagHint": "మీ కారణం, గమనికతో పాటు ఈ శిక్షణార్థి రికార్డును అడ్మిన్ చూస్తారు.",
+      "flagReason": "కారణం",
+      "flagNote": "అడ్మిన్‌కు ఏమి తెలియాలి?",
+      "flagNotePlaceholder": "మీరు చూసినది, కావాల్సిన సహాయం రాయండి",
+      "flagNoteRequired": "కనీసం ఒక పంక్తి రాయండి, అప్పుడే అడ్మిన్‌కు ఏం చేయాలో తెలుస్తుంది.",
+      "flagSend": "పంపు",
+      "flagsRaised": "తెలియజేయబడింది",
+      "flagsRaisedLine": "{{count}} అడ్మిన్‌కు పంపబడ్డాయి. తాజాది: {{name}} — {{reason}}.",
+      "panelAria": "{{name}} రికార్డు",
+      "panelEyebrow": "శిక్షణార్థి రికార్డు",
+      "facts": {
+        "course": "కోర్సు",
+        "attendance": "హాజరు"
+      },
+      "updateTitle": "స్థితిని మార్చు",
+      "descriptionLabel": "వివరణ (తప్పనిసరి)",
+      "descriptionPlaceholder": "ఈ స్థితి ఎందుకు? సెషన్లలో మీరు ఏమి చూశారు?",
+      "descriptionRequired": "స్థితిని భద్రపరచే ముందు వివరణ రాయడం తప్పనిసరి.",
+      "completionHint": "పూర్తి చేసినప్పుడు తదుపరి కోర్సు, ఉద్యోగ సిఫార్సు ఇవ్వాలి. భద్రపరచగానే ధ్రువపత్రం తయారవుతుంది.",
+      "nextCourse": "తదుపరి కోర్సు",
+      "jobRecommendation": "ఉద్యోగ సిఫార్సు",
+      "saveStatus": "స్థితిని భద్రపరచు",
+      "saved": "స్థితి “{{status}}”గా భద్రపరచబడింది.",
+      "savedWithCertificate": "స్థితి “{{status}}”గా భద్రపరచబడింది. ధ్రువపత్రం తయారైంది.",
+      "certificateTitle": "ధ్రువపత్రం",
+      "certificateLine": "{{name}} PM-AJAY (GIA) కింద {{course}} పూర్తి చేశారు.",
+      "certificateMeta": "{{centre}} · శిక్షకురాలు {{trainer}}",
+      "historyTitle": "స్థితి చరిత్ర"
+    },
+    "flagReason": {
+      "repeated-absence": "పదే పదే గైర్హాజరు",
+      "travel-cost": "ప్రయాణ ఖర్చు",
+      "family-pressure": "కుటుంబ ఒత్తిడి",
+      "no-local-work": "దగ్గరలో పని లేదు",
+      "needs-field-visit": "క్షేత్ర సందర్శన అవసరం"
+    },
+    "materials": {
+      "subtitle": "మీరు నిర్వహిస్తున్న {{count}} బ్యాచ్‌లు",
+      "scheduleDrivesAttendance": "హాజరు ఎప్పుడు తెరుచుకుంటుందో ఈ సమయాలే నిర్ణయిస్తాయి.",
+      "scheduleTitle": "షెడ్యూల్, సమయాలు",
+      "startTime": "ప్రారంభం",
+      "endTime": "ముగింపు",
+      "modeLabel": "విధానం",
+      "mode": {
+        "in-person": "ప్రత్యక్షంగా",
+        "online": "ఆన్‌లైన్",
+        "hybrid": "మిశ్రమం"
+      },
+      "location": "స్థలం",
+      "onlineLink": "ఆన్‌లైన్ లింక్",
+      "onlineLinkPlaceholder": "సమావేశ లింక్ ఇక్కడ పెట్టండి",
+      "materialsTitle": "కోర్సు సామగ్రి",
+      "kind": {
+        "note": "పాఠ్యం",
+        "link": "లింక్"
+      },
+      "materialTitle": "శీర్షిక",
+      "materialUrl": "లింక్",
+      "materialText": "పాఠ్యం",
+      "add": "చేర్చు",
+      "addMaterial": "సామగ్రి చేర్చు",
+      "addError": "సామగ్రికి శీర్షిక, విషయం రెండూ ఇవ్వండి.",
+      "remove": "తీసివేయి"
+    },
+    "calls": {
+      "subTypeLabel": "కేసు రకం",
+      "subType": {
+        "course-related": "కోర్సుకు సంబంధించినది",
+        "common-related": "సాధారణం"
+      },
+      "transferredBy": "{{name}} నుండి",
+      "transferOnly": "కేసులు కాల్ కన్సోల్ నుండి బదిలీ ద్వారా మాత్రమే వస్తాయి.",
+      "waitingSubtitle": "{{count}} కేసులు వేచి ఉన్నాయి · అత్యధికం {{longest}}",
+      "scopeValue": "మీ సొంత నిపుణ కాల్స్"
+    },
+    "milestones": {
+      "subtitle": "{{total}}లో {{count}} మంది శిక్షణ పూర్తి చేశారు",
+      "completedLabel": "శిక్షణ పూర్తి",
+      "completedFoot": "కోర్సు ముగించినవారు",
+      "certifiedLabel": "ఇచ్చిన ధ్రువపత్రాలు",
+      "certifiedFoot": "పూర్తయినప్పుడు తయారవుతాయి",
+      "placedLabel": "పనిలో",
+      "placedFoot": "ఉద్యోగం లేదా స్వయం ఉపాధి",
+      "awaitingLabel": "పని కోసం ఎదురుచూపు",
+      "awaitingFoot": "శిక్షణ పొందారు, దగ్గరలో పని లేదు",
+      "empty": "ఇంకా ఎవరూ కోర్సు పూర్తి చేయలేదు.",
+      "foot": "మైలురాయి వెనుక రికార్డు చూడటానికి వరుసను తెరవండి.",
+      "attendanceSub": "హాజరైన సెషన్లు",
+      "noCertificate": "ఇంకా ఇవ్వలేదు"
+    }
   }
 }

@@ -466,5 +466,129 @@
     "goodNote": "બાકીનો કૉલ આ જ ભાષામાં ચાલે છે.",
     "headerDetected": "ઓળખાયેલી ભાષા · તાલુકો",
     "dialectFoot": "દરેક કૉલમાંથી, ભાષા દીઠ સરેરાશ ઓળખ ખાતરી"
+  },
+  "resourcePerson": {
+    "centreLabel": "કેન્દ્ર",
+    "days": {
+      "sun": "રવિ",
+      "mon": "સોમ",
+      "tue": "મંગળ",
+      "wed": "બુધ",
+      "thu": "ગુરુ",
+      "fri": "શુક્ર",
+      "sat": "શનિ"
+    },
+    "attendance": {
+      "open": "{{course}} માટે હાજરી ખુલ્લી છે — આજનું સત્ર {{from}}–{{to}} છે.",
+      "closed": "હાજરી અત્યારે બંધ છે. આગામી સત્ર: {{day}}ના રોજ {{from}} વાગ્યે, {{course}}.",
+      "noSessions": "કોઈ સત્ર નક્કી નથી. દિવસ અને સમય અભ્યાસક્રમ સામગ્રીમાં ગોઠવો.",
+      "locked": "સત્રના સમયે ખૂલશે"
+    },
+    "trainees": {
+      "subtitle": "{{batches}} બેચમાં {{count}} તાલીમાર્થીઓ",
+      "searchLabel": "તાલીમાર્થીઓ શોધો",
+      "searchPlaceholder": "નામ, આઈડી કે ગામથી શોધો",
+      "batchLabel": "બેચ",
+      "batchAll": "બધા બેચ",
+      "listAria": "તાલીમાર્થીઓની યાદી",
+      "empty": "આ ફિલ્ટરથી કોઈ મળ્યું નહીં.",
+      "foot": "નક્કી કરેલું સત્ર શરૂ થતાં જ હાજરી આપોઆપ ખૂલે છે.",
+      "headers": {
+        "batch": "બેચ",
+        "attendance": "હાજરી",
+        "today": "આજનું સત્ર"
+      },
+      "flag": "એડમિનને જણાવો",
+      "flagTitle": "એડમિનને જણાવો",
+      "flagHint": "તમારું કારણ અને નોંધ સાથે આ તાલીમાર્થીનો રેકોર્ડ એડમિન જોશે.",
+      "flagReason": "કારણ",
+      "flagNote": "એડમિનને શું જાણવું જોઈએ?",
+      "flagNotePlaceholder": "તમે જે જોયું અને જે મદદ જોઈએ તે લખો",
+      "flagNoteRequired": "ઓછામાં ઓછી એક લીટી લખો, જેથી એડમિનને શું કરવું તે સમજાય.",
+      "flagSend": "મોકલો",
+      "flagsRaised": "જણાવાયું",
+      "flagsRaisedLine": "{{count}} એડમિનને મોકલાયા. તાજેતરનું: {{name}} — {{reason}}.",
+      "panelAria": "{{name}}નો રેકોર્ડ",
+      "panelEyebrow": "તાલીમાર્થી રેકોર્ડ",
+      "facts": {
+        "course": "અભ્યાસક્રમ",
+        "attendance": "હાજરી"
+      },
+      "updateTitle": "સ્થિતિ બદલો",
+      "descriptionLabel": "વર્ણન (ફરજિયાત)",
+      "descriptionPlaceholder": "આ સ્થિતિ કેમ? સત્રોમાં તમે શું જોયું?",
+      "descriptionRequired": "સ્થિતિ સાચવતા પહેલાં વર્ણન લખવું ફરજિયાત છે.",
+      "completionHint": "પૂર્ણ કરતી વખતે આગળનો અભ્યાસક્રમ અને નોકરીની ભલામણ આપવી પડે. સાચવતાં જ પ્રમાણપત્ર બને છે.",
+      "nextCourse": "આગળનો અભ્યાસક્રમ",
+      "jobRecommendation": "નોકરીની ભલામણ",
+      "saveStatus": "સ્થિતિ સાચવો",
+      "saved": "સ્થિતિ “{{status}}” તરીકે સાચવાઈ.",
+      "savedWithCertificate": "સ્થિતિ “{{status}}” તરીકે સાચવાઈ. પ્રમાણપત્ર બની ગયું.",
+      "certificateTitle": "પ્રમાણપત્ર",
+      "certificateLine": "{{name}}એ PM-AJAY (GIA) હેઠળ {{course}} પૂર્ણ કર્યો.",
+      "certificateMeta": "{{centre}} · તાલીમકર્તા {{trainer}}",
+      "historyTitle": "સ્થિતિનો ઇતિહાસ"
+    },
+    "flagReason": {
+      "repeated-absence": "વારંવાર ગેરહાજરી",
+      "travel-cost": "મુસાફરી ખર્ચ",
+      "family-pressure": "કુટુંબનું દબાણ",
+      "no-local-work": "નજીકમાં કામ નથી",
+      "needs-field-visit": "રૂબરૂ મુલાકાત જરૂરી"
+    },
+    "materials": {
+      "subtitle": "તમે ચલાવો છો તે {{count}} બેચ",
+      "scheduleDrivesAttendance": "હાજરી ક્યારે ખૂલશે તે આ સમય જ નક્કી કરે છે.",
+      "scheduleTitle": "સમયપત્રક અને સમય",
+      "startTime": "શરૂ",
+      "endTime": "પૂરું",
+      "modeLabel": "રીત",
+      "mode": {
+        "in-person": "રૂબરૂ",
+        "online": "ઓનલાઇન",
+        "hybrid": "મિશ્ર"
+      },
+      "location": "સ્થળ",
+      "onlineLink": "ઓનલાઇન લિંક",
+      "onlineLinkPlaceholder": "મીટિંગ લિંક અહીં મૂકો",
+      "materialsTitle": "અભ્યાસક્રમ સામગ્રી",
+      "kind": {
+        "note": "લખાણ",
+        "link": "લિંક"
+      },
+      "materialTitle": "શીર્ષક",
+      "materialUrl": "લિંક",
+      "materialText": "લખાણ",
+      "add": "ઉમેરો",
+      "addMaterial": "સામગ્રી ઉમેરો",
+      "addError": "સામગ્રીનું શીર્ષક અને વિષયવસ્તુ બંને આપો.",
+      "remove": "કાઢી નાખો"
+    },
+    "calls": {
+      "subTypeLabel": "કેસનો પ્રકાર",
+      "subType": {
+        "course-related": "અભ્યાસક્રમ સંબંધિત",
+        "common-related": "સામાન્ય"
+      },
+      "transferredBy": "{{name}} તરફથી",
+      "transferOnly": "કેસ ફક્ત કોલ કન્સોલથી તબદીલ થઈને આવે છે.",
+      "waitingSubtitle": "{{count}} કેસ રાહમાં · સૌથી લાંબો {{longest}}",
+      "scopeValue": "તમારા પોતાના નિષ્ણાત કોલ"
+    },
+    "milestones": {
+      "subtitle": "{{total}}માંથી {{count}} તાલીમાર્થીઓએ તાલીમ પૂરી કરી",
+      "completedLabel": "તાલીમ પૂર્ણ",
+      "completedFoot": "જેમણે અભ્યાસક્રમ પૂરો કર્યો",
+      "certifiedLabel": "આપેલાં પ્રમાણપત્રો",
+      "certifiedFoot": "પૂર્ણ થતાં જ બને છે",
+      "placedLabel": "કામમાં",
+      "placedFoot": "નોકરી કે સ્વરોજગાર",
+      "awaitingLabel": "કામની રાહમાં",
+      "awaitingFoot": "તાલીમ પામ્યા, પણ નજીક કામ નથી",
+      "empty": "હજી કોઈ તાલીમાર્થીએ અભ્યાસક્રમ પૂરો કર્યો નથી.",
+      "foot": "સિદ્ધિ પાછળનો રેકોર્ડ જોવા હરોળ ખોલો.",
+      "attendanceSub": "હાજર રહેલાં સત્રો",
+      "noCertificate": "હજી અપાયું નથી"
+    }
   }
 }

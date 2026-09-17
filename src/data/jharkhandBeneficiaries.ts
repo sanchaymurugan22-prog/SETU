@@ -173,6 +173,30 @@ const INTERESTS_BY_COURSE: Record<string, string[]> = {
   'Beauty & wellness': ['Beauty work', 'Salon work'],
 }
 
+/**
+ * The centre one resource person runs (S. Devi, Ghaghra). Seeded here rather than in
+ * resourcePerson.ts so the trainer view, the Admin list and the gap map describe the
+ * same people. Statuses are spread across the stages a trainer moves a trainee through.
+ */
+export const TRAINER_CENTRE = { district: 'Gumla', block: 'Ghaghra', centre: 'Ghaghra Training Centre' }
+
+const TRAINER_INTAKE: { course: string; status: BeneficiaryStatus }[] = [
+  { course: 'Tailoring L1', status: 'enrolled' },
+  { course: 'Tailoring L1', status: 'enrolled' },
+  { course: 'Tailoring L1', status: 'attending' },
+  { course: 'Tailoring L1', status: 'attending' },
+  { course: 'Tailoring L1', status: 'attending' },
+  { course: 'Tailoring L1', status: 'irregular' },
+  { course: 'Tailoring L1', status: 'completed' },
+  { course: 'Tailoring L1', status: 'certified' },
+  { course: 'Tailoring L1', status: 'dropped' },
+  { course: 'Tailoring L2', status: 'attending' },
+  { course: 'Tailoring L2', status: 'irregular' },
+  { course: 'Tailoring L2', status: 'completed' },
+  { course: 'Tailoring L2', status: 'placed' },
+  { course: 'Tailoring L2', status: 'trained-unplaced' },
+]
+
 /** Blocks that already have a working centre — the healthy cases, for contrast. */
 const SERVED_BLOCKS = [
   { district: 'Ranchi', block: 'Bundu', course: 'Beauty & wellness', centre: 'Bundu Skill Hub' },
@@ -492,6 +516,25 @@ function build(): Beneficiary[] {
     ['enrolled', 'irregular'],
     ['attending', 'placed'],
   ]
+
+  for (const intake of TRAINER_INTAKE) {
+    drafts.push({
+      status: intake.status,
+      district: TRAINER_CENTRE.district,
+      block: TRAINER_CENTRE.block,
+      course: intake.course,
+      centre: TRAINER_CENTRE.centre,
+      aiFlags:
+        intake.status === 'irregular'
+          ? ['attendance falling']
+          : intake.status === 'dropped'
+            ? ['stopped attending']
+            : intake.status === 'trained-unplaced'
+              ? ['trained, no local jobs']
+              : [],
+      lastContactDays: 1 + Math.floor(rand() * 20),
+    })
+  }
 
   SERVED_BLOCKS.forEach((served, index) => {
     for (const status of servedPairs[index % servedPairs.length]!) {

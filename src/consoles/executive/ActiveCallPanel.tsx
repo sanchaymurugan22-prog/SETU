@@ -13,7 +13,7 @@ import { BILINGUAL_GREETING, DETECTION_THRESHOLD, isDialectGap } from '../../lib
 /** Stage 2. Identity is visible and every field is editable — but only while the call runs. */
 export function ActiveCallPanel() {
   const { t } = useTranslation()
-  const { active, editRecord, setNotes, toggleHold, transfer, endCall } = useCallSession()
+  const { active, editRecord, setNotes, toggleHold, transfer, endCall, allowTransfer } = useCallSession()
   const [showNotes, setShowNotes] = useState(false)
   const [newInterest, setNewInterest] = useState('')
   const [newConstraint, setNewConstraint] = useState('')
@@ -180,7 +180,7 @@ export function ActiveCallPanel() {
             </label>
           )}
 
-          <div className="call-transfer">
+          {allowTransfer && <div className="call-transfer">
             <span className="call-transfer-title">{t('callConsole.active.transferTitle')}</span>
             <div className="call-transfer-row">
               <label className="call-field">
@@ -218,7 +218,7 @@ export function ActiveCallPanel() {
                 })}
               </p>
             )}
-          </div>
+          </div>}
         </section>
 
         <aside className="call-ai" aria-label={t('callConsole.active.aiTitle')}>

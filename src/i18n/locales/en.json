@@ -466,5 +466,129 @@
     "goodNote": "The rest of the call continues in this language.",
     "headerDetected": "Detected language · block",
     "dialectFoot": "Mean detection confidence per language, across every call"
+  },
+  "resourcePerson": {
+    "centreLabel": "Centre",
+    "days": {
+      "sun": "Sun",
+      "mon": "Mon",
+      "tue": "Tue",
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri",
+      "sat": "Sat"
+    },
+    "attendance": {
+      "open": "Attendance is open for {{course}} — today's session runs {{from}}–{{to}}.",
+      "closed": "Attendance is closed. Next session: {{course}} on {{day}} at {{from}}.",
+      "noSessions": "No sessions are scheduled. Set days and timings in Course Materials.",
+      "locked": "Opens at session time"
+    },
+    "trainees": {
+      "subtitle": "{{count}} trainees across {{batches}} batches",
+      "searchLabel": "Search trainees",
+      "searchPlaceholder": "Search by name, ID or village",
+      "batchLabel": "Batch",
+      "batchAll": "All batches",
+      "listAria": "Trainee list",
+      "empty": "No trainees match these filters.",
+      "foot": "Attendance opens on its own when a scheduled session begins.",
+      "headers": {
+        "batch": "Batch",
+        "attendance": "Attendance",
+        "today": "Today's session"
+      },
+      "flag": "Flag to Admin",
+      "flagTitle": "Flag to Admin",
+      "flagHint": "The admin sees this trainee's record along with your reason and note.",
+      "flagReason": "Reason",
+      "flagNote": "What should the admin know?",
+      "flagNotePlaceholder": "Describe what you have seen and what help is needed",
+      "flagNoteRequired": "Write at least a line so the admin knows what to act on.",
+      "flagSend": "Send flag",
+      "flagsRaised": "Flag raised",
+      "flagsRaisedLine": "{{count}} sent to the admin. Latest: {{name}} — {{reason}}.",
+      "panelAria": "Record for {{name}}",
+      "panelEyebrow": "Trainee record",
+      "facts": {
+        "course": "Course",
+        "attendance": "Attendance"
+      },
+      "updateTitle": "Update status",
+      "descriptionLabel": "Description (required)",
+      "descriptionPlaceholder": "Why this status? What did you see in the sessions?",
+      "descriptionRequired": "A description is required before a status can be saved.",
+      "completionHint": "Completion needs a next course and a job recommendation. The certificate is generated when you save.",
+      "nextCourse": "Next course",
+      "jobRecommendation": "Job recommendation",
+      "saveStatus": "Save status",
+      "saved": "Status saved as {{status}}.",
+      "savedWithCertificate": "Status saved as {{status}}. Certificate generated.",
+      "certificateTitle": "Certificate",
+      "certificateLine": "{{name}} completed {{course}} under PM-AJAY (GIA).",
+      "certificateMeta": "{{centre}} · trainer {{trainer}}",
+      "historyTitle": "Status history"
+    },
+    "flagReason": {
+      "repeated-absence": "Repeated absence",
+      "travel-cost": "Travel cost",
+      "family-pressure": "Family pressure",
+      "no-local-work": "No local work",
+      "needs-field-visit": "Needs a field visit"
+    },
+    "materials": {
+      "subtitle": "{{count}} batches you run",
+      "scheduleDrivesAttendance": "These timings decide when attendance opens.",
+      "scheduleTitle": "Schedule and timings",
+      "startTime": "Starts",
+      "endTime": "Ends",
+      "modeLabel": "Mode",
+      "mode": {
+        "in-person": "In person",
+        "online": "Online",
+        "hybrid": "Hybrid"
+      },
+      "location": "Location",
+      "onlineLink": "Online link",
+      "onlineLinkPlaceholder": "Paste the meeting link",
+      "materialsTitle": "Course materials",
+      "kind": {
+        "note": "Text",
+        "link": "Link"
+      },
+      "materialTitle": "Title",
+      "materialUrl": "Link",
+      "materialText": "Text",
+      "add": "Add",
+      "addMaterial": "Add material",
+      "addError": "Give the material a title and its content.",
+      "remove": "Remove"
+    },
+    "calls": {
+      "subTypeLabel": "Case type",
+      "subType": {
+        "course-related": "Course related",
+        "common-related": "Common related"
+      },
+      "transferredBy": "from {{name}}",
+      "transferOnly": "Cases arrive only by transfer from the Call Console.",
+      "waitingSubtitle": "{{count}} cases waiting · longest {{longest}}",
+      "scopeValue": "Your own expert calls"
+    },
+    "milestones": {
+      "subtitle": "{{count}} of {{total}} trainees trained to completion",
+      "completedLabel": "Completed training",
+      "completedFoot": "Trainees who finished the course",
+      "certifiedLabel": "Certificates issued",
+      "certifiedFoot": "Generated on completion",
+      "placedLabel": "In work",
+      "placedFoot": "Placed or self-employed",
+      "awaitingLabel": "Awaiting work",
+      "awaitingFoot": "Trained, no local job yet",
+      "empty": "No trainee has completed the course yet.",
+      "foot": "Open a row to see the record behind the milestone.",
+      "attendanceSub": "sessions attended",
+      "noCertificate": "Not yet issued"
+    }
   }
 }

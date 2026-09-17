@@ -466,5 +466,129 @@
     "goodNote": "ବାକି କଲ୍ ଏହି ଭାଷାରେ ଚାଲେ।",
     "headerDetected": "ଚିହ୍ନଟ ଭାଷା · ବ୍ଲକ୍",
     "dialectFoot": "ପ୍ରତ୍ୟେକ କଲ୍‌ରୁ, ଭାଷା ପିଛା ହାରାହାରି ଚିହ୍ନଟ ନିଶ୍ଚିତତା"
+  },
+  "resourcePerson": {
+    "centreLabel": "କେନ୍ଦ୍ର",
+    "days": {
+      "sun": "ରବି",
+      "mon": "ସୋମ",
+      "tue": "ମଙ୍ଗଳ",
+      "wed": "ବୁଧ",
+      "thu": "ଗୁରୁ",
+      "fri": "ଶୁକ୍ର",
+      "sat": "ଶନି"
+    },
+    "attendance": {
+      "open": "{{course}} ପାଇଁ ଉପସ୍ଥାନ ଖୋଲା ଅଛି — ଆଜିର ସେସନ୍ {{from}}–{{to}}।",
+      "closed": "ଉପସ୍ଥାନ ବର୍ତ୍ତମାନ ବନ୍ଦ। ପରବର୍ତ୍ତୀ ସେସନ୍: {{day}} ଦିନ {{from}}ରେ, {{course}}।",
+      "noSessions": "କୌଣସି ସେସନ୍ ନିର୍ଦ୍ଧାରିତ ନାହିଁ। ଦିନ ଓ ସମୟ ପାଠ୍ୟକ୍ରମ ସାମଗ୍ରୀରେ ସେଟ୍ କରନ୍ତୁ।",
+      "locked": "ସେସନ୍ ସମୟରେ ଖୋଲିବ"
+    },
+    "trainees": {
+      "subtitle": "{{batches}} ବ୍ୟାଚ୍‌ରେ {{count}} ତାଲିମାର୍ଥୀ",
+      "searchLabel": "ତାଲିମାର୍ଥୀ ଖୋଜନ୍ତୁ",
+      "searchPlaceholder": "ନାମ, ଆଇଡି କିମ୍ବା ଗାଁ ଦ୍ୱାରା ଖୋଜନ୍ତୁ",
+      "batchLabel": "ବ୍ୟାଚ୍",
+      "batchAll": "ସମସ୍ତ ବ୍ୟାଚ୍",
+      "listAria": "ତାଲିମାର୍ଥୀ ତାଲିକା",
+      "empty": "ଏହି ଫିଲ୍ଟର୍‌ରେ କେହି ମିଳିଲେ ନାହିଁ।",
+      "foot": "ନିର୍ଦ୍ଧାରିତ ସେସନ୍ ଆରମ୍ଭ ହେବା ମାତ୍ରେ ଉପସ୍ଥାନ ନିଜେ ଖୋଲିଯାଏ।",
+      "headers": {
+        "batch": "ବ୍ୟାଚ୍",
+        "attendance": "ଉପସ୍ଥାନ",
+        "today": "ଆଜିର ସେସନ୍"
+      },
+      "flag": "ପ୍ରଶାସକଙ୍କୁ ଜଣାନ୍ତୁ",
+      "flagTitle": "ପ୍ରଶାସକଙ୍କୁ ଜଣାନ୍ତୁ",
+      "flagHint": "ଆପଣଙ୍କ କାରଣ ଓ ଟିପ୍ପଣୀ ସହିତ ଏହି ତାଲିମାର୍ଥୀଙ୍କ ରେକର୍ଡ ପ୍ରଶାସକ ଦେଖିବେ।",
+      "flagReason": "କାରଣ",
+      "flagNote": "ପ୍ରଶାସକ କ’ଣ ଜାଣିବା ଉଚିତ?",
+      "flagNotePlaceholder": "ଆପଣ ଯାହା ଦେଖିଛନ୍ତି ଓ ଯେଉଁ ସହାୟତା ଦରକାର ତାହା ଲେଖନ୍ତୁ",
+      "flagNoteRequired": "ଅନ୍ତତଃ ଏକ ଧାଡ଼ି ଲେଖନ୍ତୁ, ତେବେ ପ୍ରଶାସକ ଜାଣିବେ କ’ଣ କରିବାକୁ ହେବ।",
+      "flagSend": "ପଠାନ୍ତୁ",
+      "flagsRaised": "ଜଣାଗଲା",
+      "flagsRaisedLine": "{{count}} ପ୍ରଶାସକଙ୍କୁ ପଠାଗଲା। ସର୍ବଶେଷ: {{name}} — {{reason}}।",
+      "panelAria": "{{name}}ଙ୍କ ରେକର୍ଡ",
+      "panelEyebrow": "ତାଲିମାର୍ଥୀ ରେକର୍ଡ",
+      "facts": {
+        "course": "ପାଠ୍ୟକ୍ରମ",
+        "attendance": "ଉପସ୍ଥାନ"
+      },
+      "updateTitle": "ସ୍ଥିତି ବଦଳାନ୍ତୁ",
+      "descriptionLabel": "ବିବରଣୀ (ଆବଶ୍ୟକ)",
+      "descriptionPlaceholder": "ଏହି ସ୍ଥିତି କାହିଁକି? ସେସନ୍‌ରେ ଆପଣ କ’ଣ ଦେଖିଲେ?",
+      "descriptionRequired": "ସ୍ଥିତି ସଞ୍ଚୟ କରିବା ପୂର୍ବରୁ ବିବରଣୀ ଲେଖିବା ଆବଶ୍ୟକ।",
+      "completionHint": "ସମାପ୍ତ କରିବା ସମୟରେ ପରବର୍ତ୍ତୀ ପାଠ୍ୟକ୍ରମ ଓ ଚାକିରି ସୁପାରିଶ ଦେବାକୁ ହେବ। ସଞ୍ଚୟ କରିବା ମାତ୍ରେ ପ୍ରମାଣପତ୍ର ତିଆରି ହୁଏ।",
+      "nextCourse": "ପରବର୍ତ୍ତୀ ପାଠ୍ୟକ୍ରମ",
+      "jobRecommendation": "ଚାକିରି ସୁପାରିଶ",
+      "saveStatus": "ସ୍ଥିତି ସଞ୍ଚୟ କରନ୍ତୁ",
+      "saved": "ସ୍ଥିତି “{{status}}” ଭାବେ ସଞ୍ଚିତ ହେଲା।",
+      "savedWithCertificate": "ସ୍ଥିତି “{{status}}” ଭାବେ ସଞ୍ଚିତ ହେଲା। ପ୍ରମାଣପତ୍ର ତିଆରି ହେଲା।",
+      "certificateTitle": "ପ୍ରମାଣପତ୍ର",
+      "certificateLine": "{{name}} PM-AJAY (GIA) ଅଧୀନରେ {{course}} ସମାପ୍ତ କଲେ।",
+      "certificateMeta": "{{centre}} · ତାଲିମଦାତା {{trainer}}",
+      "historyTitle": "ସ୍ଥିତିର ଇତିହାସ"
+    },
+    "flagReason": {
+      "repeated-absence": "ବାରମ୍ବାର ଅନୁପସ୍ଥିତି",
+      "travel-cost": "ଯାତାୟାତ ଖର୍ଚ୍ଚ",
+      "family-pressure": "ପରିବାରର ଚାପ",
+      "no-local-work": "ନିକଟରେ କାମ ନାହିଁ",
+      "needs-field-visit": "କ୍ଷେତ୍ର ପରିଦର୍ଶନ ଆବଶ୍ୟକ"
+    },
+    "materials": {
+      "subtitle": "ଆପଣ ଚଳାଉଥିବା {{count}} ବ୍ୟାଚ୍",
+      "scheduleDrivesAttendance": "ଉପସ୍ଥାନ କେବେ ଖୋଲିବ ତାହା ଏହି ସମୟ ହିଁ ସ୍ଥିର କରେ।",
+      "scheduleTitle": "ସମୟସୂଚୀ ଓ ସମୟ",
+      "startTime": "ଆରମ୍ଭ",
+      "endTime": "ଶେଷ",
+      "modeLabel": "ମାଧ୍ୟମ",
+      "mode": {
+        "in-person": "ପ୍ରତ୍ୟକ୍ଷ",
+        "online": "ଅନଲାଇନ୍",
+        "hybrid": "ମିଶ୍ର"
+      },
+      "location": "ସ୍ଥାନ",
+      "onlineLink": "ଅନଲାଇନ୍ ଲିଙ୍କ୍",
+      "onlineLinkPlaceholder": "ମିଟିଂ ଲିଙ୍କ୍ ଏଠାରେ ଦିଅନ୍ତୁ",
+      "materialsTitle": "ପାଠ୍ୟକ୍ରମ ସାମଗ୍ରୀ",
+      "kind": {
+        "note": "ଲେଖା",
+        "link": "ଲିଙ୍କ୍"
+      },
+      "materialTitle": "ଶିରୋନାମା",
+      "materialUrl": "ଲିଙ୍କ୍",
+      "materialText": "ଲେଖା",
+      "add": "ଯୋଡ଼ନ୍ତୁ",
+      "addMaterial": "ସାମଗ୍ରୀ ଯୋଡ଼ନ୍ତୁ",
+      "addError": "ସାମଗ୍ରୀର ଶିରୋନାମା ଓ ବିଷୟବସ୍ତୁ ଦୁହିଁ ଦିଅନ୍ତୁ।",
+      "remove": "ହଟାନ୍ତୁ"
+    },
+    "calls": {
+      "subTypeLabel": "ମାମଲାର ପ୍ରକାର",
+      "subType": {
+        "course-related": "ପାଠ୍ୟକ୍ରମ ସମ୍ବନ୍ଧୀୟ",
+        "common-related": "ସାଧାରଣ"
+      },
+      "transferredBy": "{{name}}ଙ୍କଠାରୁ",
+      "transferOnly": "ମାମଲା କେବଳ କଲ୍ କନସୋଲରୁ ସ୍ଥାନାନ୍ତରିତ ହୋଇ ଆସେ।",
+      "waitingSubtitle": "{{count}} ମାମଲା ଅପେକ୍ଷାରେ · ସର୍ବାଧିକ {{longest}}",
+      "scopeValue": "ଆପଣଙ୍କ ନିଜର ବିଶେଷଜ୍ଞ କଲ୍"
+    },
+    "milestones": {
+      "subtitle": "{{total}}ରୁ {{count}} ଜଣ ତାଲିମ ସମାପ୍ତ କରିଛନ୍ତି",
+      "completedLabel": "ତାଲିମ ସମାପ୍ତ",
+      "completedFoot": "ଯେଉଁମାନେ ପାଠ୍ୟକ୍ରମ ଶେଷ କଲେ",
+      "certifiedLabel": "ପ୍ରଦତ୍ତ ପ୍ରମାଣପତ୍ର",
+      "certifiedFoot": "ସମାପ୍ତ ହେଲେ ତିଆରି ହୁଏ",
+      "placedLabel": "କାମରେ",
+      "placedFoot": "ଚାକିରି କିମ୍ବା ସ୍ୱନିଯୁକ୍ତି",
+      "awaitingLabel": "କାମ ଅପେକ୍ଷାରେ",
+      "awaitingFoot": "ତାଲିମପ୍ରାପ୍ତ, ମାତ୍ର ନିକଟରେ କାମ ନାହିଁ",
+      "empty": "ଏପର୍ଯ୍ୟନ୍ତ କେହି ପାଠ୍ୟକ୍ରମ ସମାପ୍ତ କରିନାହାନ୍ତି।",
+      "foot": "ମାଇଲଖୁଣ୍ଟ ପଛର ରେକର୍ଡ ଦେଖିବାକୁ ଧାଡ଼ି ଖୋଲନ୍ତୁ।",
+      "attendanceSub": "ଉପସ୍ଥିତ ସେସନ୍",
+      "noCertificate": "ଏପର୍ଯ୍ୟନ୍ତ ଦିଆଯାଇନାହିଁ"
+    }
   }
 }

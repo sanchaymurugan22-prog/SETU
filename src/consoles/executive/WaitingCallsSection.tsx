@@ -1,6 +1,14 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { formatDuration, REASON_TAGS, WAIT_TARGET_SECONDS, type QueuedCall, type ReasonTag } from '../../data/jharkhandCalls'
+import {
+  CALL_SUB_TYPES,
+  formatDuration,
+  REASON_TAGS,
+  WAIT_TARGET_SECONDS,
+  type CallSubType,
+  type QueuedCall,
+  type ReasonTag,
+} from '../../data/jharkhandCalls'
 import { isDialectGap } from '../../lib/languageDetection'
 import { ActiveCallPanel } from './ActiveCallPanel'
 import { useCallSession } from './CallSessionContext'
@@ -8,13 +16,20 @@ import { useCallSession } from './CallSessionContext'
 type SortMode = 'wait' | 'position'
 
 /** Stage 1. No identity here: reason, wait, position and language only — and Accept. */
-export function WaitingCallsSection() {
+export function WaitingCallsSection({
+  titleKey = 'sections.executive.waiting.title',
+  subtitleKey = 'callConsole.queue.subtitle',
+}: {
+  titleKey?: string
+  subtitleKey?: string
+} = {}) {
   const { t } = useTranslation()
   const { queue, active, accept, available, setAvailable, waitedSeconds } = useCallSession()
   const [reason, setReason] = useState<ReasonTag | 'all'>('all')
+  const [subType, setSubType] = useState<CallSubType | 'all'>('all')
   const [sort, setSort] = useState<SortMode>('wait')
 
-  const title = t('sections.executive.waiting.title')
+  const title = t(titleKey)
   useEffect(() => {
     document.title = `${title} · SETU`
   }, [title])
@@ -28,13 +43,24 @@ export function WaitingCallsSection() {
     return map
   }, [queue])
 
+  // Only the Resource Person queue carries a sub-type; the tabs appear with it.
+  const hasSubTypes = useMemo(() => queue.some((call) => call.subType), [queue])
+  const subTypeCounts = useMemo(() => {
+    const map = new Map<CallSubType, number>()
+    for (const call of queue) if (call.subType) map.set(call.subType, (map.get(call.subType) ?? 0) + 1)
+    return map
+  }, [queue])
+
   const visible = useMemo(() => {
-    const filtered = reason === 'all' ? queue : queue.filter((call) => call.reasonTag === reason)
+    const filtered = queue.filter(
+      (call) =>
+        (reason === 'all' || call.reasonTag === reason) && (subType === 'all' || call.subType === subType),
+    )
     const sorted = [...filtered]
     if (sort === 'wait') sorted.sort((a, b) => waitedSeconds(b) - waitedSeconds(a))
     else sorted.sort((a, b) => (positions.get(a.callId) ?? 0) - (positions.get(b.callId) ?? 0))
     return sorted
-  }, [positions, queue, reason, sort, waitedSeconds])
+  }, [positions, queue, reason, sort, subType, waitedSeconds])
 
   if (active) return <ActiveCallPanel />
 
@@ -53,7 +79,7 @@ export function WaitingCallsSection() {
         <div>
           <h1>{title}</h1>
           <p className="call-subtitle">
-            {t('callConsole.queue.subtitle', { count: queue.length, longest: formatDuration(longest) })}
+            {t(subtitleKey, { count: queue.length, longest: formatDuration(longest) })}
           </p>
         </div>
         <div className="call-queue-controls">
@@ -71,6 +97,30 @@ export function WaitingCallsSection() {
       </header>
 
       <div className="section-body call-queue-body">
+        {hasSubTypes && (
+          <div className="call-filters">
+            <span className="call-filter-label">{t('resourcePerson.calls.subTypeLabel')}</span>
+            <button
+              type="button"
+              className={subType === 'all' ? 'call-chip is-selected' : 'call-chip'}
+              onClick={() => setSubType('all')}
+            >
+              {t('common.all')} · {queue.length}
+            </button>
+            {CALL_SUB_TYPES.map((kind) => (
+              <button
+                key={kind}
+                type="button"
+                className={subType === kind ? 'call-chip is-selected' : 'call-chip'}
+                onClick={() => setSubType(subType === kind ? 'all' : kind)}
+              >
+                {t(`resourcePerson.calls.subType.${kind}`)} · {subTypeCounts.get(kind) ?? 0}
+              </button>
+            ))}
+            <span className="call-transfer-note">{t('resourcePerson.calls.transferOnly')}</span>
+          </div>
+        )}
+
         <div className="call-filters">
           <span className="call-filter-label">{t('callConsole.queue.reasonLabel')}</span>
           <button
@@ -134,6 +184,14 @@ export function WaitingCallsSection() {
                     <span className="call-reason">
                       <span className={`call-tag is-${call.reasonTag}`}>{t(`callConsole.reason.${call.reasonTag}`)}</span>
                       <span className="call-reason-detail">{call.reasonDetail}</span>
+                      {call.subType && (
+                        <span className="call-subtype">
+                          {t(`resourcePerson.calls.subType.${call.subType}`)}
+                          {call.transferredFrom
+                            ? ` · ${t('resourcePerson.calls.transferredBy', { name: call.transferredFrom })}`
+                            : ''}
+                        </span>
+                      )}
                     </span>
                     <span className="call-wait">
                       <span className={over ? 'call-wait-time is-over' : 'call-wait-time'}>{formatDuration(waited)}</span>

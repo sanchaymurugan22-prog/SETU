@@ -7,6 +7,11 @@ import { CallConsole } from './consoles/executive/CallConsole'
 import { CompletedCallsSection } from './consoles/executive/CompletedCallsSection'
 import { WaitingCallsSection } from './consoles/executive/WaitingCallsSection'
 import { GapMapSection } from './consoles/admin/GapMapSection'
+import { CourseMaterialsSection } from './consoles/resourcePerson/CourseMaterialsSection'
+import { ExpertCompletedSection, ExpertWaitingSection } from './consoles/resourcePerson/ExpertCallSections'
+import { MilestonesSection } from './consoles/resourcePerson/MilestonesSection'
+import { ResourcePersonConsole } from './consoles/resourcePerson/ResourcePersonConsole'
+import { TraineesSection } from './consoles/resourcePerson/TraineesSection'
 import { ConsoleLayout } from './consoles/ConsoleLayout'
 import { CONSOLES } from './consoles/consoles'
 import { SectionPlaceholder } from './consoles/SectionPlaceholder'
@@ -21,6 +26,11 @@ const SECTION_VIEWS: Record<string, ComponentType> = {
   'admin/gap-map': GapMapSection,
   'executive/waiting': WaitingCallsSection,
   'executive/completed': CompletedCallsSection,
+  'resourcePerson/beneficiaries': TraineesSection,
+  'resourcePerson/materials': CourseMaterialsSection,
+  'resourcePerson/waiting': ExpertWaitingSection,
+  'resourcePerson/completed': ExpertCompletedSection,
+  'resourcePerson/milestones': MilestonesSection,
 }
 
 export default function App() {
@@ -45,6 +55,10 @@ export default function App() {
                         <CallConsole>
                           <ConsoleLayout definition={definition} />
                         </CallConsole>
+                      ) : definition.role === 'resourcePerson' ? (
+                        <ResourcePersonConsole>
+                          <ConsoleLayout definition={definition} />
+                        </ResourcePersonConsole>
                       ) : (
                         <ConsoleLayout definition={definition} />
                       )}

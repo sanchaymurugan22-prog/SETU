@@ -466,5 +466,129 @@
     "goodNote": "বাকি কল এই ভাষাতেই চলে।",
     "headerDetected": "শনাক্ত ভাষা · ব্লক",
     "dialectFoot": "প্রতিটি কল থেকে, ভাষাপ্রতি গড় শনাক্তকরণ নিশ্চয়তা"
+  },
+  "resourcePerson": {
+    "centreLabel": "কেন্দ্র",
+    "days": {
+      "sun": "রবি",
+      "mon": "সোম",
+      "tue": "মঙ্গল",
+      "wed": "বুধ",
+      "thu": "বৃহঃ",
+      "fri": "শুক্র",
+      "sat": "শনি"
+    },
+    "attendance": {
+      "open": "{{course}}-এর উপস্থিতি এখন খোলা — আজকের সেশন {{from}}–{{to}}।",
+      "closed": "উপস্থিতি এখন বন্ধ। পরবর্তী সেশন: {{day}} {{from}}-টায়, {{course}}।",
+      "noSessions": "কোনও সেশন নির্ধারিত নেই। কোর্স সামগ্রীতে দিন ও সময় ঠিক করুন।",
+      "locked": "সেশনের সময়ে খুলবে"
+    },
+    "trainees": {
+      "subtitle": "{{batches}}টি ব্যাচে {{count}} জন প্রশিক্ষণার্থী",
+      "searchLabel": "প্রশিক্ষণার্থী খুঁজুন",
+      "searchPlaceholder": "নাম, আইডি বা গ্রাম দিয়ে খুঁজুন",
+      "batchLabel": "ব্যাচ",
+      "batchAll": "সব ব্যাচ",
+      "listAria": "প্রশিক্ষণার্থীর তালিকা",
+      "empty": "এই ফিল্টারে কোনও প্রশিক্ষণার্থী মেলেনি।",
+      "foot": "নির্ধারিত সেশন শুরু হলেই উপস্থিতি নিজে থেকে খোলে।",
+      "headers": {
+        "batch": "ব্যাচ",
+        "attendance": "উপস্থিতি",
+        "today": "আজকের সেশন"
+      },
+      "flag": "প্রশাসককে জানান",
+      "flagTitle": "প্রশাসককে জানান",
+      "flagHint": "প্রশাসক এই প্রশিক্ষণার্থীর রেকর্ড আপনার কারণ ও মন্তব্যসহ দেখবেন।",
+      "flagReason": "কারণ",
+      "flagNote": "প্রশাসকের কী জানা দরকার?",
+      "flagNotePlaceholder": "আপনি যা দেখেছেন এবং যে সাহায্য দরকার তা লিখুন",
+      "flagNoteRequired": "অন্তত এক লাইন লিখুন, যাতে প্রশাসক বুঝতে পারেন কী করতে হবে।",
+      "flagSend": "পাঠান",
+      "flagsRaised": "জানানো হয়েছে",
+      "flagsRaisedLine": "{{count}}টি প্রশাসককে পাঠানো হয়েছে। সর্বশেষ: {{name}} — {{reason}}।",
+      "panelAria": "{{name}}-এর রেকর্ড",
+      "panelEyebrow": "প্রশিক্ষণার্থীর রেকর্ড",
+      "facts": {
+        "course": "কোর্স",
+        "attendance": "উপস্থিতি"
+      },
+      "updateTitle": "অবস্থা বদলান",
+      "descriptionLabel": "বিবরণ (আবশ্যক)",
+      "descriptionPlaceholder": "এই অবস্থা কেন? সেশনে আপনি কী দেখেছেন?",
+      "descriptionRequired": "অবস্থা সংরক্ষণের আগে বিবরণ লেখা আবশ্যক।",
+      "completionHint": "সম্পূর্ণ করার সঙ্গে পরবর্তী কোর্স ও কাজের সুপারিশ দিতে হবে। সংরক্ষণ করলেই শংসাপত্র তৈরি হয়।",
+      "nextCourse": "পরবর্তী কোর্স",
+      "jobRecommendation": "কাজের সুপারিশ",
+      "saveStatus": "অবস্থা সংরক্ষণ করুন",
+      "saved": "অবস্থা “{{status}}” হিসেবে সংরক্ষিত হয়েছে।",
+      "savedWithCertificate": "অবস্থা “{{status}}” হিসেবে সংরক্ষিত। শংসাপত্র তৈরি হয়েছে।",
+      "certificateTitle": "শংসাপত্র",
+      "certificateLine": "{{name}} PM-AJAY (GIA)-এর অধীনে {{course}} সম্পূর্ণ করেছেন।",
+      "certificateMeta": "{{centre}} · প্রশিক্ষক {{trainer}}",
+      "historyTitle": "অবস্থার ইতিহাস"
+    },
+    "flagReason": {
+      "repeated-absence": "বারবার অনুপস্থিতি",
+      "travel-cost": "যাতায়াতের খরচ",
+      "family-pressure": "পরিবারের চাপ",
+      "no-local-work": "কাছাকাছি কাজ নেই",
+      "needs-field-visit": "সরেজমিন পরিদর্শন দরকার"
+    },
+    "materials": {
+      "subtitle": "আপনার {{count}}টি ব্যাচ",
+      "scheduleDrivesAttendance": "এই সময়ই ঠিক করে কখন উপস্থিতি খুলবে।",
+      "scheduleTitle": "সময়সূচি ও সময়",
+      "startTime": "শুরু",
+      "endTime": "শেষ",
+      "modeLabel": "মাধ্যম",
+      "mode": {
+        "in-person": "সরাসরি",
+        "online": "অনলাইন",
+        "hybrid": "মিশ্র"
+      },
+      "location": "স্থান",
+      "onlineLink": "অনলাইন লিঙ্ক",
+      "onlineLinkPlaceholder": "মিটিং লিঙ্ক এখানে দিন",
+      "materialsTitle": "কোর্স সামগ্রী",
+      "kind": {
+        "note": "লেখা",
+        "link": "লিঙ্ক"
+      },
+      "materialTitle": "শিরোনাম",
+      "materialUrl": "লিঙ্ক",
+      "materialText": "লেখা",
+      "add": "যোগ করুন",
+      "addMaterial": "সামগ্রী যোগ করুন",
+      "addError": "সামগ্রীর শিরোনাম ও বিষয়বস্তু দুটোই দিন।",
+      "remove": "সরান"
+    },
+    "calls": {
+      "subTypeLabel": "কেসের ধরন",
+      "subType": {
+        "course-related": "কোর্স সংক্রান্ত",
+        "common-related": "সাধারণ"
+      },
+      "transferredBy": "{{name}} থেকে",
+      "transferOnly": "কেস কেবল কল কনসোল থেকে স্থানান্তরিত হয়ে আসে।",
+      "waitingSubtitle": "{{count}}টি কেস অপেক্ষায় · দীর্ঘতম {{longest}}",
+      "scopeValue": "আপনার নিজের বিশেষজ্ঞ কল"
+    },
+    "milestones": {
+      "subtitle": "{{total}} জনের মধ্যে {{count}} জন প্রশিক্ষণ শেষ করেছেন",
+      "completedLabel": "প্রশিক্ষণ সম্পূর্ণ",
+      "completedFoot": "যাঁরা কোর্স শেষ করেছেন",
+      "certifiedLabel": "প্রদত্ত শংসাপত্র",
+      "certifiedFoot": "সম্পূর্ণ হলেই তৈরি হয়",
+      "placedLabel": "কাজে যুক্ত",
+      "placedFoot": "নিযুক্ত বা স্বনির্ভর",
+      "awaitingLabel": "কাজের অপেক্ষায়",
+      "awaitingFoot": "প্রশিক্ষিত, তবে কাছে কাজ নেই",
+      "empty": "এখনও কোনও প্রশিক্ষণার্থী কোর্স শেষ করেননি।",
+      "foot": "মাইলফলকের পিছনের রেকর্ড দেখতে সারিটি খুলুন।",
+      "attendanceSub": "সেশনে উপস্থিতি",
+      "noCertificate": "এখনও দেওয়া হয়নি"
+    }
   }
 }

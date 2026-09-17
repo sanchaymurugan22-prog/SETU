@@ -466,5 +466,129 @@
     "goodNote": "बाकी कॉल इसी भाषा में चलती है।",
     "headerDetected": "पहचानी गई भाषा · प्रखंड",
     "dialectFoot": "हर कॉल से, प्रति भाषा औसत पहचान आश्वस्ति"
+  },
+  "resourcePerson": {
+    "centreLabel": "केंद्र",
+    "days": {
+      "sun": "रवि",
+      "mon": "सोम",
+      "tue": "मंगल",
+      "wed": "बुध",
+      "thu": "गुरु",
+      "fri": "शुक्र",
+      "sat": "शनि"
+    },
+    "attendance": {
+      "open": "{{course}} के लिए उपस्थिति खुली है — आज का सत्र {{from}}–{{to}} तक है।",
+      "closed": "उपस्थिति अभी बंद है। अगला सत्र: {{day}} को {{from}} बजे, {{course}}।",
+      "noSessions": "कोई सत्र निर्धारित नहीं है। दिन और समय पाठ्यक्रम सामग्री में तय करें।",
+      "locked": "सत्र के समय पर खुलेगी"
+    },
+    "trainees": {
+      "subtitle": "{{batches}} बैचों में {{count}} प्रशिक्षार्थी",
+      "searchLabel": "प्रशिक्षार्थी खोजें",
+      "searchPlaceholder": "नाम, आईडी या गाँव से खोजें",
+      "batchLabel": "बैच",
+      "batchAll": "सभी बैच",
+      "listAria": "प्रशिक्षार्थी सूची",
+      "empty": "इन फ़िल्टरों से कोई प्रशिक्षार्थी नहीं मिला।",
+      "foot": "निर्धारित सत्र शुरू होते ही उपस्थिति अपने आप खुल जाती है।",
+      "headers": {
+        "batch": "बैच",
+        "attendance": "उपस्थिति",
+        "today": "आज का सत्र"
+      },
+      "flag": "प्रशासक को भेजें",
+      "flagTitle": "प्रशासक को सूचित करें",
+      "flagHint": "प्रशासक इस प्रशिक्षार्थी का रिकॉर्ड आपके कारण और टिप्पणी के साथ देखेगा।",
+      "flagReason": "कारण",
+      "flagNote": "प्रशासक को क्या जानना चाहिए?",
+      "flagNotePlaceholder": "आपने जो देखा और जो सहायता चाहिए, वह लिखें",
+      "flagNoteRequired": "कम से कम एक पंक्ति लिखें ताकि प्रशासक को पता चले कि क्या करना है।",
+      "flagSend": "भेजें",
+      "flagsRaised": "सूचना भेजी गई",
+      "flagsRaisedLine": "{{count}} प्रशासक को भेजी गईं। नवीनतम: {{name}} — {{reason}}।",
+      "panelAria": "{{name}} का रिकॉर्ड",
+      "panelEyebrow": "प्रशिक्षार्थी रिकॉर्ड",
+      "facts": {
+        "course": "पाठ्यक्रम",
+        "attendance": "उपस्थिति"
+      },
+      "updateTitle": "स्थिति बदलें",
+      "descriptionLabel": "विवरण (अनिवार्य)",
+      "descriptionPlaceholder": "यह स्थिति क्यों? सत्रों में आपने क्या देखा?",
+      "descriptionRequired": "स्थिति सहेजने से पहले विवरण लिखना अनिवार्य है।",
+      "completionHint": "पूर्ण करने पर अगला पाठ्यक्रम और रोज़गार सुझाव देना ज़रूरी है। सहेजते ही प्रमाणपत्र बन जाता है।",
+      "nextCourse": "अगला पाठ्यक्रम",
+      "jobRecommendation": "रोज़गार सुझाव",
+      "saveStatus": "स्थिति सहेजें",
+      "saved": "स्थिति “{{status}}” के रूप में सहेजी गई।",
+      "savedWithCertificate": "स्थिति “{{status}}” के रूप में सहेजी गई। प्रमाणपत्र बन गया।",
+      "certificateTitle": "प्रमाणपत्र",
+      "certificateLine": "{{name}} ने PM-AJAY (GIA) के अंतर्गत {{course}} पूरा किया।",
+      "certificateMeta": "{{centre}} · प्रशिक्षक {{trainer}}",
+      "historyTitle": "स्थिति का इतिहास"
+    },
+    "flagReason": {
+      "repeated-absence": "बार-बार अनुपस्थिति",
+      "travel-cost": "आने-जाने का खर्च",
+      "family-pressure": "पारिवारिक दबाव",
+      "no-local-work": "आसपास काम नहीं",
+      "needs-field-visit": "क्षेत्र भ्रमण आवश्यक"
+    },
+    "materials": {
+      "subtitle": "आपके {{count}} बैच",
+      "scheduleDrivesAttendance": "यही समय तय करता है कि उपस्थिति कब खुलेगी।",
+      "scheduleTitle": "समय-सारणी और समय",
+      "startTime": "शुरू",
+      "endTime": "समाप्त",
+      "modeLabel": "माध्यम",
+      "mode": {
+        "in-person": "आमने-सामने",
+        "online": "ऑनलाइन",
+        "hybrid": "मिश्रित"
+      },
+      "location": "स्थान",
+      "onlineLink": "ऑनलाइन लिंक",
+      "onlineLinkPlaceholder": "मीटिंग लिंक यहाँ डालें",
+      "materialsTitle": "पाठ्यक्रम सामग्री",
+      "kind": {
+        "note": "पाठ",
+        "link": "लिंक"
+      },
+      "materialTitle": "शीर्षक",
+      "materialUrl": "लिंक",
+      "materialText": "पाठ",
+      "add": "जोड़ें",
+      "addMaterial": "सामग्री जोड़ें",
+      "addError": "सामग्री का शीर्षक और उसकी विषय-वस्तु दोनों भरें।",
+      "remove": "हटाएँ"
+    },
+    "calls": {
+      "subTypeLabel": "मामले का प्रकार",
+      "subType": {
+        "course-related": "पाठ्यक्रम से जुड़ा",
+        "common-related": "सामान्य"
+      },
+      "transferredBy": "{{name}} से",
+      "transferOnly": "मामले केवल कॉल कंसोल से स्थानांतरित होकर आते हैं।",
+      "waitingSubtitle": "{{count}} मामले प्रतीक्षा में · सबसे लंबी {{longest}}",
+      "scopeValue": "आपकी अपनी विशेषज्ञ कॉल"
+    },
+    "milestones": {
+      "subtitle": "{{total}} में से {{count}} प्रशिक्षार्थी प्रशिक्षण पूरा कर चुके हैं",
+      "completedLabel": "प्रशिक्षण पूर्ण",
+      "completedFoot": "जिन्होंने पाठ्यक्रम पूरा किया",
+      "certifiedLabel": "जारी प्रमाणपत्र",
+      "certifiedFoot": "पूर्ण होने पर बनते हैं",
+      "placedLabel": "काम पर",
+      "placedFoot": "नियुक्त या स्वरोज़गार",
+      "awaitingLabel": "काम की प्रतीक्षा",
+      "awaitingFoot": "प्रशिक्षित, पर स्थानीय काम नहीं",
+      "empty": "अभी किसी प्रशिक्षार्थी ने पाठ्यक्रम पूरा नहीं किया है।",
+      "foot": "उपलब्धि के पीछे का रिकॉर्ड देखने के लिए पंक्ति खोलें।",
+      "attendanceSub": "सत्रों में उपस्थिति",
+      "noCertificate": "अभी जारी नहीं"
+    }
   }
 }

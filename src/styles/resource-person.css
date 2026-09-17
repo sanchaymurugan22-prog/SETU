@@ -1,0 +1,564 @@
+/* Resource Person Console — trainees, attendance, materials, milestones. */
+
+.rp-header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.rp-header-side {
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.rp-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ── Session banner: the schedule, not the trainer, opens attendance ── */
+
+.rp-session {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 10px 14px;
+  background: var(--grey-200);
+  border-left: 3px solid var(--grey-500);
+  font-size: 13px;
+  color: var(--ink);
+}
+
+.rp-session.is-open {
+  background: var(--cyan-50);
+  border-left-color: var(--signal-cyan);
+}
+
+.rp-session-dot {
+  width: 9px;
+  height: 9px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--grey-500);
+}
+
+.rp-session.is-open .rp-session-dot {
+  background: var(--signal-cyan);
+  box-shadow: 0 0 0 4px rgb(0 136 176 / 18%);
+}
+
+.rp-session-note {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--grey-700);
+}
+
+/* ── Trainee table ── */
+
+.rp-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.rp-layout.has-panel {
+  grid-template-columns: minmax(0, 1fr) 380px;
+}
+
+.rp-table-panel {
+  background: var(--white);
+  border: 1px solid var(--grey-300);
+  min-width: 0;
+}
+
+.rp-table-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1.9fr) minmax(0, 1.1fr) minmax(0, 1.1fr) minmax(0, 1.2fr) 150px 92px;
+  gap: 12px;
+  padding: 10px 16px;
+  background: var(--grey-200);
+  border-bottom: 1px solid var(--grey-300);
+  font-family: var(--font-heading);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--grey-700);
+}
+
+/* Long labels must not run into the next column when the panel is open. */
+.rp-table-head span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.rp-rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.rp-row {
+  display: grid;
+  grid-template-columns: minmax(0, 5.3fr) 150px 92px;
+  gap: 12px;
+  align-items: center;
+  padding: 0 16px 0 0;
+  border-bottom: 1px solid var(--grey-200);
+}
+
+.rp-row.is-selected {
+  background: var(--cyan-50);
+}
+
+.rp-row-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1.9fr) minmax(0, 1.1fr) minmax(0, 1.1fr) minmax(0, 1.2fr);
+  gap: 12px;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  padding: 12px 16px;
+  background: none;
+  border: 0;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.rp-row-main:hover {
+  background: var(--paper);
+}
+
+.rp-cell-sub {
+  display: block;
+  font-size: 11.5px;
+  color: var(--grey-700);
+}
+
+.rp-attendance {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.rp-mark {
+  background: var(--white);
+  border: 1px solid var(--grey-500);
+  color: var(--grey-700);
+  font-family: var(--font-heading);
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 6px 9px;
+  cursor: pointer;
+}
+
+.rp-mark.is-present {
+  background: var(--teal);
+  border-color: var(--teal);
+  color: var(--white);
+}
+
+.rp-mark.is-absent {
+  background: var(--magenta);
+  border-color: var(--magenta);
+  color: var(--white);
+}
+
+.rp-locked {
+  font-size: 11.5px;
+  color: var(--grey-700);
+  font-style: italic;
+}
+
+/* ── Trainee panel ── */
+
+.rp-panel {
+  background: var(--white);
+  border: 1px solid var(--grey-300);
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 190px);
+  overflow-y: auto;
+}
+
+.rp-block-title {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--grey-700);
+  margin-bottom: 8px;
+}
+
+.rp-status-form,
+.rp-certificate,
+.rp-history {
+  padding: 14px 16px;
+  border-top: 1px solid var(--grey-200);
+}
+
+.rp-stage-row,
+.rp-kind-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.rp-recommendations {
+  margin-top: 10px;
+  padding: 10px 12px;
+  background: var(--cyan-50);
+  border-left: 3px solid var(--signal-cyan);
+}
+
+.rp-hint {
+  margin: 0 0 8px;
+  font-size: 12.5px;
+  color: var(--grey-700);
+}
+
+.rp-error {
+  margin: 8px 0 0;
+  font-size: 12.5px;
+  color: var(--magenta);
+}
+
+.rp-saved {
+  margin: 8px 0 0;
+  font-size: 12.5px;
+  color: var(--teal);
+}
+
+.rp-form-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.rp-certificate-body {
+  padding: 12px 14px;
+  border: 1px solid var(--teal);
+  background: var(--white);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.rp-certificate-id {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--teal);
+  letter-spacing: 0.04em;
+}
+
+.rp-certificate-line {
+  font-size: 13px;
+}
+
+.rp-certificate-meta {
+  font-size: 11.5px;
+  color: var(--grey-700);
+}
+
+.rp-reco {
+  margin: 10px 0 0;
+  display: grid;
+  gap: 8px;
+}
+
+.rp-reco div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.rp-reco dt {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--grey-700);
+}
+
+.rp-reco dd {
+  margin: 0;
+  font-size: 13px;
+}
+
+/* ── Flag modal ── */
+
+.rp-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgb(32 30 29 / 55%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 60;
+}
+
+.rp-modal {
+  background: var(--white);
+  border: 1px solid var(--grey-300);
+  width: min(520px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.rp-modal-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--grey-200);
+}
+
+.rp-modal-head h2 {
+  margin: 2px 0 0;
+  font-size: 18px;
+}
+
+.rp-modal-body {
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.rp-modal-foot {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 12px 16px;
+  border-top: 1px solid var(--grey-200);
+  background: var(--paper);
+}
+
+/* ── Course materials ── */
+
+.rp-batches {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  gap: 14px;
+  align-items: start;
+}
+
+.rp-batch {
+  background: var(--white);
+  border: 1px solid var(--grey-300);
+}
+
+.rp-batch-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--grey-200);
+}
+
+.rp-batch-head h2 {
+  margin: 2px 0 2px;
+  font-size: 18px;
+}
+
+.rp-batch-head .chip {
+  margin-left: auto;
+}
+
+.rp-schedule,
+.rp-materials {
+  padding: 14px 16px;
+  border-top: 1px solid var(--grey-200);
+}
+
+.rp-days {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.rp-day {
+  min-width: 42px;
+  padding: 7px 8px;
+  background: var(--white);
+  border: 1px solid var(--grey-500);
+  font-family: var(--font-heading);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--grey-700);
+  cursor: pointer;
+}
+
+.rp-day.is-on {
+  background: var(--setu-blue);
+  border-color: var(--setu-blue);
+  color: var(--white);
+}
+
+.rp-time-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.rp-time-row .call-field {
+  flex: 1 1 130px;
+}
+
+.rp-material-list {
+  list-style: none;
+  margin: 0 0 12px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.rp-material {
+  display: grid;
+  grid-template-columns: 62px minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: start;
+  padding: 10px 12px;
+  background: var(--paper);
+}
+
+.rp-material-kind {
+  font-family: var(--font-heading);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 6px;
+  text-align: center;
+  color: var(--white);
+  background: var(--grey-700);
+}
+
+.rp-material-kind.is-link {
+  background: var(--signal-cyan);
+}
+
+.rp-material-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.rp-material-title {
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.rp-material-body {
+  font-size: 12.5px;
+  color: var(--grey-700);
+}
+
+.rp-material-link {
+  font-size: 12.5px;
+  color: var(--teal);
+  overflow-wrap: anywhere;
+}
+
+.rp-material-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  background: var(--cyan-50);
+  border-left: 3px solid var(--signal-cyan);
+}
+
+/* ── Milestones ── */
+
+.rp-milestone-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 12px;
+}
+
+.rp-milestone-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.rp-milestone {
+  border-bottom: 1px solid var(--grey-200);
+}
+
+.rp-milestone.is-open {
+  background: var(--cyan-50);
+}
+
+.rp-milestone-head {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.2fr);
+  gap: 12px;
+  align-items: center;
+  width: 100%;
+  padding: 12px 16px;
+  background: none;
+  border: 0;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.rp-milestone-head:hover {
+  background: var(--paper);
+}
+
+.rp-milestone-body {
+  padding: 4px 16px 16px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  gap: 18px;
+}
+
+/* Sub-type tags shared with the call views. */
+
+.call-subtype {
+  display: block;
+  margin-top: 3px;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--teal);
+}
+
+.call-transfer-note {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--grey-700);
+  font-style: italic;
+}
+
+@media (max-width: 1100px) {
+  .rp-layout.has-panel {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .rp-milestone-body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

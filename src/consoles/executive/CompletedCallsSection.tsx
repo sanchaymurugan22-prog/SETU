@@ -1,6 +1,12 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { formatDuration, OUTCOME_KEYS, type OutcomeKey } from '../../data/jharkhandCalls'
+import {
+  CALL_SUB_TYPES,
+  formatDuration,
+  OUTCOME_KEYS,
+  type CallSubType,
+  type OutcomeKey,
+} from '../../data/jharkhandCalls'
 import { useCallSession } from './CallSessionContext'
 
 type Period = 'all' | 'today' | 'week' | 'month'
@@ -11,14 +17,21 @@ const PERIOD_DAYS: Record<Period, number> = { all: 3650, today: 0, week: 7, mont
  * Only this executive's own calls, and only report content: no name, phone or village
  * appears here — that is the privacy rule, not a gap in the data.
  */
-export function CompletedCallsSection() {
+export function CompletedCallsSection({
+  titleKey = 'sections.executive.completed.title',
+  scopeValueKey = 'callConsole.completed.scopeValue',
+}: {
+  titleKey?: string
+  scopeValueKey?: string
+} = {}) {
   const { t } = useTranslation()
   const { completed } = useCallSession()
   const [search, setSearch] = useState('')
   const [period, setPeriod] = useState<Period>('all')
   const [outcome, setOutcome] = useState<OutcomeKey | 'all'>('all')
+  const [subType, setSubType] = useState<CallSubType | 'all'>('all')
 
-  const title = t('sections.executive.completed.title')
+  const title = t(titleKey)
   useEffect(() => {
     document.title = `${title} · SETU`
   }, [title])
@@ -34,9 +47,17 @@ export function CompletedCallsSection() {
         call.actions.some((action) => action.toLowerCase().includes(needle))
       const matchesPeriod = call.daysAgo <= PERIOD_DAYS[period]
       const matchesOutcome = outcome === 'all' || call.outcome === outcome
-      return matchesSearch && matchesPeriod && matchesOutcome
+      const matchesSubType = subType === 'all' || call.subType === subType
+      return matchesSearch && matchesPeriod && matchesOutcome && matchesSubType
     })
-  }, [completed, outcome, period, search])
+  }, [completed, outcome, period, search, subType])
+
+  const hasSubTypes = useMemo(() => completed.some((call) => call.subType), [completed])
+  const subTypeCounts = useMemo(() => {
+    const map = new Map<CallSubType, number>()
+    for (const call of completed) if (call.subType) map.set(call.subType, (map.get(call.subType) ?? 0) + 1)
+    return map
+  }, [completed])
 
   return (
     <>
@@ -49,12 +70,35 @@ export function CompletedCallsSection() {
           <span className="chip is-cyan">{t('callConsole.completed.identityNote')}</span>
           <span className="call-scope">
             <span className="call-scope-label">{t('callConsole.completed.scopeLabel')}</span>
-            <span className="call-scope-value">{t('callConsole.completed.scopeValue')}</span>
+            <span className="call-scope-value">{t(scopeValueKey)}</span>
           </span>
         </div>
       </header>
 
       <div className="section-body call-completed-body">
+        {hasSubTypes && (
+          <div className="call-filters">
+            <span className="call-filter-label">{t('resourcePerson.calls.subTypeLabel')}</span>
+            <button
+              type="button"
+              className={subType === 'all' ? 'call-chip is-selected' : 'call-chip'}
+              onClick={() => setSubType('all')}
+            >
+              {t('common.all')} · {completed.length}
+            </button>
+            {CALL_SUB_TYPES.map((kind) => (
+              <button
+                key={kind}
+                type="button"
+                className={subType === kind ? 'call-chip is-selected' : 'call-chip'}
+                onClick={() => setSubType(subType === kind ? 'all' : kind)}
+              >
+                {t(`resourcePerson.calls.subType.${kind}`)} · {subTypeCounts.get(kind) ?? 0}
+              </button>
+            ))}
+          </div>
+        )}
+
         <div className="call-filters">
           <label className="call-search">
             <span className="visually-hidden">{t('callConsole.completed.searchLabel')}</span>
@@ -119,7 +163,12 @@ export function CompletedCallsSection() {
                     {call.daysAgo === 0 && <span className="chip is-cyan">{t('callConsole.completed.justSent')}</span>}
                   </span>
                   <span className="call-discussed">{call.discussion}</span>
-                  <span className="call-course">{call.course}</span>
+                  <span className="call-course">
+                    {call.course}
+                    {call.subType && (
+                      <span className="call-subtype">{t(`resourcePerson.calls.subType.${call.subType}`)}</span>
+                    )}
+                  </span>
                   <ul className="call-actions">
                     {call.actions.map((action, index) => (
                       <li key={`${action}-${index}`}>{action}</li>
