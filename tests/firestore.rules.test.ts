@@ -70,8 +70,8 @@ beforeEach(async () => {
       [`users/${RP2}`, staff('resourcePerson')],
       [`users/${INACTIVE}`, staff('executive', false)],
 
-      ['beneficiaries/ben-1', { name: 'Sunita Devi', primaryNumber: '+91 94310 24718', assignedResourcePerson: RP, currentStatus: 'enrolled', activeHandler: null, activeCallId: null }],
-      ['beneficiaries/ben-2', { name: 'Ramesh Oraon', primaryNumber: '+91 90062 11840', assignedResourcePerson: RP2, currentStatus: 'enrolled', activeHandler: null, activeCallId: null }],
+      ['beneficiaries/ben-1', { name: 'Sunita Devi', primaryNumber: '+91 94310 24718', assignedResourcePerson: RP, trainingStatus: 'enrolled', employmentStatus: 'in-training', activeHandler: null, activeCallId: null }],
+      ['beneficiaries/ben-2', { name: 'Ramesh Oraon', primaryNumber: '+91 90062 11840', assignedResourcePerson: RP2, trainingStatus: 'enrolled', employmentStatus: 'in-training', activeHandler: null, activeCallId: null }],
 
       ['calls/queued-1', { callType: 'executive', status: 'waiting', handledBy: null, beneficiaryId: 'ben-1', queue: { reasonTag: 'ai-low-confidence' } }],
       ['calls/queued-1/private/detail', { transcript: 'Caller said her name is Sunita…' }],
@@ -260,8 +260,16 @@ describe('trainer access', () => {
     const beneficiary = doc(as(RP), 'beneficiaries', 'ben-1')
     await assertSucceeds(
       updateDoc(beneficiary, {
-        currentStatus: 'attending',
+        trainingStatus: 'attending',
         statusHistory: [{ status: 'attending', description: 'Attended first week.', changedBy: RP }],
+      }),
+    )
+    // Certified and unplaced at the same time: two fields, one update.
+    await assertSucceeds(
+      updateDoc(beneficiary, {
+        trainingStatus: 'certified',
+        employmentStatus: 'unplaced',
+        statusHistory: [{ status: 'certified', description: 'Passed the assessment.', changedBy: RP }],
       }),
     )
     await assertFails(updateDoc(beneficiary, { assignedResourcePerson: RP2 }))

@@ -1,7 +1,6 @@
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import { LANGUAGE_CODES } from '../lib/languages'
-import { getUiLanguageCode } from '../lib/uiLanguage'
 import bn from './locales/bn.json'
 import en from './locales/en.json'
 import gu from './locales/gu.json'
@@ -19,6 +18,10 @@ import te from './locales/te.json'
  *
  * Adding a screen? Add its keys to en.json first, then every other locale, then run
  * `npm run i18n:check` — it fails on any key that is missing or left in English.
+ *
+ * The app always starts in English. A language chosen on the selection screen or in the
+ * sidebar lasts for that session only: nothing is persisted, so the next person at a
+ * shared machine gets English and picks for themselves.
  */
 export const resources = {
   hi: { translation: hi },
@@ -35,7 +38,7 @@ export const resources = {
 
 void i18n.use(initReactI18next).init({
   resources,
-  lng: getUiLanguageCode(),
+  lng: 'en',
   fallbackLng: 'en',
   supportedLngs: LANGUAGE_CODES,
   interpolation: { escapeValue: false },

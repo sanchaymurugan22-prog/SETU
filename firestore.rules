@@ -122,9 +122,13 @@ service cloud.firestore {
       }
 
       // Spec 5.1: a trainer maintains status and recommendations for their own trainees.
+      // Training and employment are separate fields: certified and unplaced co-exist.
       function trainerUpdate() {
         return isMyTrainee(resource.data)
-          && changesOnly(['currentStatus', 'statusHistory', 'completionRecommendation', 'flags', 'updatedAt']);
+          && changesOnly([
+            'trainingStatus', 'employmentStatus', 'statusHistory',
+            'completionRecommendation', 'flags', 'updatedAt'
+          ]);
       }
 
       allow read: if isAdmin()

@@ -28,18 +28,6 @@
     "weeksAgo": "{{count}} weeks ago",
     "monthsAgo": "{{count}} months ago"
   },
-  "status": {
-    "new": "New",
-    "recommended": "Recommended",
-    "enrolled": "Enrolled",
-    "attending": "Attending",
-    "irregular": "Irregular",
-    "completed": "Completed",
-    "certified": "Certified",
-    "placed": "Placed",
-    "trained-unplaced": "Unplaced",
-    "dropped": "Dropped"
-  },
   "roles": {
     "executive": "Call Executive",
     "resourcePerson": "Resource Person",
@@ -257,12 +245,14 @@
       "districtAll": "District: all",
       "blockAll": "Block: all",
       "courseAll": "Course: all",
-      "statusAll": "Status: all",
       "district": "District",
       "block": "Block",
       "course": "Course",
-      "status": "Status",
-      "flaggedOnly": "AI-flagged / stalled only"
+      "flaggedOnly": "AI-flagged / stalled only",
+      "training": "Training status",
+      "trainingAll": "Training: all",
+      "employment": "Employment status",
+      "employmentAll": "Employment: all"
     },
     "chipAll": "All · {{count}}",
     "chip": "{{label}} · {{count}}",
@@ -270,9 +260,10 @@
       "name": "Name",
       "location": "District · block · village",
       "course": "Recommended course",
-      "status": "Status",
       "lastContact": "Last contact",
-      "flags": "Flags"
+      "flags": "Flags",
+      "training": "Training",
+      "employment": "Employment"
     },
     "listAria": "Beneficiary list",
     "empty": "No beneficiaries match these filters.",
@@ -302,11 +293,12 @@
       "absent": "Absent",
       "sessionTitle": "Session {{number}}",
       "outcome": {
-        "currentStatus": "Current status",
         "outcome": "Outcome",
         "course": "Recommended course",
         "centre": "Centre",
-        "interests": "Interests recorded"
+        "interests": "Interests recorded",
+        "training": "Training status",
+        "employment": "Employment status"
       },
       "noCentre": "No centre in this block yet",
       "scheduleCall": "Schedule call",
@@ -529,7 +521,7 @@
       "descriptionLabel": "Description (required)",
       "descriptionPlaceholder": "Why this status? What did you see in the sessions?",
       "descriptionRequired": "A description is required before a status can be saved.",
-      "completionHint": "Completion needs a next course and a job recommendation. The certificate is generated when you save.",
+      "completionHint": "Certifying needs a next course and a job recommendation. The certificate is generated when you save.",
       "nextCourse": "Next course",
       "jobRecommendation": "Job recommendation",
       "saveStatus": "Save status",
@@ -538,7 +530,8 @@
       "certificateTitle": "Certificate",
       "certificateLine": "{{name}} completed {{course}} under PM-AJAY (GIA).",
       "certificateMeta": "{{centre}} · trainer {{trainer}}",
-      "historyTitle": "Status history"
+      "historyTitle": "Status history",
+      "employmentLabel": "Employment status"
     },
     "flagReason": {
       "repeated-absence": "Repeated absence",
@@ -588,10 +581,8 @@
     },
     "milestones": {
       "subtitle": "{{count}} of {{total}} trainees trained to completion",
-      "completedLabel": "Completed training",
-      "completedFoot": "Trainees who finished the course",
-      "certifiedLabel": "Certificates issued",
-      "certifiedFoot": "Generated on completion",
+      "certifiedLabel": "Certified",
+      "certifiedFoot": "Finished the course; certificate issued",
       "placedLabel": "In work",
       "placedFoot": "Placed or self-employed",
       "awaitingLabel": "Awaiting work",
@@ -599,7 +590,44 @@
       "empty": "No trainee has completed the course yet.",
       "foot": "Open a row to see the record behind the milestone.",
       "attendanceSub": "sessions attended",
-      "noCertificate": "Not yet issued"
+      "noCertificate": "Not yet issued",
+      "seekingLabel": "Seeking work",
+      "seekingFoot": "Certified, no placement yet"
     }
+  },
+  "certificate": {
+    "title": "Certificate of Completion",
+    "sheetAria": "Completion certificate for {{name}}",
+    "scheme": "PM-AJAY · Grant-in-Aid component",
+    "certifies": "This is to certify that",
+    "completed": "has successfully completed the course",
+    "nsqf": "NSQF Level {{level}}",
+    "centreLabel": "Training centre",
+    "periodLabel": "Training period",
+    "period": "{{from}} to {{to}}",
+    "sessions": "{{count}} scheduled sessions",
+    "idLabel": "Certificate ID",
+    "issuedLabel": "Date of issue",
+    "sealAria": "SETU issuing seal",
+    "verificationTitle": "Verification",
+    "verification": "Verify this certificate against the SETU record using certificate ID {{id}}. Issued electronically by the training centre; the trainer's record is the source of truth.",
+    "viewAction": "View certificate",
+    "printAction": "Print"
+  },
+  "training": {
+    "new": "New",
+    "recommended": "Recommended",
+    "enrolled": "Enrolled",
+    "attending": "Attending",
+    "irregular": "Irregular",
+    "certified": "Certified",
+    "dropped": "Dropped"
+  },
+  "employment": {
+    "in-training": "In training",
+    "seeking": "Seeking work",
+    "placed": "Placed",
+    "unplaced": "Unplaced",
+    "not-tracked": "Not tracked"
   }
 }

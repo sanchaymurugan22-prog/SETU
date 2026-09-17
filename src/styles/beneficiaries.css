@@ -277,10 +277,11 @@
 .ben-table-head,
 .ben-row {
   display: grid;
-  grid-template-columns: 1.5fr 1.7fr 1.2fr 1.05fr 0.85fr 0.7fr;
+  /* name · location · course · training · employment · last contact · flags */
+  grid-template-columns: 1.45fr 1.6fr 1.1fr 0.95fr 0.95fr 0.85fr 0.7fr;
   gap: 12px;
   align-items: center;
-  min-width: 940px;
+  min-width: 1060px;
 }
 
 .ben-table-head {

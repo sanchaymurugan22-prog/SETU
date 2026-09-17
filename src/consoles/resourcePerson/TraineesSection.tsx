@@ -1,6 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { STATUS_TONE, type BeneficiaryStatus } from '../../data/jharkhandBeneficiaries'
+import {
+  EMPLOYMENT_TONE,
+  TRAINING_TONE,
+  type TrainingStatus,
+} from '../../data/jharkhandBeneficiaries'
 import {
   FLAG_REASONS,
   RESOURCE_PERSON,
@@ -21,7 +25,7 @@ export function TraineesSection() {
   const { trainees, batches, openSession, nextSession, markFor, mark, attendanceOf, flagTrainee, flags } = useTrainer()
   const [search, setSearch] = useState('')
   const [batchId, setBatchId] = useState('all')
-  const [status, setStatus] = useState<BeneficiaryStatus | 'all'>('all')
+  const [status, setStatus] = useState<TrainingStatus | 'all'>('all')
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [flagFor, setFlagFor] = useState<Trainee | null>(null)
   const [flagReason, setFlagReason] = useState<FlagReason>('repeated-absence')
@@ -42,7 +46,7 @@ export function TraineesSection() {
           trainee.beneficiaryId.toLowerCase().includes(needle) ||
           trainee.village.toLowerCase().includes(needle)) &&
         (batchId === 'all' || trainee.batchId === batchId) &&
-        (status === 'all' || trainee.status === status),
+        (status === 'all' || trainee.trainingStatus === status),
     )
   }, [batchId, search, status, trainees])
 
@@ -151,7 +155,7 @@ export function TraineesSection() {
               className={status === stage ? 'call-chip is-selected' : 'call-chip'}
               onClick={() => setStatus(status === stage ? 'all' : stage)}
             >
-              {t(`status.${stage}`)} · {trainees.filter((trainee) => trainee.status === stage).length}
+              {t(`training.${stage}`)} · {trainees.filter((trainee) => trainee.trainingStatus === stage).length}
             </button>
           ))}
         </div>
@@ -162,7 +166,8 @@ export function TraineesSection() {
               <span>{t('beneficiaries.headers.name')}</span>
               <span>{t('resourcePerson.trainees.headers.batch')}</span>
               <span>{t('resourcePerson.trainees.headers.attendance')}</span>
-              <span>{t('beneficiaries.headers.status')}</span>
+              <span>{t('beneficiaries.headers.training')}</span>
+              <span>{t('beneficiaries.headers.employment')}</span>
               <span>{t('resourcePerson.trainees.headers.today')}</span>
               <span />
             </div>
@@ -202,8 +207,13 @@ export function TraineesSection() {
                           <span className="rp-cell-sub">{formatLastContact(t, trainee.lastContactDays)}</span>
                         </span>
                         <span className="ben-cell">
-                          <span className={`chip is-${STATUS_TONE[trainee.status]}`}>
-                            {t(`status.${trainee.status}`)}
+                          <span className={`chip is-${TRAINING_TONE[trainee.trainingStatus]}`}>
+                            {t(`training.${trainee.trainingStatus}`)}
+                          </span>
+                        </span>
+                        <span className="ben-cell">
+                          <span className={`chip is-${EMPLOYMENT_TONE[trainee.employmentStatus]}`}>
+                            {t(`employment.${trainee.employmentStatus}`)}
                           </span>
                         </span>
                       </button>

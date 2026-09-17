@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { STATUS_TONE } from '../../data/jharkhandBeneficiaries'
-import { RESOURCE_PERSON } from '../../data/resourcePerson'
+import { EMPLOYMENT_TONE, TRAINING_TONE } from '../../data/jharkhandBeneficiaries'
+import { RESOURCE_PERSON, type Trainee } from '../../data/resourcePerson'
+import { CertificateSheet } from './CertificateSheet'
 import { formatLastContact } from '../../i18n/format'
 import { useTrainer } from './TrainerContext'
 import '../../styles/resource-person.css'
@@ -11,27 +12,20 @@ export function MilestonesSection() {
   const { t } = useTranslation()
   const { trainees, batches, attendanceOf } = useTrainer()
   const [openId, setOpenId] = useState<string | null>(null)
+  const [certificateFor, setCertificateFor] = useState<Trainee | null>(null)
 
   const title = t('sections.resourcePerson.milestones.title')
   useEffect(() => {
     document.title = `${title} · SETU`
   }, [title])
 
-  const finished = useMemo(
-    () =>
-      trainees.filter(
-        (trainee) =>
-          trainee.status === 'completed' ||
-          trainee.status === 'certified' ||
-          trainee.status === 'placed' ||
-          trainee.status === 'trained-unplaced',
-      ),
-    [trainees],
-  )
+  // Certified is the end of training: there is no separate completed stage to include.
+  const finished = useMemo(() => trainees.filter((trainee) => trainee.trainingStatus === 'certified'), [trainees])
 
-  const certified = finished.filter((trainee) => trainee.certificateId !== null).length
-  const placed = finished.filter((trainee) => trainee.status === 'placed').length
-  const awaitingWork = finished.filter((trainee) => trainee.status === 'trained-unplaced').length
+  const placed = finished.filter((trainee) => trainee.employmentStatus === 'placed').length
+  const seeking = finished.filter((trainee) => trainee.employmentStatus === 'seeking').length
+  // Certified and unplaced at once — the pair the Gap Map counts as trained-but-unplaced.
+  const awaitingWork = finished.filter((trainee) => trainee.employmentStatus === 'unplaced').length
 
   return (
     <>
@@ -53,19 +47,19 @@ export function MilestonesSection() {
       <div className="section-body rp-body">
         <div className="rp-milestone-stats">
           <article className="gap-card">
-            <span className="gap-card-label">{t('resourcePerson.milestones.completedLabel')}</span>
-            <span className="gap-card-value">{finished.length}</span>
-            <span className="gap-card-foot">{t('resourcePerson.milestones.completedFoot')}</span>
-          </article>
-          <article className="gap-card">
             <span className="gap-card-label">{t('resourcePerson.milestones.certifiedLabel')}</span>
-            <span className="gap-card-value">{certified}</span>
+            <span className="gap-card-value">{finished.length}</span>
             <span className="gap-card-foot">{t('resourcePerson.milestones.certifiedFoot')}</span>
           </article>
           <article className="gap-card">
             <span className="gap-card-label">{t('resourcePerson.milestones.placedLabel')}</span>
             <span className="gap-card-value">{placed}</span>
             <span className="gap-card-foot">{t('resourcePerson.milestones.placedFoot')}</span>
+          </article>
+          <article className="gap-card">
+            <span className="gap-card-label">{t('resourcePerson.milestones.seekingLabel')}</span>
+            <span className="gap-card-value">{seeking}</span>
+            <span className="gap-card-foot">{t('resourcePerson.milestones.seekingFoot')}</span>
           </article>
           <article className="gap-card is-alert">
             <span className="gap-card-label">{t('resourcePerson.milestones.awaitingLabel')}</span>
@@ -105,12 +99,31 @@ export function MilestonesSection() {
                         <span className="rp-cell-sub">{t('resourcePerson.milestones.attendanceSub')}</span>
                       </span>
                       <span className="ben-cell">
-                        <span className={`chip is-${STATUS_TONE[trainee.status]}`}>{t(`status.${trainee.status}`)}</span>
+                        <span className={`chip is-${TRAINING_TONE[trainee.trainingStatus]}`}>
+                          {t(`training.${trainee.trainingStatus}`)}
+                        </span>
+                      </span>
+                      <span className="ben-cell">
+                        <span className={`chip is-${EMPLOYMENT_TONE[trainee.employmentStatus]}`}>
+                          {t(`employment.${trainee.employmentStatus}`)}
+                        </span>
                       </span>
                       <span className="ben-cell is-muted">
                         {trainee.certificateId ?? t('resourcePerson.milestones.noCertificate')}
                       </span>
                     </button>
+
+                    {trainee.certificateId && (
+                      <div className="rp-milestone-actions">
+                        <button
+                          type="button"
+                          className="btn btn-outline btn-small"
+                          onClick={() => setCertificateFor(trainee)}
+                        >
+                          {t('certificate.viewAction')}
+                        </button>
+                      </div>
+                    )}
 
                     {open && (
                       <div className="rp-milestone-body">
@@ -139,7 +152,7 @@ export function MilestonesSection() {
                               <span className="timeline-dot" aria-hidden="true" />
                               <div className="timeline-content">
                                 <div className="timeline-title-row">
-                                  <span className="timeline-title">{t(`status.${entry.status}`)}</span>
+                                  <span className="timeline-title">{t(`training.${entry.status}`)}</span>
                                   <span className="timeline-when">{entry.whenLabel}</span>
                                 </div>
                                 <span className="timeline-detail">{entry.description}</span>
@@ -160,6 +173,25 @@ export function MilestonesSection() {
           </div>
         </div>
       </div>
+
+      {certificateFor && (
+        <div className="certificate-overlay" role="dialog" aria-modal="true" aria-label={t('certificate.title')}>
+          <div className="certificate-actions">
+            <span className="certificate-actions-title">{t('certificate.title')}</span>
+            <span className="rp-cell-sub">
+              {certificateFor.name} · {certificateFor.certificateId}
+            </span>
+            <button type="button" className="btn btn-primary btn-small" onClick={() => window.print()}>
+              {t('certificate.printAction')}
+            </button>
+            <button type="button" className="btn btn-outline btn-small" onClick={() => setCertificateFor(null)}>
+              {t('common.close')}
+            </button>
+          </div>
+
+          <CertificateSheet trainee={certificateFor} />
+        </div>
+      )}
     </>
   )
 }

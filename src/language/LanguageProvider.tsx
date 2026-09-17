@@ -1,23 +1,24 @@
 import { useMemo, useState, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
-import { languageFor } from '../lib/languages'
-import { clearLanguageChoiceFlag, hasChosenLanguage, markLanguageChosen, storeUiLanguage } from '../lib/uiLanguage'
+import { DEFAULT_UI_LANGUAGE, languageFor } from '../lib/languages'
 import { LanguageContext } from './LanguageContext'
 
 /**
- * Holds the interface language. It lives in i18next itself — changing it re-renders every
- * translated component with no reload — while this provider keeps it persisted and owns
- * the first-run prompt. The language SETU speaks to a caller is never chosen here: it is
- * detected per call (see lib/languageDetection.ts).
+ * Holds the interface language. It lives in i18next itself, so changing it re-renders
+ * every translated component with no reload.
+ *
+ * Nothing is persisted. The app always opens in English, and the selection screen is
+ * offered again to whoever is next at the machine — which is why the prompt starts
+ * needed on every load and is re-armed on sign-out. The language SETU speaks to a caller
+ * is never chosen here: it is detected per call (see lib/languageDetection.ts).
  */
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const { i18n } = useTranslation()
-  const [promptNeeded, setPromptNeeded] = useState(() => !hasChosenLanguage())
+  // Always true on a fresh load: the screen itself is skipped when someone is signed in.
+  const [promptNeeded, setPromptNeeded] = useState(true)
 
   const applyUiLanguage = (code: string) => {
-    const language = languageFor(code)
-    void i18n.changeLanguage(language.code)
-    storeUiLanguage(language.code)
+    void i18n.changeLanguage(languageFor(code).code)
   }
 
   const value = useMemo(
@@ -27,11 +28,11 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       promptNeeded,
       confirmLanguage: (code: string) => {
         applyUiLanguage(code)
-        markLanguageChosen()
         setPromptNeeded(false)
       },
       requestPrompt: () => {
-        clearLanguageChoiceFlag()
+        // Sign-out hands the machine back: English again, and the screen shown again.
+        applyUiLanguage(DEFAULT_UI_LANGUAGE.code)
         setPromptNeeded(true)
       },
     }),

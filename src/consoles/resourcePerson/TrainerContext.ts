@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react'
-import type { BeneficiaryStatus } from '../../data/jharkhandBeneficiaries'
+import type { EmploymentStatus, TrainingStatus } from '../../data/jharkhandBeneficiaries'
 import type {
   Batch,
   CourseMaterial,
@@ -13,8 +13,10 @@ export type AttendanceMark = 'present' | 'absent'
 
 /** A status change a trainer saved. The description is never optional. */
 export interface StatusChange {
-  status: BeneficiaryStatus
+  status: TrainingStatus
   description: string
+  /** Set when certifying: whether the trainee already has work. */
+  employmentStatus?: EmploymentStatus
   nextCourse?: string
   jobRecommendation?: string
 }

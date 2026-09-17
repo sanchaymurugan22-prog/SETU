@@ -144,9 +144,11 @@ function pick(predicate: (person: Beneficiary) => boolean): Beneficiary {
 }
 
 const kurukhCaller = pick((p) => p.preferredLanguage === 'Kurukh' && p.course.startsWith('Tailoring'))
-const unplacedWelder = pick((p) => p.status === 'trained-unplaced' && p.course.startsWith('Welding'))
+const isTrainedUnplaced = (p: Beneficiary) => p.trainingStatus === 'certified' && p.employmentStatus === 'unplaced'
+
+const unplacedWelder = pick((p) => isTrainedUnplaced(p) && p.course.startsWith('Welding'))
 const drivingCaller = pick((p) => p.course === 'Driving (LMV)')
-const unplacedTailor = pick((p) => p.status === 'trained-unplaced' && p.course.startsWith('Tailoring'))
+const unplacedTailor = pick((p) => isTrainedUnplaced(p) && p.course.startsWith('Tailoring'))
 const santaliCaller = pick((p) => p.preferredLanguage === 'Santali')
 const beautyCaller = pick((p) => p.course === 'Beauty & wellness')
 const foodCaller = pick((p) => p.course === 'Food processing')

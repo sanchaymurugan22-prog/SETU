@@ -1,10 +1,16 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { STATUS_TONE, type BeneficiaryStatus } from '../../data/jharkhandBeneficiaries'
+import {
+  EMPLOYMENT_TONE,
+  TRAINING_TONE,
+  type EmploymentStatus,
+  type TrainingStatus,
+} from '../../data/jharkhandBeneficiaries'
 import { formatLastContact } from '../../i18n/format'
 import {
   JOB_OPTIONS,
   RESOURCE_PERSON,
+  TRAINEE_EMPLOYMENT,
   NEXT_COURSE_OPTIONS,
   STAGES_NEEDING_RECOMMENDATIONS,
   TRAINEE_STAGES,
@@ -24,7 +30,10 @@ export function TraineePanel({
 }) {
   const { t } = useTranslation()
   const { attendanceOf, updateStatus } = useTrainer()
-  const [status, setStatus] = useState<BeneficiaryStatus>(trainee.status)
+  const [status, setStatus] = useState<TrainingStatus>(trainee.trainingStatus)
+  const [employment, setEmployment] = useState<EmploymentStatus>(
+    trainee.employmentStatus === 'in-training' ? 'seeking' : trainee.employmentStatus,
+  )
   const [description, setDescription] = useState('')
   const [nextCourse, setNextCourse] = useState(trainee.nextCourse ?? NEXT_COURSE_OPTIONS[0]!)
   const [job, setJob] = useState(trainee.jobRecommendation ?? JOB_OPTIONS[0]!)
@@ -43,12 +52,14 @@ export function TraineePanel({
     updateStatus(trainee.beneficiaryId, {
       status,
       description: description.trim(),
-      ...(needsRecommendations ? { nextCourse, jobRecommendation: job } : {}),
+      ...(needsRecommendations
+        ? { employmentStatus: employment, nextCourse, jobRecommendation: job }
+        : {}),
     })
     setSaved(
       needsRecommendations
-        ? t('resourcePerson.trainees.savedWithCertificate', { status: t(`status.${status}`) })
-        : t('resourcePerson.trainees.saved', { status: t(`status.${status}`) }),
+        ? t('resourcePerson.trainees.savedWithCertificate', { status: t(`training.${status}`) })
+        : t('resourcePerson.trainees.saved', { status: t(`training.${status}`) }),
     )
     setDescription('')
   }
@@ -70,7 +81,12 @@ export function TraineePanel({
 
       <div className="journey-summary">
         <div className="journey-chips">
-          <span className={`chip is-${STATUS_TONE[trainee.status]}`}>{t(`status.${trainee.status}`)}</span>
+          <span className={`chip is-${TRAINING_TONE[trainee.trainingStatus]}`}>
+            {t(`training.${trainee.trainingStatus}`)}
+          </span>
+          <span className={`chip is-${EMPLOYMENT_TONE[trainee.employmentStatus]}`}>
+            {t(`employment.${trainee.employmentStatus}`)}
+          </span>
           <span className="chip is-neutral">{trainee.batchId}</span>
           {trainee.certificateId && <span className="chip is-teal">{trainee.certificateId}</span>}
         </div>
@@ -118,7 +134,7 @@ export function TraineePanel({
               className={stage === status ? 'call-chip is-selected' : 'call-chip'}
               onClick={() => setStatus(stage)}
             >
-              {t(`status.${stage}`)}
+              {t(`training.${stage}`)}
             </button>
           ))}
         </div>
@@ -136,6 +152,16 @@ export function TraineePanel({
         {needsRecommendations && (
           <div className="rp-recommendations">
             <p className="rp-hint">{t('resourcePerson.trainees.completionHint')}</p>
+            <label className="call-field">
+              <span>{t('resourcePerson.trainees.employmentLabel')}</span>
+              <select value={employment} onChange={(event) => setEmployment(event.target.value as EmploymentStatus)}>
+                {TRAINEE_EMPLOYMENT.map((option) => (
+                  <option key={option} value={option}>
+                    {t(`employment.${option}`)}
+                  </option>
+                ))}
+              </select>
+            </label>
             <label className="call-field">
               <span>{t('resourcePerson.trainees.nextCourse')}</span>
               <select value={nextCourse} onChange={(event) => setNextCourse(event.target.value)}>
@@ -212,11 +238,11 @@ export function TraineePanel({
         <span className="rp-block-title">{t('resourcePerson.trainees.historyTitle')}</span>
         <ol className="timeline">
           {[...trainee.statusHistory].reverse().map((entry, index) => (
-            <li key={`${entry.status}-${index}`} className={`timeline-item is-${STATUS_TONE[entry.status]}`}>
+            <li key={`${entry.status}-${index}`} className={`timeline-item is-${TRAINING_TONE[entry.status]}`}>
               <span className="timeline-dot" aria-hidden="true" />
               <div className="timeline-content">
                 <div className="timeline-title-row">
-                  <span className="timeline-title">{t(`status.${entry.status}`)}</span>
+                  <span className="timeline-title">{t(`training.${entry.status}`)}</span>
                   <span className="timeline-when">{entry.whenLabel}</span>
                 </div>
                 <span className="timeline-detail">{entry.description}</span>

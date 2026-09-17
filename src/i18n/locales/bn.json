@@ -28,18 +28,6 @@
     "weeksAgo": "{{count}} সপ্তাহ আগে",
     "monthsAgo": "{{count}} মাস আগে"
   },
-  "status": {
-    "new": "নতুন",
-    "recommended": "সুপারিশকৃত",
-    "enrolled": "ভর্তি",
-    "attending": "উপস্থিত",
-    "irregular": "অনিয়মিত",
-    "completed": "সম্পন্ন",
-    "certified": "সনদপ্রাপ্ত",
-    "placed": "নিযুক্ত",
-    "trained-unplaced": "অনিযুক্ত",
-    "dropped": "ছেড়েছেন"
-  },
   "roles": {
     "executive": "কল আধিকারিক",
     "resourcePerson": "রিসোর্স পার্সন",
@@ -257,12 +245,14 @@
       "districtAll": "জেলা: সব",
       "blockAll": "ব্লক: সব",
       "courseAll": "কোর্স: সব",
-      "statusAll": "স্থিতি: সব",
       "district": "জেলা",
       "block": "ব্লক",
       "course": "কোর্স",
-      "status": "স্থিতি",
-      "flaggedOnly": "শুধু AI-চিহ্নিত / থমকে"
+      "flaggedOnly": "শুধু AI-চিহ্নিত / থমকে",
+      "training": "প্রশিক্ষণের অবস্থা",
+      "trainingAll": "প্রশিক্ষণ: সব",
+      "employment": "কাজের অবস্থা",
+      "employmentAll": "কাজ: সব"
     },
     "chipAll": "সব · {{count}}",
     "chip": "{{label}} · {{count}}",
@@ -270,9 +260,10 @@
       "name": "নাম",
       "location": "জেলা · ব্লক · গ্রাম",
       "course": "সুপারিশকৃত কোর্স",
-      "status": "স্থিতি",
       "lastContact": "শেষ যোগাযোগ",
-      "flags": "চিহ্ন"
+      "flags": "চিহ্ন",
+      "training": "প্রশিক্ষণ",
+      "employment": "কাজ"
     },
     "listAria": "সুবিধাভোগীর তালিকা",
     "empty": "এই ফিল্টারে কোনো সুবিধাভোগী মেলেনি।",
@@ -302,11 +293,12 @@
       "absent": "অনুপস্থিত",
       "sessionTitle": "ক্লাস {{number}}",
       "outcome": {
-        "currentStatus": "বর্তমান স্থিতি",
         "outcome": "ফলাফল",
         "course": "সুপারিশকৃত কোর্স",
         "centre": "কেন্দ্র",
-        "interests": "নথিভুক্ত আগ্রহ"
+        "interests": "নথিভুক্ত আগ্রহ",
+        "training": "প্রশিক্ষণের অবস্থা",
+        "employment": "কাজের অবস্থা"
       },
       "noCentre": "এই ব্লকে এখনো কোনো কেন্দ্র নেই",
       "scheduleCall": "কল নির্ধারণ করুন",
@@ -529,7 +521,7 @@
       "descriptionLabel": "বিবরণ (আবশ্যক)",
       "descriptionPlaceholder": "এই অবস্থা কেন? সেশনে আপনি কী দেখেছেন?",
       "descriptionRequired": "অবস্থা সংরক্ষণের আগে বিবরণ লেখা আবশ্যক।",
-      "completionHint": "সম্পূর্ণ করার সঙ্গে পরবর্তী কোর্স ও কাজের সুপারিশ দিতে হবে। সংরক্ষণ করলেই শংসাপত্র তৈরি হয়।",
+      "completionHint": "শংসাপত্র দিতে হলে পরবর্তী কোর্স ও কাজের সুপারিশ দিতে হবে। সংরক্ষণ করলেই শংসাপত্র তৈরি হয়।",
       "nextCourse": "পরবর্তী কোর্স",
       "jobRecommendation": "কাজের সুপারিশ",
       "saveStatus": "অবস্থা সংরক্ষণ করুন",
@@ -538,7 +530,8 @@
       "certificateTitle": "শংসাপত্র",
       "certificateLine": "{{name}} PM-AJAY (GIA)-এর অধীনে {{course}} সম্পূর্ণ করেছেন।",
       "certificateMeta": "{{centre}} · প্রশিক্ষক {{trainer}}",
-      "historyTitle": "অবস্থার ইতিহাস"
+      "historyTitle": "অবস্থার ইতিহাস",
+      "employmentLabel": "কাজের অবস্থা"
     },
     "flagReason": {
       "repeated-absence": "বারবার অনুপস্থিতি",
@@ -588,10 +581,8 @@
     },
     "milestones": {
       "subtitle": "{{total}} জনের মধ্যে {{count}} জন প্রশিক্ষণ শেষ করেছেন",
-      "completedLabel": "প্রশিক্ষণ সম্পূর্ণ",
-      "completedFoot": "যাঁরা কোর্স শেষ করেছেন",
-      "certifiedLabel": "প্রদত্ত শংসাপত্র",
-      "certifiedFoot": "সম্পূর্ণ হলেই তৈরি হয়",
+      "certifiedLabel": "শংসাপত্রপ্রাপ্ত",
+      "certifiedFoot": "কোর্স শেষ; শংসাপত্র দেওয়া হয়েছে",
       "placedLabel": "কাজে যুক্ত",
       "placedFoot": "নিযুক্ত বা স্বনির্ভর",
       "awaitingLabel": "কাজের অপেক্ষায়",
@@ -599,7 +590,44 @@
       "empty": "এখনও কোনও প্রশিক্ষণার্থী কোর্স শেষ করেননি।",
       "foot": "মাইলফলকের পিছনের রেকর্ড দেখতে সারিটি খুলুন।",
       "attendanceSub": "সেশনে উপস্থিতি",
-      "noCertificate": "এখনও দেওয়া হয়নি"
+      "noCertificate": "এখনও দেওয়া হয়নি",
+      "seekingLabel": "কাজ খুঁজছেন",
+      "seekingFoot": "শংসাপত্র আছে, এখনও কাজ হয়নি"
     }
+  },
+  "certificate": {
+    "title": "কোর্স সমাপ্তির শংসাপত্র",
+    "sheetAria": "{{name}}-এর সমাপ্তি শংসাপত্র",
+    "scheme": "পিএম-অজয় · সহায়তা অনুদান অংশ",
+    "certifies": "এতদ্দ্বারা প্রত্যয়ন করা যাচ্ছে যে",
+    "completed": "এই কোর্সটি সফলভাবে সম্পূর্ণ করেছেন",
+    "nsqf": "এনএসকিউএফ স্তর {{level}}",
+    "centreLabel": "প্রশিক্ষণ কেন্দ্র",
+    "periodLabel": "প্রশিক্ষণের মেয়াদ",
+    "period": "{{from}} থেকে {{to}}",
+    "sessions": "{{count}}টি নির্ধারিত সেশন",
+    "idLabel": "শংসাপত্র নম্বর",
+    "issuedLabel": "প্রদানের তারিখ",
+    "sealAria": "সেতু প্রদানকারী সিলমোহর",
+    "verificationTitle": "যাচাই",
+    "verification": "শংসাপত্র নম্বর {{id}} দিয়ে এটি সেতুর নথিতে যাচাই করুন। প্রশিক্ষণ কেন্দ্র ইলেকট্রনিকভাবে এটি দিয়েছে; প্রশিক্ষকের নথিই মূল সূত্র।",
+    "viewAction": "শংসাপত্র দেখুন",
+    "printAction": "প্রিন্ট করুন"
+  },
+  "training": {
+    "new": "নতুন",
+    "recommended": "সুপারিশকৃত",
+    "enrolled": "ভর্তি",
+    "attending": "উপস্থিত",
+    "irregular": "অনিয়মিত",
+    "certified": "সনদপ্রাপ্ত",
+    "dropped": "ছেড়েছেন"
+  },
+  "employment": {
+    "in-training": "প্রশিক্ষণ চলছে",
+    "seeking": "কাজ খুঁজছেন",
+    "placed": "নিযুক্ত",
+    "unplaced": "অনিযুক্ত",
+    "not-tracked": "নথিভুক্ত নয়"
   }
 }

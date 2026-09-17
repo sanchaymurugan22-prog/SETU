@@ -255,7 +255,7 @@ Automated AI call → Call executive → Resource person → Field officer (on-g
 
 **Stage 7 — Automated follow-up begins.** SETU now tracks Ravi automatically, calling on a schedule to check progress, escalating only when something is wrong.
 
-**Stage 8 — Enrollment → attendance → completion → job.** Ravi enrolls, attends, completes, is certified, and is connected to local welding demand. Each milestone is tracked, with gentle automated check-ins while he progresses and escalation whenever he stalls.
+**Stage 8 — Enrollment → attendance → certification → job.** Ravi enrolls, attends, is certified on finishing the course, and is connected to local welding demand. Each milestone is tracked, with gentle automated check-ins while he progresses and escalation whenever he stalls.
 
 **At the system level:** Ravi's calls — and thousands like them — feed the **Opportunity Gap Map**, showing administrators that his block has welding demand met but, say, tailoring demand unmet, guiding where the government invests next.
 
@@ -479,20 +479,24 @@ CALL CONSOLE
 
 - **View each enrolled trainee's profile**
 - **Mark attendance** — when a scheduled session's time arrives, that session's attendance page (for that specific date and time) opens; attendance is marked **per person**. Whether the session is in-person or online depends on how that course is scheduled.
-- **Update status** through fixed stages, each requiring a **mandatory description**:
+- **Update training status** through fixed stages, each requiring a **mandatory description**:
 
   ```
-  Enrolled → Attending → Irregular → Completed → Certified → Dropped
+  Enrolled → Attending → Irregular → Certified → Dropped
   ```
 
-- **Add future recommendations once status = Completed** — **both**:
+  There is no separate *Completed* stage. Finishing the course is what issues the
+  certificate, so **Certified means the course is finished and the certificate issued** —
+  one stage, not two that can drift apart.
+
+- **Add future recommendations once status = Certified** — **both**:
   - a **next upskilling course** (to advance them further), and
   - a **job recommendation**
 - **Flag to Admin** — a button beside each trainee's profile for stuck cases. This notifies the administrator so the right people are dispatched to inspect and help.
 
 **Automatic behaviours:**
 
-- When status is set to **Completed**, a **certificate is generated automatically and sent to the beneficiary** — no manual issuing required
+- When training status is set to **Certified**, a **certificate is generated automatically and sent to the beneficiary** — no manual issuing required
 - The **dropout or rejection reason is captured inside the status-update description** — no separate field needed
 
 ## 5.2 TAB 2 — Course Materials / Details
@@ -580,7 +584,7 @@ RESOURCE PERSON CONSOLE
 **The admin can:**
 
 - **Filter for AI-flagged or stalled beneficiaries** needing attention — dropped off, not responding, stuck
-- **Search and filter** by state, district, block, course or status
+- **Search and filter** by state, district, block, course, training status or employment status
 - **View any beneficiary's full journey** end to end — profile, all calls, recommendations, enrollment, attendance, completion, placement
 
 ## 6.2 FEATURE 2 — Call Executives
@@ -728,7 +732,7 @@ AI  →  Call Console (executive)  →  Resource Person  →  Field Officer
 
 | Trigger | Automatic action |
 |---|---|
-| Status set to **Completed** | Certificate generated and sent to the beneficiary |
+| Training status set to **Certified** | Certificate generated and sent to the beneficiary |
 | Scheduled session time arrives | That session's attendance page opens |
 | Beneficiary location + capacity | Auto-allotment to the nearest available centre |
 | New centre created when full | Remaining waiting users auto-allotted with assigned resource person |
@@ -780,9 +784,14 @@ beneficiaries/{beneficiaryId}
 │   ├── givenAt            timestamp
 │   └── method             string   voice confirmation
 │
-├── currentStatus          string   new / recommended / enrolled / attending /
-│                                   irregular / completed / certified /
-│                                   placed / trained-unplaced / dropped
+├── trainingStatus         string   new / recommended / enrolled / attending /
+│                                   irregular / certified / dropped
+├── employmentStatus       string   in-training / seeking / placed / unplaced /
+│                                   not-tracked
+│                                   Training and employment are tracked separately:
+│                                   a beneficiary is certified AND unplaced at the
+│                                   same time, and that pair is what the Opportunity
+│                                   Gap Map counts as trained-but-unplaced.
 ├── statusHistory          array of { status, description, changedBy,
 │                                     changedAt }
 │

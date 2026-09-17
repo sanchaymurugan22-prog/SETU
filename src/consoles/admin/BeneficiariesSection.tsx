@@ -4,12 +4,15 @@ import {
   blocks,
   courses,
   districts,
+  EMPLOYMENT_ORDER,
+  EMPLOYMENT_TONE,
   isFlaggedOrStalled,
   loadBeneficiaries,
-  STATUS_ORDER,
-  STATUS_TONE,
+  TRAINING_ORDER,
+  TRAINING_TONE,
   type Beneficiary,
-  type BeneficiaryStatus,
+  type EmploymentStatus,
+  type TrainingStatus,
 } from '../../data/jharkhandBeneficiaries'
 import { formatLastContact } from '../../i18n/format'
 import { BeneficiaryJourney } from './BeneficiaryJourney'
@@ -17,7 +20,8 @@ import '../../styles/beneficiaries.css'
 
 const PAGE_SIZE = 12
 
-type StatusFilter = 'all' | BeneficiaryStatus
+type TrainingFilter = 'all' | TrainingStatus
+type EmploymentFilter = 'all' | EmploymentStatus
 
 function matchesSearch(person: Beneficiary, term: string): boolean {
   if (!term) return true
@@ -38,7 +42,8 @@ export function BeneficiariesSection() {
   const [district, setDistrict] = useState('all')
   const [block, setBlock] = useState('all')
   const [course, setCourse] = useState('all')
-  const [status, setStatus] = useState<StatusFilter>('all')
+  const [status, setStatus] = useState<TrainingFilter>('all')
+  const [employment, setEmployment] = useState<EmploymentFilter>('all')
   const [flaggedOnly, setFlaggedOnly] = useState(false)
   const [page, setPage] = useState(1)
   const [selectedId, setSelectedId] = useState<string | null>(null)
@@ -58,7 +63,7 @@ export function BeneficiariesSection() {
 
   // Any filter change puts us back on page 1. Adjusting state during render is React's
   // documented pattern for this and avoids the cascading render an effect would cause.
-  const filterKey = `${search}|${district}|${effectiveBlock}|${course}|${status}|${flaggedOnly}`
+  const filterKey = `${search}|${district}|${effectiveBlock}|${course}|${status}|${employment}|${flaggedOnly}`
   const [lastFilterKey, setLastFilterKey] = useState(filterKey)
   if (lastFilterKey !== filterKey) {
     setLastFilterKey(filterKey)
@@ -73,20 +78,21 @@ export function BeneficiariesSection() {
           (district === 'all' || person.district === district) &&
           (effectiveBlock === 'all' || person.block === effectiveBlock) &&
           (course === 'all' || person.course === course) &&
+          (employment === 'all' || person.employmentStatus === employment) &&
           (!flaggedOnly || isFlaggedOrStalled(person)),
       ),
-    [all, search, district, effectiveBlock, course, flaggedOnly],
+    [all, search, district, effectiveBlock, course, employment, flaggedOnly],
   )
 
   // Status counts reflect every other filter, so the chips always add up to what you see.
   const statusCounts = useMemo(() => {
-    const counts = new Map<BeneficiaryStatus, number>()
-    for (const person of scoped) counts.set(person.status, (counts.get(person.status) ?? 0) + 1)
+    const counts = new Map<TrainingStatus, number>()
+    for (const person of scoped) counts.set(person.trainingStatus, (counts.get(person.trainingStatus) ?? 0) + 1)
     return counts
   }, [scoped])
 
   const filtered = useMemo(
-    () => (status === 'all' ? scoped : scoped.filter((person) => person.status === status)),
+    () => (status === 'all' ? scoped : scoped.filter((person) => person.trainingStatus === status)),
     [scoped, status],
   )
 
@@ -158,12 +164,24 @@ export function BeneficiariesSection() {
           </label>
 
           <label className="ben-select">
-            <span className="visually-hidden">{t('beneficiaries.filters.status')}</span>
-            <select value={status} onChange={(event) => setStatus(event.target.value as StatusFilter)}>
-              <option value="all">{t('beneficiaries.filters.statusAll')}</option>
-              {STATUS_ORDER.map((name) => (
+            <span className="visually-hidden">{t('beneficiaries.filters.training')}</span>
+            <select value={status} onChange={(event) => setStatus(event.target.value as TrainingFilter)}>
+              <option value="all">{t('beneficiaries.filters.trainingAll')}</option>
+              {TRAINING_ORDER.map((name) => (
                 <option key={name} value={name}>
-                  {t(`status.${name}`)}
+                  {t(`training.${name}`)}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label className="ben-select">
+            <span className="visually-hidden">{t('beneficiaries.filters.employment')}</span>
+            <select value={employment} onChange={(event) => setEmployment(event.target.value as EmploymentFilter)}>
+              <option value="all">{t('beneficiaries.filters.employmentAll')}</option>
+              {EMPLOYMENT_ORDER.map((name) => (
+                <option key={name} value={name}>
+                  {t(`employment.${name}`)}
                 </option>
               ))}
             </select>
@@ -182,7 +200,7 @@ export function BeneficiariesSection() {
         </div>
 
         <div className="ben-status-row">
-          <span className="ben-status-label">{t('beneficiaries.filters.status')}</span>
+          <span className="ben-status-label">{t('beneficiaries.filters.training')}</span>
           <button
             type="button"
             className={status === 'all' ? 'ben-chip is-selected' : 'ben-chip'}
@@ -190,14 +208,14 @@ export function BeneficiariesSection() {
           >
             {t('beneficiaries.chipAll', { count: scoped.length })}
           </button>
-          {STATUS_ORDER.map((name) => (
+          {TRAINING_ORDER.map((name) => (
             <button
               key={name}
               type="button"
-              className={`ben-chip is-${STATUS_TONE[name]}${status === name ? ' is-selected' : ''}`}
+              className={`ben-chip is-${TRAINING_TONE[name]}${status === name ? ' is-selected' : ''}`}
               onClick={() => setStatus(status === name ? 'all' : name)}
             >
-              {t('beneficiaries.chip', { label: t(`status.${name}`), count: statusCounts.get(name) ?? 0 })}
+              {t('beneficiaries.chip', { label: t(`training.${name}`), count: statusCounts.get(name) ?? 0 })}
             </button>
           ))}
         </div>
@@ -227,7 +245,8 @@ export function BeneficiariesSection() {
               <span>{t('beneficiaries.headers.name')}</span>
               <span>{t('beneficiaries.headers.location')}</span>
               <span>{t('beneficiaries.headers.course')}</span>
-              <span>{t('beneficiaries.headers.status')}</span>
+              <span>{t('beneficiaries.headers.training')}</span>
+              <span>{t('beneficiaries.headers.employment')}</span>
               <span>{t('beneficiaries.headers.lastContact')}</span>
               <span>{t('beneficiaries.headers.flags')}</span>
             </div>
@@ -256,7 +275,14 @@ export function BeneficiariesSection() {
                       </span>
                       <span className="ben-cell">{person.course}</span>
                       <span className="ben-cell">
-                        <span className={`chip is-${STATUS_TONE[person.status]}`}>{t(`status.${person.status}`)}</span>
+                        <span className={`chip is-${TRAINING_TONE[person.trainingStatus]}`}>
+                          {t(`training.${person.trainingStatus}`)}
+                        </span>
+                      </span>
+                      <span className="ben-cell">
+                        <span className={`chip is-${EMPLOYMENT_TONE[person.employmentStatus]}`}>
+                          {t(`employment.${person.employmentStatus}`)}
+                        </span>
                       </span>
                       <span className="ben-cell is-muted">{formatLastContact(t, person.lastContactDays)}</span>
                       <span className="ben-cell">

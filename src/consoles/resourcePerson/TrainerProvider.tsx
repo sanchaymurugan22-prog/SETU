@@ -86,11 +86,12 @@ export function TrainerProvider({ children }: { children: ReactNode }) {
         setTrainees((current) =>
           current.map((trainee) => {
             if (trainee.beneficiaryId !== beneficiaryId) return trainee
-            // Completion is what issues the certificate: no separate button to forget.
-            const earnsCertificate = change.status === 'completed' || change.status === 'certified'
+            // Certifying is what issues the certificate: no separate button to forget.
+            const earnsCertificate = change.status === 'certified'
             return {
               ...trainee,
-              status: change.status,
+              trainingStatus: change.status,
+              employmentStatus: change.employmentStatus ?? trainee.employmentStatus,
               nextCourse: change.nextCourse ?? trainee.nextCourse,
               jobRecommendation: change.jobRecommendation ?? trainee.jobRecommendation,
               certificateId: earnsCertificate ? certificateFor(trainee) : trainee.certificateId,

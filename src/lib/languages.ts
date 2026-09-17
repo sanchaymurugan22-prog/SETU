@@ -38,26 +38,6 @@ export function languageFor(code: string | null | undefined): Language {
 }
 
 // Storage can throw (private windows, blocked site data), and the app must still work.
-export function readStored(key: string): string | null {
-  try {
-    return localStorage.getItem(key)
-  } catch {
-    return null
-  }
-}
 
-export function writeStored(key: string, value: string): void {
-  try {
-    localStorage.setItem(key, value)
-  } catch {
-    /* the choice simply will not persist */
-  }
-}
-
-export function removeStored(key: string): void {
-  try {
-    localStorage.removeItem(key)
-  } catch {
-    /* nothing to do */
-  }
-}
+/** The app always opens in English, whatever was chosen last time. */
+export const DEFAULT_UI_LANGUAGE = languageFor('en')

@@ -28,18 +28,6 @@
     "weeksAgo": "{{count}} सप्ताह पहले",
     "monthsAgo": "{{count}} महीने पहले"
   },
-  "status": {
-    "new": "नया",
-    "recommended": "अनुशंसित",
-    "enrolled": "नामांकित",
-    "attending": "उपस्थित",
-    "irregular": "अनियमित",
-    "completed": "पूर्ण",
-    "certified": "प्रमाणित",
-    "placed": "नियुक्त",
-    "trained-unplaced": "अनियुक्त",
-    "dropped": "छोड़ा"
-  },
   "roles": {
     "executive": "कॉल कार्यकारी",
     "resourcePerson": "संसाधन व्यक्ति",
@@ -257,12 +245,14 @@
       "districtAll": "ज़िला: सभी",
       "blockAll": "प्रखंड: सभी",
       "courseAll": "पाठ्यक्रम: सभी",
-      "statusAll": "स्थिति: सभी",
       "district": "ज़िला",
       "block": "प्रखंड",
       "course": "पाठ्यक्रम",
-      "status": "स्थिति",
-      "flaggedOnly": "केवल AI-चिह्नित / रुके हुए"
+      "flaggedOnly": "केवल AI-चिह्नित / रुके हुए",
+      "training": "प्रशिक्षण स्थिति",
+      "trainingAll": "प्रशिक्षण: सभी",
+      "employment": "रोज़गार स्थिति",
+      "employmentAll": "रोज़गार: सभी"
     },
     "chipAll": "सभी · {{count}}",
     "chip": "{{label}} · {{count}}",
@@ -270,9 +260,10 @@
       "name": "नाम",
       "location": "ज़िला · प्रखंड · गाँव",
       "course": "अनुशंसित पाठ्यक्रम",
-      "status": "स्थिति",
       "lastContact": "अंतिम संपर्क",
-      "flags": "चिह्न"
+      "flags": "चिह्न",
+      "training": "प्रशिक्षण",
+      "employment": "रोज़गार"
     },
     "listAria": "लाभार्थी सूची",
     "empty": "इन फ़िल्टरों से कोई लाभार्थी मेल नहीं खाता।",
@@ -302,11 +293,12 @@
       "absent": "अनुपस्थित",
       "sessionTitle": "कक्षा {{number}}",
       "outcome": {
-        "currentStatus": "वर्तमान स्थिति",
         "outcome": "परिणाम",
         "course": "अनुशंसित पाठ्यक्रम",
         "centre": "केंद्र",
-        "interests": "दर्ज रुचियाँ"
+        "interests": "दर्ज रुचियाँ",
+        "training": "प्रशिक्षण स्थिति",
+        "employment": "रोज़गार स्थिति"
       },
       "noCentre": "इस प्रखंड में अभी कोई केंद्र नहीं",
       "scheduleCall": "कॉल निर्धारित करें",
@@ -529,7 +521,7 @@
       "descriptionLabel": "विवरण (अनिवार्य)",
       "descriptionPlaceholder": "यह स्थिति क्यों? सत्रों में आपने क्या देखा?",
       "descriptionRequired": "स्थिति सहेजने से पहले विवरण लिखना अनिवार्य है।",
-      "completionHint": "पूर्ण करने पर अगला पाठ्यक्रम और रोज़गार सुझाव देना ज़रूरी है। सहेजते ही प्रमाणपत्र बन जाता है।",
+      "completionHint": "प्रमाणित करने पर अगला पाठ्यक्रम और रोज़गार सुझाव देना ज़रूरी है। सहेजते ही प्रमाणपत्र बन जाता है।",
       "nextCourse": "अगला पाठ्यक्रम",
       "jobRecommendation": "रोज़गार सुझाव",
       "saveStatus": "स्थिति सहेजें",
@@ -538,7 +530,8 @@
       "certificateTitle": "प्रमाणपत्र",
       "certificateLine": "{{name}} ने PM-AJAY (GIA) के अंतर्गत {{course}} पूरा किया।",
       "certificateMeta": "{{centre}} · प्रशिक्षक {{trainer}}",
-      "historyTitle": "स्थिति का इतिहास"
+      "historyTitle": "स्थिति का इतिहास",
+      "employmentLabel": "रोज़गार स्थिति"
     },
     "flagReason": {
       "repeated-absence": "बार-बार अनुपस्थिति",
@@ -588,10 +581,8 @@
     },
     "milestones": {
       "subtitle": "{{total}} में से {{count}} प्रशिक्षार्थी प्रशिक्षण पूरा कर चुके हैं",
-      "completedLabel": "प्रशिक्षण पूर्ण",
-      "completedFoot": "जिन्होंने पाठ्यक्रम पूरा किया",
-      "certifiedLabel": "जारी प्रमाणपत्र",
-      "certifiedFoot": "पूर्ण होने पर बनते हैं",
+      "certifiedLabel": "प्रमाणित",
+      "certifiedFoot": "पाठ्यक्रम पूरा; प्रमाणपत्र जारी",
       "placedLabel": "काम पर",
       "placedFoot": "नियुक्त या स्वरोज़गार",
       "awaitingLabel": "काम की प्रतीक्षा",
@@ -599,7 +590,44 @@
       "empty": "अभी किसी प्रशिक्षार्थी ने पाठ्यक्रम पूरा नहीं किया है।",
       "foot": "उपलब्धि के पीछे का रिकॉर्ड देखने के लिए पंक्ति खोलें।",
       "attendanceSub": "सत्रों में उपस्थिति",
-      "noCertificate": "अभी जारी नहीं"
+      "noCertificate": "अभी जारी नहीं",
+      "seekingLabel": "काम की तलाश",
+      "seekingFoot": "प्रमाणित, अभी नियुक्ति नहीं"
     }
+  },
+  "certificate": {
+    "title": "पाठ्यक्रम पूर्णता प्रमाणपत्र",
+    "sheetAria": "{{name}} का पूर्णता प्रमाणपत्र",
+    "scheme": "पीएम-अजय · सहायता अनुदान घटक",
+    "certifies": "प्रमाणित किया जाता है कि",
+    "completed": "ने यह पाठ्यक्रम सफलतापूर्वक पूरा किया",
+    "nsqf": "एनएसक्यूएफ स्तर {{level}}",
+    "centreLabel": "प्रशिक्षण केंद्र",
+    "periodLabel": "प्रशिक्षण अवधि",
+    "period": "{{from}} से {{to}} तक",
+    "sessions": "{{count}} निर्धारित सत्र",
+    "idLabel": "प्रमाणपत्र क्रमांक",
+    "issuedLabel": "जारी करने की तिथि",
+    "sealAria": "सेतु जारीकर्ता मुहर",
+    "verificationTitle": "सत्यापन",
+    "verification": "प्रमाणपत्र क्रमांक {{id}} से इसे सेतु के अभिलेख में सत्यापित करें। यह प्रशिक्षण केंद्र द्वारा इलेक्ट्रॉनिक रूप से जारी है; प्रशिक्षक का अभिलेख ही प्रामाणिक स्रोत है।",
+    "viewAction": "प्रमाणपत्र देखें",
+    "printAction": "प्रिंट करें"
+  },
+  "training": {
+    "new": "नया",
+    "recommended": "अनुशंसित",
+    "enrolled": "नामांकित",
+    "attending": "उपस्थित",
+    "irregular": "अनियमित",
+    "certified": "प्रमाणित",
+    "dropped": "छोड़ा"
+  },
+  "employment": {
+    "in-training": "प्रशिक्षण जारी",
+    "seeking": "काम की तलाश",
+    "placed": "नियुक्त",
+    "unplaced": "अनियुक्त",
+    "not-tracked": "दर्ज नहीं"
   }
 }

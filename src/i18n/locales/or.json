@@ -28,18 +28,6 @@
     "weeksAgo": "{{count}} ସପ୍ତାହ ପୂର୍ବେ",
     "monthsAgo": "{{count}} ମାସ ପୂର୍ବେ"
   },
-  "status": {
-    "new": "ନୂଆ",
-    "recommended": "ସୁପାରିଶ କରାଯାଇଛି",
-    "enrolled": "ନାମ ଲେଖାଇଛନ୍ତି",
-    "attending": "ଉପସ୍ଥିତ",
-    "irregular": "ଅନିୟମିତ",
-    "completed": "ସମ୍ପୂର୍ଣ୍ଣ",
-    "certified": "ପ୍ରମାଣିତ",
-    "placed": "ନିଯୁକ୍ତ",
-    "trained-unplaced": "ନିଯୁକ୍ତି ନାହିଁ",
-    "dropped": "ଛାଡ଼ିଛନ୍ତି"
-  },
   "roles": {
     "executive": "କଲ୍ ଅଧିକାରୀ",
     "resourcePerson": "ସମ୍ବଳ ବ୍ୟକ୍ତି",
@@ -257,12 +245,14 @@
       "districtAll": "ଜିଲ୍ଲା: ସମସ୍ତ",
       "blockAll": "ବ୍ଲକ୍: ସମସ୍ତ",
       "courseAll": "ପାଠ୍ୟକ୍ରମ: ସମସ୍ତ",
-      "statusAll": "ସ୍ଥିତି: ସମସ୍ତ",
       "district": "ଜିଲ୍ଲା",
       "block": "ବ୍ଲକ୍",
       "course": "ପାଠ୍ୟକ୍ରମ",
-      "status": "ସ୍ଥିତି",
-      "flaggedOnly": "କେବଳ AI-ଚିହ୍ନିତ / ଅଟକିଥିବା"
+      "flaggedOnly": "କେବଳ AI-ଚିହ୍ନିତ / ଅଟକିଥିବା",
+      "training": "ତାଲିମ ସ୍ଥିତି",
+      "trainingAll": "ତାଲିମ: ସମସ୍ତ",
+      "employment": "ନିଯୁକ୍ତି ସ୍ଥିତି",
+      "employmentAll": "ନିଯୁକ୍ତି: ସମସ୍ତ"
     },
     "chipAll": "ସମସ୍ତ · {{count}}",
     "chip": "{{label}} · {{count}}",
@@ -270,9 +260,10 @@
       "name": "ନାମ",
       "location": "ଜିଲ୍ଲା · ବ୍ଲକ୍ · ଗାଁ",
       "course": "ସୁପାରିଶ କରାଯାଇଥିବା ପାଠ୍ୟକ୍ରମ",
-      "status": "ସ୍ଥିତି",
       "lastContact": "ଶେଷ ଯୋଗାଯୋଗ",
-      "flags": "ଚିହ୍ନ"
+      "flags": "ଚିହ୍ନ",
+      "training": "ତାଲିମ",
+      "employment": "ନିଯୁକ୍ତି"
     },
     "listAria": "ହିତାଧିକାରୀ ତାଲିକା",
     "empty": "ଏହି ଫିଲ୍ଟର ସହ କୌଣସି ହିତାଧିକାରୀ ମେଳ ଖାଉନାହାଁନ୍ତି।",
@@ -302,11 +293,12 @@
       "absent": "ଅନୁପସ୍ଥିତ",
       "sessionTitle": "ଶ୍ରେଣୀ {{number}}",
       "outcome": {
-        "currentStatus": "ବର୍ତ୍ତମାନ ସ୍ଥିତି",
         "outcome": "ଫଳାଫଳ",
         "course": "ସୁପାରିଶ କରାଯାଇଥିବା ପାଠ୍ୟକ୍ରମ",
         "centre": "କେନ୍ଦ୍ର",
-        "interests": "ଲିପିବଦ୍ଧ ଆଗ୍ରହ"
+        "interests": "ଲିପିବଦ୍ଧ ଆଗ୍ରହ",
+        "training": "ତାଲିମ ସ୍ଥିତି",
+        "employment": "ନିଯୁକ୍ତି ସ୍ଥିତି"
       },
       "noCentre": "ଏହି ବ୍ଲକ୍‌ରେ ଏପର୍ଯ୍ୟନ୍ତ କେନ୍ଦ୍ର ନାହିଁ",
       "scheduleCall": "କଲ୍ ନିର୍ଧାରଣ କରନ୍ତୁ",
@@ -529,7 +521,7 @@
       "descriptionLabel": "ବିବରଣୀ (ଆବଶ୍ୟକ)",
       "descriptionPlaceholder": "ଏହି ସ୍ଥିତି କାହିଁକି? ସେସନ୍‌ରେ ଆପଣ କ’ଣ ଦେଖିଲେ?",
       "descriptionRequired": "ସ୍ଥିତି ସଞ୍ଚୟ କରିବା ପୂର୍ବରୁ ବିବରଣୀ ଲେଖିବା ଆବଶ୍ୟକ।",
-      "completionHint": "ସମାପ୍ତ କରିବା ସମୟରେ ପରବର୍ତ୍ତୀ ପାଠ୍ୟକ୍ରମ ଓ ଚାକିରି ସୁପାରିଶ ଦେବାକୁ ହେବ। ସଞ୍ଚୟ କରିବା ମାତ୍ରେ ପ୍ରମାଣପତ୍ର ତିଆରି ହୁଏ।",
+      "completionHint": "ପ୍ରମାଣିତ କରିବା ସମୟରେ ପରବର୍ତ୍ତୀ ପାଠ୍ୟକ୍ରମ ଓ ଚାକିରି ସୁପାରିଶ ଦେବାକୁ ହେବ। ସଞ୍ଚୟ କରିବା ମାତ୍ରେ ପ୍ରମାଣପତ୍ର ତିଆରି ହୁଏ।",
       "nextCourse": "ପରବର୍ତ୍ତୀ ପାଠ୍ୟକ୍ରମ",
       "jobRecommendation": "ଚାକିରି ସୁପାରିଶ",
       "saveStatus": "ସ୍ଥିତି ସଞ୍ଚୟ କରନ୍ତୁ",
@@ -538,7 +530,8 @@
       "certificateTitle": "ପ୍ରମାଣପତ୍ର",
       "certificateLine": "{{name}} PM-AJAY (GIA) ଅଧୀନରେ {{course}} ସମାପ୍ତ କଲେ।",
       "certificateMeta": "{{centre}} · ତାଲିମଦାତା {{trainer}}",
-      "historyTitle": "ସ୍ଥିତିର ଇତିହାସ"
+      "historyTitle": "ସ୍ଥିତିର ଇତିହାସ",
+      "employmentLabel": "ନିଯୁକ୍ତି ସ୍ଥିତି"
     },
     "flagReason": {
       "repeated-absence": "ବାରମ୍ବାର ଅନୁପସ୍ଥିତି",
@@ -588,10 +581,8 @@
     },
     "milestones": {
       "subtitle": "{{total}}ରୁ {{count}} ଜଣ ତାଲିମ ସମାପ୍ତ କରିଛନ୍ତି",
-      "completedLabel": "ତାଲିମ ସମାପ୍ତ",
-      "completedFoot": "ଯେଉଁମାନେ ପାଠ୍ୟକ୍ରମ ଶେଷ କଲେ",
-      "certifiedLabel": "ପ୍ରଦତ୍ତ ପ୍ରମାଣପତ୍ର",
-      "certifiedFoot": "ସମାପ୍ତ ହେଲେ ତିଆରି ହୁଏ",
+      "certifiedLabel": "ପ୍ରମାଣିତ",
+      "certifiedFoot": "ପାଠ୍ୟକ୍ରମ ସମାପ୍ତ; ପ୍ରମାଣପତ୍ର ଦିଆଗଲା",
       "placedLabel": "କାମରେ",
       "placedFoot": "ଚାକିରି କିମ୍ବା ସ୍ୱନିଯୁକ୍ତି",
       "awaitingLabel": "କାମ ଅପେକ୍ଷାରେ",
@@ -599,7 +590,44 @@
       "empty": "ଏପର୍ଯ୍ୟନ୍ତ କେହି ପାଠ୍ୟକ୍ରମ ସମାପ୍ତ କରିନାହାନ୍ତି।",
       "foot": "ମାଇଲଖୁଣ୍ଟ ପଛର ରେକର୍ଡ ଦେଖିବାକୁ ଧାଡ଼ି ଖୋଲନ୍ତୁ।",
       "attendanceSub": "ଉପସ୍ଥିତ ସେସନ୍",
-      "noCertificate": "ଏପର୍ଯ୍ୟନ୍ତ ଦିଆଯାଇନାହିଁ"
+      "noCertificate": "ଏପର୍ଯ୍ୟନ୍ତ ଦିଆଯାଇନାହିଁ",
+      "seekingLabel": "କାମ ଖୋଜୁଥିବା",
+      "seekingFoot": "ପ୍ରମାଣିତ, ଏପର୍ଯ୍ୟନ୍ତ ନିଯୁକ୍ତି ନାହିଁ"
     }
+  },
+  "certificate": {
+    "title": "ପାଠ୍ୟକ୍ରମ ସମାପ୍ତି ପ୍ରମାଣପତ୍ର",
+    "sheetAria": "{{name}}ଙ୍କ ସମାପ୍ତି ପ୍ରମାଣପତ୍ର",
+    "scheme": "ପିଏମ୍-ଅଜୟ · ସହାୟତା ଅନୁଦାନ ଅଂଶ",
+    "certifies": "ଏତଦ୍ଦ୍ୱାରା ପ୍ରମାଣିତ କରାଯାଉଛି ଯେ",
+    "completed": "ଏହି ପାଠ୍ୟକ୍ରମ ସଫଳତାର ସହ ସମାପ୍ତ କରିଛନ୍ତି",
+    "nsqf": "ଏନଏସକ୍ୟୁଏଫ୍ ସ୍ତର {{level}}",
+    "centreLabel": "ତାଲିମ କେନ୍ଦ୍ର",
+    "periodLabel": "ତାଲିମ ଅବଧି",
+    "period": "{{from}} ରୁ {{to}} ପର୍ଯ୍ୟନ୍ତ",
+    "sessions": "{{count}} ନିର୍ଦ୍ଧାରିତ ସେସନ୍",
+    "idLabel": "ପ୍ରମାଣପତ୍ର ସଂଖ୍ୟା",
+    "issuedLabel": "ଜାରି ତାରିଖ",
+    "sealAria": "ସେତୁ ଜାରିକର୍ତ୍ତା ମୋହର",
+    "verificationTitle": "ଯାଞ୍ଚ",
+    "verification": "ପ୍ରମାଣପତ୍ର ସଂଖ୍ୟା {{id}} ବ୍ୟବହାର କରି ଏହାକୁ ସେତୁ ରେକର୍ଡରେ ଯାଞ୍ଚ କରନ୍ତୁ। ତାଲିମ କେନ୍ଦ୍ର ଏହାକୁ ଇଲେକ୍ଟ୍ରୋନିକ୍ ଭାବେ ଜାରି କରିଛି; ତାଲିମଦାତାଙ୍କ ରେକର୍ଡ ହିଁ ପ୍ରାମାଣିକ ଉତ୍ସ।",
+    "viewAction": "ପ୍ରମାଣପତ୍ର ଦେଖନ୍ତୁ",
+    "printAction": "ପ୍ରିଣ୍ଟ କରନ୍ତୁ"
+  },
+  "training": {
+    "new": "ନୂଆ",
+    "recommended": "ସୁପାରିଶ କରାଯାଇଛି",
+    "enrolled": "ନାମ ଲେଖାଇଛନ୍ତି",
+    "attending": "ଉପସ୍ଥିତ",
+    "irregular": "ଅନିୟମିତ",
+    "certified": "ପ୍ରମାଣିତ",
+    "dropped": "ଛାଡ଼ିଛନ୍ତି"
+  },
+  "employment": {
+    "in-training": "ତାଲିମ ଚାଲିଛି",
+    "seeking": "କାମ ଖୋଜୁଛନ୍ତି",
+    "placed": "ନିଯୁକ୍ତ",
+    "unplaced": "ନିଯୁକ୍ତି ନାହିଁ",
+    "not-tracked": "ନଥିଭୁକ୍ତ ନୁହେଁ"
   }
 }

@@ -13,7 +13,8 @@ import {
   loadBeneficiaries,
   TRAINER_CENTRE,
   type Beneficiary,
-  type BeneficiaryStatus,
+  type EmploymentStatus,
+  type TrainingStatus,
 } from './jharkhandBeneficiaries'
 
 export interface SessionSchedule {
@@ -42,20 +43,45 @@ export interface Batch {
   district: string
   schedule: SessionSchedule
   totalSessions: number
+  /** ISO date the batch began — the "from" date printed on a certificate. */
+  startDate: string
   materials: CourseMaterial[]
 }
 
 export interface ResourcePersonProfile {
   userId: string
   name: string
+  /** Printed under the trainer's name on a certificate. */
+  designation: string
   block: string
   district: string
   batches: Batch[]
 }
 
+/**
+ * NSQF qualification each course maps to. A certificate that names a level without the
+ * job role it belongs to is not much use to an employer, so both are carried.
+ */
+export const NSQF_QUALIFICATIONS: Record<string, { level: string; jobRole: string }> = {
+  'Tailoring L1': { level: '3', jobRole: 'Self-Employed Tailor' },
+  'Tailoring L2': { level: '4', jobRole: 'Fashion Design Assistant' },
+  'Welding L1': { level: '3', jobRole: 'Gas Cutter Welder' },
+  'Electrical wiring': { level: '3', jobRole: 'Domestic Electrician' },
+  'Mobile repair': { level: '4', jobRole: 'Field Technician — Mobile Phone' },
+  'Masonry': { level: '3', jobRole: 'Mason General' },
+  'Food processing': { level: '3', jobRole: 'Food Processing Operator' },
+  'Beauty & wellness': { level: '3', jobRole: 'Beauty Therapist' },
+  'Driving (LMV)': { level: '3', jobRole: 'Commercial Vehicle Driver' },
+}
+
+export function qualificationFor(course: string): { level: string; jobRole: string } | null {
+  return NSQF_QUALIFICATIONS[course] ?? null
+}
+
 export const RESOURCE_PERSON: ResourcePersonProfile = {
   userId: 'rp-devi',
   name: 'S. Devi',
+  designation: 'Resource Person · Tailoring trades',
   block: 'Ghaghra',
   district: 'Gumla',
   batches: [
@@ -66,6 +92,7 @@ export const RESOURCE_PERSON: ResourcePersonProfile = {
       block: 'Ghaghra',
       district: 'Gumla',
       totalSessions: 24,
+      startDate: '2026-03-19',
       schedule: {
         days: [1, 3, 5],
         startTime: '10:00',
@@ -102,6 +129,7 @@ export const RESOURCE_PERSON: ResourcePersonProfile = {
       block: 'Ghaghra',
       district: 'Gumla',
       totalSessions: 24,
+      startDate: '2026-06-02',
       schedule: {
         days: [2, 4],
         startTime: '14:00',
@@ -133,19 +161,45 @@ const OWN_CENTRE = TRAINER_CENTRE.centre
 
 export interface Trainee extends Beneficiary {
   batchId: string
+  /** ISO dates for the certificate. completedOn is null until the course is finished. */
+  startedOn: string
+  completedOn: string | null
   /** Set once the trainer marks them Completed. */
   certificateId: string | null
   nextCourse: string | null
   jobRecommendation: string | null
   /** Every status change carries the description the trainer had to write. */
-  statusHistory: { status: BeneficiaryStatus; description: string; whenLabel: string }[]
+  statusHistory: { status: TrainingStatus; description: string; whenLabel: string }[]
 }
 
-/** Statuses that mean the trainee finished the course. */
-const FINISHED = new Set<BeneficiaryStatus>(['completed', 'certified', 'placed', 'trained-unplaced'])
+/** Finishing the course is certification — there is no separate completed stage. */
+function isFinished(person: Beneficiary): boolean {
+  return person.trainingStatus === 'certified'
+}
 
 function nextCourseAfter(course: string): string {
   return course === 'Tailoring L1' ? 'Tailoring L2' : 'Beauty & wellness'
+}
+
+function startOf(course: string): string {
+  return (
+    RESOURCE_PERSON.batches.find((batch) => batch.course === course)?.startDate ??
+    RESOURCE_PERSON.batches[0]!.startDate
+  )
+}
+
+/**
+ * Completion date: the batch start plus the weeks it takes to hold every session, nudged
+ * a few days per trainee so a batch does not appear to have certified everyone at once.
+ */
+function completionOf(person: Beneficiary): string {
+  const batch = RESOURCE_PERSON.batches.find((entry) => entry.course === person.course) ?? RESOURCE_PERSON.batches[0]!
+  const perWeek = Math.max(1, batch.schedule.days.length)
+  const weeks = Math.ceil(batch.totalSessions / perWeek)
+  const drift = Number.parseInt(person.beneficiaryId.slice(-2), 10) % 9
+  const date = new Date(`${batch.startDate}T00:00:00`)
+  date.setDate(date.getDate() + weeks * 7 + drift)
+  return date.toISOString().slice(0, 10)
 }
 
 function batchFor(course: string): string {
@@ -158,23 +212,22 @@ export function loadTrainees(): Trainee[] {
     .map((person) => ({
       ...person,
       batchId: batchFor(person.course),
+      startedOn: startOf(person.course),
+      completedOn: isFinished(person) ? completionOf(person) : null,
       // Completing the course is what issues the certificate, so everyone past that
       // point already has one.
-      certificateId: FINISHED.has(person.status) ? `SETU-CERT-${person.beneficiaryId.slice(-4)}` : null,
-      nextCourse: FINISHED.has(person.status) ? nextCourseAfter(person.course) : null,
-      jobRecommendation: FINISHED.has(person.status) ? 'Ghaghra SHG garment cluster · piece work' : null,
+      certificateId: isFinished(person) ? `SETU-CERT-${person.beneficiaryId.slice(-4)}` : null,
+      nextCourse: isFinished(person) ? nextCourseAfter(person.course) : null,
+      jobRecommendation: isFinished(person) ? 'Ghaghra SHG garment cluster · piece work' : null,
       statusHistory: historyFor(person),
     }))
 }
 
 /** Descriptions the trainer wrote at each stage — every status change carries one. */
-const STAGE_NOTE: Partial<Record<BeneficiaryStatus, string>> = {
+const STAGE_NOTE: Partial<Record<TrainingStatus, string>> = {
   attending: 'Coming to every session and keeping up with the cutting practice.',
   irregular: 'Missed three sessions in a row. Says the timing clashes with field work.',
-  completed: 'Finished all modules and the practice set. Ready for assessment.',
-  certified: 'Passed the assessment. Certificate issued and read out over the phone.',
-  placed: 'Taking piece work from the SHG cluster and earning from it.',
-  'trained-unplaced': 'Course finished, but no employer within reach yet. Waiting on the placement drive.',
+  certified: 'Finished every module and passed the assessment. Certificate issued.',
   dropped: 'Stopped coming after the family asked her to take up daily-wage work instead.',
 }
 
@@ -187,13 +240,13 @@ function historyFor(person: Beneficiary): Trainee['statusHistory'] {
       whenLabel: '19 Mar',
     },
   ]
-  const order: BeneficiaryStatus[] = ['attending', 'irregular', 'completed', 'certified', 'placed']
+  const order: TrainingStatus[] = ['attending', 'irregular', 'certified']
   const reached = order
-    .slice(0, Math.max(0, order.indexOf(person.status) + 1))
+    .slice(0, Math.max(0, order.indexOf(person.trainingStatus) + 1))
     // Not everyone who finished was irregular on the way; only keep it if that is where they are.
-    .filter((status) => status !== 'irregular' || person.status === 'irregular')
-  const path: BeneficiaryStatus[] =
-    person.status === 'enrolled' ? [] : reached.length > 0 ? reached : ['attending', person.status]
+    .filter((status) => status !== 'irregular' || person.trainingStatus === 'irregular')
+  const path: TrainingStatus[] =
+    person.trainingStatus === 'enrolled' ? [] : reached.length > 0 ? reached : ['attending', person.trainingStatus]
   const months = ['12 Apr', '7 May', '3 Jun', '21 Jun', '9 Jul']
 
   path.forEach((status, index) => {
@@ -206,18 +259,18 @@ function historyFor(person: Beneficiary): Trainee['statusHistory'] {
   return history
 }
 
-/** The fixed stages a trainer moves a trainee through. */
-export const TRAINEE_STAGES: BeneficiaryStatus[] = [
-  'enrolled',
-  'attending',
-  'irregular',
-  'completed',
-  'certified',
-  'dropped',
-]
+/**
+ * The fixed stages a trainer moves a trainee through. Certified is the end of training:
+ * finishing the course is what issues the certificate, so there is no separate
+ * "completed" stage to forget to follow up on.
+ */
+export const TRAINEE_STAGES: TrainingStatus[] = ['enrolled', 'attending', 'irregular', 'certified', 'dropped']
 
 /** Stages that require next-course and job recommendations before they can be saved. */
-export const STAGES_NEEDING_RECOMMENDATIONS: BeneficiaryStatus[] = ['completed']
+export const STAGES_NEEDING_RECOMMENDATIONS: TrainingStatus[] = ['certified']
+
+/** What a trainer can set a certified trainee's employment status to. */
+export const TRAINEE_EMPLOYMENT: EmploymentStatus[] = ['seeking', 'placed', 'unplaced']
 
 export const FLAG_REASONS = [
   'repeated-absence',

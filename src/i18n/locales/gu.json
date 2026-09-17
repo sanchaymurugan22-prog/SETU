@@ -28,18 +28,6 @@
     "weeksAgo": "{{count}} અઠવાડિયાં પહેલાં",
     "monthsAgo": "{{count}} મહિના પહેલાં"
   },
-  "status": {
-    "new": "નવું",
-    "recommended": "ભલામણ કરેલ",
-    "enrolled": "નોંધાયેલ",
-    "attending": "હાજર",
-    "irregular": "અનિયમિત",
-    "completed": "પૂર્ણ",
-    "certified": "પ્રમાણિત",
-    "placed": "નિયુક્ત",
-    "trained-unplaced": "અનિયુક્ત",
-    "dropped": "છોડ્યું"
-  },
   "roles": {
     "executive": "કૉલ અધિકારી",
     "resourcePerson": "સંસાધન વ્યક્તિ",
@@ -257,12 +245,14 @@
       "districtAll": "જિલ્લો: બધા",
       "blockAll": "તાલુકો: બધા",
       "courseAll": "અભ્યાસક્રમ: બધા",
-      "statusAll": "સ્થિતિ: બધી",
       "district": "જિલ્લો",
       "block": "તાલુકો",
       "course": "અભ્યાસક્રમ",
-      "status": "સ્થિતિ",
-      "flaggedOnly": "ફક્ત AI-ચિહ્નિત / અટકેલા"
+      "flaggedOnly": "ફક્ત AI-ચિહ્નિત / અટકેલા",
+      "training": "તાલીમ સ્થિતિ",
+      "trainingAll": "તાલીમ: બધા",
+      "employment": "રોજગાર સ્થિતિ",
+      "employmentAll": "રોજગાર: બધા"
     },
     "chipAll": "બધા · {{count}}",
     "chip": "{{label}} · {{count}}",
@@ -270,9 +260,10 @@
       "name": "નામ",
       "location": "જિલ્લો · તાલુકો · ગામ",
       "course": "ભલામણ કરેલ અભ્યાસક્રમ",
-      "status": "સ્થિતિ",
       "lastContact": "છેલ્લો સંપર્ક",
-      "flags": "ચિહ્નો"
+      "flags": "ચિહ્નો",
+      "training": "તાલીમ",
+      "employment": "રોજગાર"
     },
     "listAria": "લાભાર્થી યાદી",
     "empty": "આ ફિલ્ટર સાથે કોઈ લાભાર્થી મેળ ખાતો નથી.",
@@ -302,11 +293,12 @@
       "absent": "ગેરહાજર",
       "sessionTitle": "વર્ગ {{number}}",
       "outcome": {
-        "currentStatus": "હાલની સ્થિતિ",
         "outcome": "પરિણામ",
         "course": "ભલામણ કરેલ અભ્યાસક્રમ",
         "centre": "કેન્દ્ર",
-        "interests": "નોંધાયેલી રુચિઓ"
+        "interests": "નોંધાયેલી રુચિઓ",
+        "training": "તાલીમ સ્થિતિ",
+        "employment": "રોજગાર સ્થિતિ"
       },
       "noCentre": "આ તાલુકામાં હજુ કેન્દ્ર નથી",
       "scheduleCall": "કૉલ નક્કી કરો",
@@ -529,7 +521,7 @@
       "descriptionLabel": "વર્ણન (ફરજિયાત)",
       "descriptionPlaceholder": "આ સ્થિતિ કેમ? સત્રોમાં તમે શું જોયું?",
       "descriptionRequired": "સ્થિતિ સાચવતા પહેલાં વર્ણન લખવું ફરજિયાત છે.",
-      "completionHint": "પૂર્ણ કરતી વખતે આગળનો અભ્યાસક્રમ અને નોકરીની ભલામણ આપવી પડે. સાચવતાં જ પ્રમાણપત્ર બને છે.",
+      "completionHint": "પ્રમાણિત કરતી વખતે આગળનો અભ્યાસક્રમ અને નોકરીની ભલામણ આપવી પડે. સાચવતાં જ પ્રમાણપત્ર બને છે.",
       "nextCourse": "આગળનો અભ્યાસક્રમ",
       "jobRecommendation": "નોકરીની ભલામણ",
       "saveStatus": "સ્થિતિ સાચવો",
@@ -538,7 +530,8 @@
       "certificateTitle": "પ્રમાણપત્ર",
       "certificateLine": "{{name}}એ PM-AJAY (GIA) હેઠળ {{course}} પૂર્ણ કર્યો.",
       "certificateMeta": "{{centre}} · તાલીમકર્તા {{trainer}}",
-      "historyTitle": "સ્થિતિનો ઇતિહાસ"
+      "historyTitle": "સ્થિતિનો ઇતિહાસ",
+      "employmentLabel": "રોજગાર સ્થિતિ"
     },
     "flagReason": {
       "repeated-absence": "વારંવાર ગેરહાજરી",
@@ -588,10 +581,8 @@
     },
     "milestones": {
       "subtitle": "{{total}}માંથી {{count}} તાલીમાર્થીઓએ તાલીમ પૂરી કરી",
-      "completedLabel": "તાલીમ પૂર્ણ",
-      "completedFoot": "જેમણે અભ્યાસક્રમ પૂરો કર્યો",
-      "certifiedLabel": "આપેલાં પ્રમાણપત્રો",
-      "certifiedFoot": "પૂર્ણ થતાં જ બને છે",
+      "certifiedLabel": "પ્રમાણિત",
+      "certifiedFoot": "અભ્યાસક્રમ પૂર્ણ; પ્રમાણપત્ર અપાયું",
       "placedLabel": "કામમાં",
       "placedFoot": "નોકરી કે સ્વરોજગાર",
       "awaitingLabel": "કામની રાહમાં",
@@ -599,7 +590,44 @@
       "empty": "હજી કોઈ તાલીમાર્થીએ અભ્યાસક્રમ પૂરો કર્યો નથી.",
       "foot": "સિદ્ધિ પાછળનો રેકોર્ડ જોવા હરોળ ખોલો.",
       "attendanceSub": "હાજર રહેલાં સત્રો",
-      "noCertificate": "હજી અપાયું નથી"
+      "noCertificate": "હજી અપાયું નથી",
+      "seekingLabel": "કામ શોધનારા",
+      "seekingFoot": "પ્રમાણિત, હજી નોકરી નથી"
     }
+  },
+  "certificate": {
+    "title": "અભ્યાસક્રમ પૂર્ણતા પ્રમાણપત્ર",
+    "sheetAria": "{{name}}નું પૂર્ણતા પ્રમાણપત્ર",
+    "scheme": "પીએમ-અજય · સહાય અનુદાન ઘટક",
+    "certifies": "આથી પ્રમાણિત કરવામાં આવે છે કે",
+    "completed": "એ આ અભ્યાસક્રમ સફળતાપૂર્વક પૂર્ણ કર્યો",
+    "nsqf": "એનએસક્યુએફ સ્તર {{level}}",
+    "centreLabel": "તાલીમ કેન્દ્ર",
+    "periodLabel": "તાલીમ સમયગાળો",
+    "period": "{{from}} થી {{to}}",
+    "sessions": "{{count}} નિર્ધારિત સત્રો",
+    "idLabel": "પ્રમાણપત્ર ક્રમાંક",
+    "issuedLabel": "જારી તારીખ",
+    "sealAria": "સેતુ જારીકર્તા મુદ્રા",
+    "verificationTitle": "ચકાસણી",
+    "verification": "પ્રમાણપત્ર ક્રમાંક {{id}} વડે આને સેતુના રેકોર્ડમાં ચકાસો. તાલીમ કેન્દ્રે તે ઇલેક્ટ્રોનિક રીતે આપ્યું છે; તાલીમકર્તાનો રેકોર્ડ જ પ્રમાણભૂત સ્રોત છે.",
+    "viewAction": "પ્રમાણપત્ર જુઓ",
+    "printAction": "પ્રિન્ટ કરો"
+  },
+  "training": {
+    "new": "નવું",
+    "recommended": "ભલામણ કરેલ",
+    "enrolled": "નોંધાયેલ",
+    "attending": "હાજર",
+    "irregular": "અનિયમિત",
+    "certified": "પ્રમાણિત",
+    "dropped": "છોડ્યું"
+  },
+  "employment": {
+    "in-training": "તાલીમમાં",
+    "seeking": "કામ શોધે છે",
+    "placed": "નિયુક્ત",
+    "unplaced": "અનિયુક્ત",
+    "not-tracked": "નોંધાયેલ નથી"
   }
 }

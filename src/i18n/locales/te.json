@@ -28,18 +28,6 @@
     "weeksAgo": "{{count}} వారాల క్రితం",
     "monthsAgo": "{{count}} నెలల క్రితం"
   },
-  "status": {
-    "new": "కొత్త",
-    "recommended": "సిఫార్సు చేయబడింది",
-    "enrolled": "చేరారు",
-    "attending": "హాజరవుతున్నారు",
-    "irregular": "క్రమరహితం",
-    "completed": "పూర్తయింది",
-    "certified": "ధ్రువీకరించబడింది",
-    "placed": "ఉద్యోగంలో",
-    "trained-unplaced": "ఉద్యోగం లేదు",
-    "dropped": "మానేశారు"
-  },
   "roles": {
     "executive": "కాల్ అధికారి",
     "resourcePerson": "వనరు వ్యక్తి",
@@ -257,12 +245,14 @@
       "districtAll": "జిల్లా: అన్నీ",
       "blockAll": "మండలం: అన్నీ",
       "courseAll": "కోర్సు: అన్నీ",
-      "statusAll": "స్థితి: అన్నీ",
       "district": "జిల్లా",
       "block": "మండలం",
       "course": "కోర్సు",
-      "status": "స్థితి",
-      "flaggedOnly": "AI-గుర్తించిన / ఆగిపోయినవి మాత్రమే"
+      "flaggedOnly": "AI-గుర్తించిన / ఆగిపోయినవి మాత్రమే",
+      "training": "శిక్షణ స్థితి",
+      "trainingAll": "శిక్షణ: అన్నీ",
+      "employment": "ఉపాధి స్థితి",
+      "employmentAll": "ఉపాధి: అన్నీ"
     },
     "chipAll": "అన్నీ · {{count}}",
     "chip": "{{label}} · {{count}}",
@@ -270,9 +260,10 @@
       "name": "పేరు",
       "location": "జిల్లా · మండలం · గ్రామం",
       "course": "సిఫార్సు చేసిన కోర్సు",
-      "status": "స్థితి",
       "lastContact": "చివరి సంప్రదింపు",
-      "flags": "గుర్తులు"
+      "flags": "గుర్తులు",
+      "training": "శిక్షణ",
+      "employment": "ఉపాధి"
     },
     "listAria": "లబ్ధిదారుల జాబితా",
     "empty": "ఈ ఫిల్టర్లకు సరిపోయే లబ్ధిదారు లేరు.",
@@ -302,11 +293,12 @@
       "absent": "గైర్హాజరు",
       "sessionTitle": "తరగతి {{number}}",
       "outcome": {
-        "currentStatus": "ప్రస్తుత స్థితి",
         "outcome": "ఫలితం",
         "course": "సిఫార్సు చేసిన కోర్సు",
         "centre": "కేంద్రం",
-        "interests": "నమోదైన ఆసక్తులు"
+        "interests": "నమోదైన ఆసక్తులు",
+        "training": "శిక్షణ స్థితి",
+        "employment": "ఉపాధి స్థితి"
       },
       "noCentre": "ఈ మండలంలో ఇంకా కేంద్రం లేదు",
       "scheduleCall": "కాల్ షెడ్యూల్ చేయి",
@@ -529,7 +521,7 @@
       "descriptionLabel": "వివరణ (తప్పనిసరి)",
       "descriptionPlaceholder": "ఈ స్థితి ఎందుకు? సెషన్లలో మీరు ఏమి చూశారు?",
       "descriptionRequired": "స్థితిని భద్రపరచే ముందు వివరణ రాయడం తప్పనిసరి.",
-      "completionHint": "పూర్తి చేసినప్పుడు తదుపరి కోర్సు, ఉద్యోగ సిఫార్సు ఇవ్వాలి. భద్రపరచగానే ధ్రువపత్రం తయారవుతుంది.",
+      "completionHint": "ధ్రువీకరించేటప్పుడు తదుపరి కోర్సు, ఉద్యోగ సిఫార్సు ఇవ్వాలి. భద్రపరచగానే ధ్రువపత్రం తయారవుతుంది.",
       "nextCourse": "తదుపరి కోర్సు",
       "jobRecommendation": "ఉద్యోగ సిఫార్సు",
       "saveStatus": "స్థితిని భద్రపరచు",
@@ -538,7 +530,8 @@
       "certificateTitle": "ధ్రువపత్రం",
       "certificateLine": "{{name}} PM-AJAY (GIA) కింద {{course}} పూర్తి చేశారు.",
       "certificateMeta": "{{centre}} · శిక్షకురాలు {{trainer}}",
-      "historyTitle": "స్థితి చరిత్ర"
+      "historyTitle": "స్థితి చరిత్ర",
+      "employmentLabel": "ఉపాధి స్థితి"
     },
     "flagReason": {
       "repeated-absence": "పదే పదే గైర్హాజరు",
@@ -588,10 +581,8 @@
     },
     "milestones": {
       "subtitle": "{{total}}లో {{count}} మంది శిక్షణ పూర్తి చేశారు",
-      "completedLabel": "శిక్షణ పూర్తి",
-      "completedFoot": "కోర్సు ముగించినవారు",
-      "certifiedLabel": "ఇచ్చిన ధ్రువపత్రాలు",
-      "certifiedFoot": "పూర్తయినప్పుడు తయారవుతాయి",
+      "certifiedLabel": "ధ్రువీకరించబడినవారు",
+      "certifiedFoot": "కోర్సు పూర్తి; ధ్రువపత్రం జారీ",
       "placedLabel": "పనిలో",
       "placedFoot": "ఉద్యోగం లేదా స్వయం ఉపాధి",
       "awaitingLabel": "పని కోసం ఎదురుచూపు",
@@ -599,7 +590,44 @@
       "empty": "ఇంకా ఎవరూ కోర్సు పూర్తి చేయలేదు.",
       "foot": "మైలురాయి వెనుక రికార్డు చూడటానికి వరుసను తెరవండి.",
       "attendanceSub": "హాజరైన సెషన్లు",
-      "noCertificate": "ఇంకా ఇవ్వలేదు"
+      "noCertificate": "ఇంకా ఇవ్వలేదు",
+      "seekingLabel": "పని కోసం చూస్తున్నవారు",
+      "seekingFoot": "ధ్రువపత్రం ఉంది, ఇంకా ఉద్యోగం లేదు"
     }
+  },
+  "certificate": {
+    "title": "కోర్సు పూర్తి ధ్రువపత్రం",
+    "sheetAria": "{{name}} వారి పూర్తి ధ్రువపత్రం",
+    "scheme": "పీఎం-అజయ్ · సహాయ గ్రాంటు భాగం",
+    "certifies": "ఇందుమూలంగా ధ్రువీకరించడమైనది",
+    "completed": "ఈ కోర్సును విజయవంతంగా పూర్తి చేశారు",
+    "nsqf": "ఎన్ఎస్‌క్యూఎఫ్ స్థాయి {{level}}",
+    "centreLabel": "శిక్షణ కేంద్రం",
+    "periodLabel": "శిక్షణ కాలం",
+    "period": "{{from}} నుండి {{to}} వరకు",
+    "sessions": "{{count}} నిర్ణీత సెషన్లు",
+    "idLabel": "ధ్రువపత్ర సంఖ్య",
+    "issuedLabel": "జారీ తేదీ",
+    "sealAria": "సేతు జారీ ముద్ర",
+    "verificationTitle": "ధ్రువీకరణ",
+    "verification": "ధ్రువపత్ర సంఖ్య {{id}} ద్వారా దీన్ని సేతు రికార్డులో సరిచూడండి. శిక్షణ కేంద్రం దీన్ని ఎలక్ట్రానిక్‌గా జారీ చేసింది; శిక్షకుల రికార్డే ప్రామాణిక ఆధారం.",
+    "viewAction": "ధ్రువపత్రం చూడండి",
+    "printAction": "ప్రింట్ చేయండి"
+  },
+  "training": {
+    "new": "కొత్త",
+    "recommended": "సిఫార్సు చేయబడింది",
+    "enrolled": "చేరారు",
+    "attending": "హాజరవుతున్నారు",
+    "irregular": "క్రమరహితం",
+    "certified": "ధ్రువీకరించబడింది",
+    "dropped": "మానేశారు"
+  },
+  "employment": {
+    "in-training": "శిక్షణలో",
+    "seeking": "పని కోసం చూస్తున్నారు",
+    "placed": "ఉద్యోగంలో",
+    "unplaced": "ఉద్యోగం లేదు",
+    "not-tracked": "నమోదు కాలేదు"
   }
 }

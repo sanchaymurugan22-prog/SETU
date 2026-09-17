@@ -13,56 +13,79 @@
 
 import { loadBlockGaps, type BlockGap } from './jharkhandGaps'
 
-export type BeneficiaryStatus =
+/**
+ * Where someone is in their training. There is no separate "completed" stage: finishing
+ * the course is what issues the certificate, so Certified means both.
+ */
+export type TrainingStatus =
   | 'new'
   | 'recommended'
   | 'enrolled'
   | 'attending'
   | 'irregular'
-  | 'completed'
   | 'certified'
-  | 'placed'
-  | 'trained-unplaced'
   | 'dropped'
 
-export const STATUS_ORDER: BeneficiaryStatus[] = [
+/**
+ * Whether that training turned into work. Kept apart from training on purpose: a trainee
+ * is Certified AND Unplaced at the same time, and that pair is what the Opportunity Gap
+ * Map counts as trained-but-unplaced.
+ */
+export type EmploymentStatus = 'in-training' | 'seeking' | 'placed' | 'unplaced' | 'not-tracked'
+
+export const TRAINING_ORDER: TrainingStatus[] = [
   'new',
   'recommended',
   'enrolled',
   'attending',
   'irregular',
-  'completed',
   'certified',
-  'placed',
-  'trained-unplaced',
   'dropped',
 ]
 
-export const STATUS_LABEL: Record<BeneficiaryStatus, string> = {
-  new: 'New',
-  recommended: 'Recommended',
-  enrolled: 'Enrolled',
-  attending: 'Attending',
-  irregular: 'Irregular',
-  completed: 'Completed',
-  certified: 'Certified',
-  placed: 'Placed',
-  'trained-unplaced': 'Unplaced',
-  dropped: 'Dropped',
-}
+export const EMPLOYMENT_ORDER: EmploymentStatus[] = ['in-training', 'seeking', 'placed', 'unplaced', 'not-tracked']
+
+type Tone = 'neutral' | 'cyan' | 'amber' | 'teal' | 'magenta' | 'bright'
 
 /** Chip colour family for each status. */
-export const STATUS_TONE: Record<BeneficiaryStatus, 'neutral' | 'cyan' | 'amber' | 'teal' | 'magenta' | 'bright'> = {
+export const TRAINING_TONE: Record<TrainingStatus, Tone> = {
   new: 'neutral',
   recommended: 'neutral',
   enrolled: 'cyan',
   attending: 'cyan',
   irregular: 'amber',
-  completed: 'neutral',
   certified: 'teal',
-  placed: 'teal',
-  'trained-unplaced': 'magenta',
   dropped: 'bright',
+}
+
+export const EMPLOYMENT_TONE: Record<EmploymentStatus, Tone> = {
+  'in-training': 'neutral',
+  seeking: 'cyan',
+  placed: 'teal',
+  unplaced: 'magenta',
+  'not-tracked': 'neutral',
+}
+
+/**
+ * The seed generator still thinks in one combined stage, because a person's story —
+ * their calls, attendance and journey — follows that single thread. It is split into the
+ * two public fields at the end of build().
+ */
+type SeedStage = TrainingStatus | 'placed' | 'trained-unplaced'
+
+function splitStage(stage: SeedStage): { trainingStatus: TrainingStatus; employmentStatus: EmploymentStatus } {
+  switch (stage) {
+    case 'placed':
+      return { trainingStatus: 'certified', employmentStatus: 'placed' }
+    case 'trained-unplaced':
+      return { trainingStatus: 'certified', employmentStatus: 'unplaced' }
+    case 'certified':
+      return { trainingStatus: 'certified', employmentStatus: 'seeking' }
+    case 'dropped':
+      return { trainingStatus: 'dropped', employmentStatus: 'not-tracked' }
+    default:
+      return { trainingStatus: stage, employmentStatus: 'in-training' }
+  }
 }
 
 export type SessionMark = 'present' | 'absent'
@@ -98,7 +121,8 @@ export interface Beneficiary {
   interests: string[]
   course: string
   centre: string | null
-  status: BeneficiaryStatus
+  trainingStatus: TrainingStatus
+  employmentStatus: EmploymentStatus
   lastContactDays: number
   aiFlags: string[]
   isStalled: boolean
@@ -180,19 +204,19 @@ const INTERESTS_BY_COURSE: Record<string, string[]> = {
  */
 export const TRAINER_CENTRE = { district: 'Gumla', block: 'Ghaghra', centre: 'Ghaghra Training Centre' }
 
-const TRAINER_INTAKE: { course: string; status: BeneficiaryStatus }[] = [
+const TRAINER_INTAKE: { course: string; status: SeedStage }[] = [
   { course: 'Tailoring L1', status: 'enrolled' },
   { course: 'Tailoring L1', status: 'enrolled' },
   { course: 'Tailoring L1', status: 'attending' },
   { course: 'Tailoring L1', status: 'attending' },
   { course: 'Tailoring L1', status: 'attending' },
   { course: 'Tailoring L1', status: 'irregular' },
-  { course: 'Tailoring L1', status: 'completed' },
+  { course: 'Tailoring L1', status: 'certified' },
   { course: 'Tailoring L1', status: 'certified' },
   { course: 'Tailoring L1', status: 'dropped' },
   { course: 'Tailoring L2', status: 'attending' },
   { course: 'Tailoring L2', status: 'irregular' },
-  { course: 'Tailoring L2', status: 'completed' },
+  { course: 'Tailoring L2', status: 'certified' },
   { course: 'Tailoring L2', status: 'placed' },
   { course: 'Tailoring L2', status: 'trained-unplaced' },
 ]
@@ -219,7 +243,7 @@ function phoneNumber(rand: () => number, serial: number): string {
   return `+91 ${prefix} ${String(10000 + (serial % 9000)).padStart(5, '0')}`
 }
 
-function sessionsFor(rand: () => number, status: BeneficiaryStatus, total: number): SessionMark[] {
+function sessionsFor(rand: () => number, status: SeedStage, total: number): SessionMark[] {
   const held =
     status === 'enrolled'
       ? Math.max(2, Math.round(total * 0.15))
@@ -242,7 +266,7 @@ function sessionsFor(rand: () => number, status: BeneficiaryStatus, total: numbe
 
 function callsFor(
   rand: () => number,
-  status: BeneficiaryStatus,
+  status: SeedStage,
   course: string,
   lastContactDays: number,
   hasDialectGap: boolean,
@@ -316,7 +340,7 @@ function callsFor(
     })
   }
 
-  if (status === 'certified' || status === 'completed') {
+  if (status === 'certified') {
     calls.push({
       when: dateLabel(lastContactDays),
       handledBy: 'ai',
@@ -338,8 +362,10 @@ function callsFor(
   return calls
 }
 
-function journeyFor(person: Omit<Beneficiary, 'journey'>): JourneyEvent[] {
-  const { status, course, centre, lastContactDays, attendance, aiFlags } = person
+/** The stage is passed in rather than read off the record: the journey narrative follows
+ *  the single combined thread the seeds were generated from. */
+function journeyFor(person: Omit<Beneficiary, 'journey'>, status: SeedStage): JourneyEvent[] {
+  const { course, centre, lastContactDays, attendance, aiFlags } = person
   const events: JourneyEvent[] = [
     {
       title: `First call · language ${person.preferredLanguage}`,
@@ -395,7 +421,7 @@ function journeyFor(person: Omit<Beneficiary, 'journey'>): JourneyEvent[] {
     })
   }
 
-  if (status === 'completed' || status === 'certified' || status === 'placed' || status === 'trained-unplaced') {
+  if (status === 'certified' || status === 'placed' || status === 'trained-unplaced') {
     events.push({
       title: 'Completed the course',
       detail: 'All modules finished; certificate generated automatically and sent by SMS and WhatsApp.',
@@ -441,7 +467,7 @@ function journeyFor(person: Omit<Beneficiary, 'journey'>): JourneyEvent[] {
 }
 
 interface Draft {
-  status: BeneficiaryStatus
+  status: SeedStage
   district: string
   block: string
   course: string
@@ -505,14 +531,14 @@ function build(): Beneficiary[] {
 
   // Two learners per healthy block, so the middle of the funnel — enrolled, attending,
   // irregular, completed — is populated rather than only the flagged extremes.
-  const servedPairs: [BeneficiaryStatus, BeneficiaryStatus][] = [
+  const servedPairs: [SeedStage, SeedStage][] = [
     ['attending', 'enrolled'],
     ['attending', 'irregular'],
-    ['completed', 'attending'],
+    ['certified', 'attending'],
     ['enrolled', 'attending'],
-    ['irregular', 'completed'],
+    ['irregular', 'certified'],
     ['placed', 'attending'],
-    ['attending', 'completed'],
+    ['attending', 'certified'],
     ['enrolled', 'irregular'],
     ['attending', 'placed'],
   ]
@@ -588,7 +614,7 @@ function build(): Beneficiary[] {
       interests: INTERESTS_BY_COURSE[draft.course] ?? ['Skill training'],
       course: draft.course,
       centre: draft.centre,
-      status: draft.status,
+      ...splitStage(draft.status),
       lastContactDays: draft.lastContactDays,
       aiFlags,
       isStalled,
@@ -607,7 +633,7 @@ function build(): Beneficiary[] {
                 : 'In progress',
     }
 
-    return { ...core, journey: journeyFor(core) }
+    return { ...core, journey: journeyFor(core, draft.status) }
   })
 }
 

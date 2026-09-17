@@ -1,7 +1,12 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { formatLastContact } from '../../i18n/format'
-import { STATUS_TONE, type Beneficiary, type CallRecord } from '../../data/jharkhandBeneficiaries'
+import {
+  EMPLOYMENT_TONE,
+  TRAINING_TONE,
+  type Beneficiary,
+  type CallRecord,
+} from '../../data/jharkhandBeneficiaries'
 
 const TABS = ['timeline', 'calls', 'attendance', 'outcome'] as const
 type Tab = (typeof TABS)[number]
@@ -42,7 +47,12 @@ export function BeneficiaryJourney({
 
       <div className="journey-summary">
         <div className="journey-chips">
-          <span className={`chip is-${STATUS_TONE[person.status]}`}>{t(`status.${person.status}`)}</span>
+          <span className={`chip is-${TRAINING_TONE[person.trainingStatus]}`}>
+            {t(`training.${person.trainingStatus}`)}
+          </span>
+          <span className={`chip is-${EMPLOYMENT_TONE[person.employmentStatus]}`}>
+            {t(`employment.${person.employmentStatus}`)}
+          </span>
           {person.aiFlags.map((flag) => (
             <span className="chip is-flag" key={flag}>
               {t('beneficiaries.journey.flagChip', { flag })}
@@ -184,8 +194,16 @@ export function BeneficiaryJourney({
         {tab === 'outcome' && (
           <div className="outcome-view">
             <div className="outcome-row">
-              <span className="outcome-label">{t('beneficiaries.journey.outcome.currentStatus')}</span>
-              <span className={`chip is-${STATUS_TONE[person.status]}`}>{t(`status.${person.status}`)}</span>
+              <span className="outcome-label">{t('beneficiaries.journey.outcome.training')}</span>
+              <span className={`chip is-${TRAINING_TONE[person.trainingStatus]}`}>
+                {t(`training.${person.trainingStatus}`)}
+              </span>
+            </div>
+            <div className="outcome-row">
+              <span className="outcome-label">{t('beneficiaries.journey.outcome.employment')}</span>
+              <span className={`chip is-${EMPLOYMENT_TONE[person.employmentStatus]}`}>
+                {t(`employment.${person.employmentStatus}`)}
+              </span>
             </div>
             <div className="outcome-row">
               <span className="outcome-label">{t('beneficiaries.journey.outcome.outcome')}</span>
