@@ -54,13 +54,9 @@
     "screenNote": "हे या कन्सोलची भाषा ठरवते. कॉलवर SETU लाभार्थ्यांशी कोणत्या भाषेत बोलते हे कन्सोलमध्ये वेगळे ठरवले जाते.",
     "hint": "साइन आउट न करता तुम्ही हे नंतर कोणत्याही कन्सोलमधून बदलू शकता.",
     "interfaceLabel": "इंटरफेस भाषा",
-    "callLabel": "कॉल भाषा",
     "interfaceDialogEyebrow": "कन्सोल प्रदर्शन",
     "interfaceDialogTitle": "इंटरफेस भाषा बदला",
     "interfaceDialogNote": "यामुळे फक्त या कन्सोलची भाषा बदलेल. SETU लाभार्थ्यांशी कोणत्या भाषेत बोलते ते बदलणार नाही.",
-    "callDialogEyebrow": "कॉल आणि संदेश",
-    "callDialogTitle": "कॉल भाषा बदला",
-    "callDialogNote": "SETU लाभार्थ्यांशी याच भाषेत बोलते आणि SMS व WhatsApp अहवाल याच भाषेत पाठवते. कन्सोलची भाषा वेगळी ठरते.",
     "saveLanguage": "भाषा जतन करा",
     "chooseAria": "भाषा"
   },
@@ -101,7 +97,11 @@
     "errorHint": "परवानगीबाबत संदेश असल्यास, Firestore सुरक्षा नियम प्रकाशित आहेत का आणि तुमची users नोंद आहे का ते तपासा."
   },
   "console": {
-    "groups": { "Sections": "विभाग", "Trainer": "प्रशिक्षक", "Expert": "तज्ज्ञ" },
+    "groups": {
+      "Sections": "विभाग",
+      "Trainer": "प्रशिक्षक",
+      "Expert": "तज्ज्ञ"
+    },
     "titles": {
       "executive": "कॉल कन्सोल",
       "resourcePerson": "संसाधन व्यक्ती कन्सोल",
@@ -115,25 +115,70 @@
   },
   "sections": {
     "executive": {
-      "waiting": { "title": "प्रतीक्षेतील कॉल", "summary": "वरच्या स्तरावर पाठवलेल्या कॉलची रांग, मग सक्रिय कॉल आणि अनिवार्य अहवाल." },
-      "completed": { "title": "पूर्ण कॉल", "summary": "तुम्ही हाताळलेल्या कॉलचे AI अहवाल. लाभार्थ्याची ओळख लपलेली राहते." }
+      "waiting": {
+        "title": "प्रतीक्षेतील कॉल",
+        "summary": "वरच्या स्तरावर पाठवलेल्या कॉलची रांग, मग सक्रिय कॉल आणि अनिवार्य अहवाल."
+      },
+      "completed": {
+        "title": "पूर्ण कॉल",
+        "summary": "तुम्ही हाताळलेल्या कॉलचे AI अहवाल. लाभार्थ्याची ओळख लपलेली राहते."
+      }
     },
     "resourcePerson": {
-      "beneficiaries": { "title": "लाभार्थी", "summary": "तुमचे प्रशिक्षार्थी: उपस्थिती, स्थिती अद्यतन आणि पूर्णतेच्या शिफारशी." },
-      "materials": { "title": "अभ्यासक्रम साहित्य", "summary": "वेळापत्रक, ठिकाण किंवा ऑनलाइन लिंक, आणि अभ्यासक्रम साहित्य." },
-      "waiting": { "title": "प्रतीक्षेतील कॉल", "summary": "कॉल कन्सोलकडून पाठवलेली कॉलबॅक प्रकरणे." },
-      "completed": { "title": "पूर्ण कॉल", "summary": "तुमच्या तज्ज्ञ कॉलचे AI अहवाल. ओळख लपलेली." },
-      "milestones": { "title": "टप्पे", "summary": "ज्यांना तुम्ही पूर्णतेपर्यंत प्रशिक्षण दिले, त्यांच्या अहवालांसह." }
+      "beneficiaries": {
+        "title": "लाभार्थी",
+        "summary": "तुमचे प्रशिक्षार्थी: उपस्थिती, स्थिती अद्यतन आणि पूर्णतेच्या शिफारशी."
+      },
+      "materials": {
+        "title": "अभ्यासक्रम साहित्य",
+        "summary": "वेळापत्रक, ठिकाण किंवा ऑनलाइन लिंक, आणि अभ्यासक्रम साहित्य."
+      },
+      "waiting": {
+        "title": "प्रतीक्षेतील कॉल",
+        "summary": "कॉल कन्सोलकडून पाठवलेली कॉलबॅक प्रकरणे."
+      },
+      "completed": {
+        "title": "पूर्ण कॉल",
+        "summary": "तुमच्या तज्ज्ञ कॉलचे AI अहवाल. ओळख लपलेली."
+      },
+      "milestones": {
+        "title": "टप्पे",
+        "summary": "ज्यांना तुम्ही पूर्णतेपर्यंत प्रशिक्षण दिले, त्यांच्या अहवालांसह."
+      }
     },
     "admin": {
-      "beneficiaries": { "title": "लाभार्थी", "summary": "प्रत्येक लाभार्थी, चिन्हांकित फिल्टर आणि संपूर्ण प्रवास." },
-      "call-executives": { "title": "कॉल कार्यकारी", "summary": "सर्व कॉल कार्यकारी: खाती जोडा, हालचाल पाहा, निष्क्रिय करा." },
-      "resource-persons": { "title": "संसाधन व्यक्ती", "summary": "सर्व संसाधन व्यक्ती, त्यांचे अभ्यासक्रम आणि केंद्रे." },
-      "calls": { "title": "कॉल", "summary": "कार्यकारी, संसाधन व्यक्ती आणि AI कॉल, ऑटोमेशन फनेलसह." },
-      "follow-ups": { "title": "पाठपुरावा अहवाल", "summary": "प्रत्येक स्वयंचलित पाठपुरावा कॉल: संख्या, उद्देश, निकाल." },
-      "courses-centres": { "title": "अभ्यासक्रम व केंद्रे", "summary": "अभ्यासक्रम, केंद्रे, जागांची संख्या आणि स्वयंचलित वाटप." },
-      "flags": { "title": "प्रशासक ध्वज", "summary": "संसाधन व्यक्तींनी चिन्हांकित प्रकरणे: कारवाई करा आणि अधिकारी नेमा." },
-      "gap-map": { "title": "संधी अंतर नकाशा", "summary": "तालुका स्तरावर मागणी विरुद्ध उपलब्धता, आणि निकाल विश्लेषण." }
+      "beneficiaries": {
+        "title": "लाभार्थी",
+        "summary": "प्रत्येक लाभार्थी, चिन्हांकित फिल्टर आणि संपूर्ण प्रवास."
+      },
+      "call-executives": {
+        "title": "कॉल कार्यकारी",
+        "summary": "सर्व कॉल कार्यकारी: खाती जोडा, हालचाल पाहा, निष्क्रिय करा."
+      },
+      "resource-persons": {
+        "title": "संसाधन व्यक्ती",
+        "summary": "सर्व संसाधन व्यक्ती, त्यांचे अभ्यासक्रम आणि केंद्रे."
+      },
+      "calls": {
+        "title": "कॉल",
+        "summary": "कार्यकारी, संसाधन व्यक्ती आणि AI कॉल, ऑटोमेशन फनेलसह."
+      },
+      "follow-ups": {
+        "title": "पाठपुरावा अहवाल",
+        "summary": "प्रत्येक स्वयंचलित पाठपुरावा कॉल: संख्या, उद्देश, निकाल."
+      },
+      "courses-centres": {
+        "title": "अभ्यासक्रम व केंद्रे",
+        "summary": "अभ्यासक्रम, केंद्रे, जागांची संख्या आणि स्वयंचलित वाटप."
+      },
+      "flags": {
+        "title": "प्रशासक ध्वज",
+        "summary": "संसाधन व्यक्तींनी चिन्हांकित प्रकरणे: कारवाई करा आणि अधिकारी नेमा."
+      },
+      "gap-map": {
+        "title": "संधी अंतर नकाशा",
+        "summary": "तालुका स्तरावर मागणी विरुद्ध उपलब्धता, आणि निकाल विश्लेषण."
+      }
     }
   },
   "placeholder": {
@@ -145,7 +190,11 @@
     "jurisdictionLabel": "अधिकारक्षेत्र",
     "jurisdictionValue": "झारखंड · सर्व २४ जिल्हे",
     "windowLabel": "कालावधी",
-    "window": { "30": "मागील ३० दिवस", "90": "मागील ९० दिवस", "365": "मागील १२ महिने" },
+    "window": {
+      "30": "मागील ३० दिवस",
+      "90": "मागील ९० दिवस",
+      "365": "मागील १२ महिने"
+    },
     "deltaUp": "▲ {{points}} गुण, मागील कालावधीच्या तुलनेत",
     "deltaDown": "▼ {{points}} गुण, मागील कालावधीच्या तुलनेत",
     "cards": {
@@ -162,8 +211,7 @@
       "demandLabel": "अभ्यासक्रम मागणी",
       "demandFoot": "चिन्हांकित तालुक्यांतील {{total}} पैकी आघाडीचे {{shown}} व्यवसाय",
       "dialectLabel": "बोली अंतर",
-      "dialectDelta": "{{threshold}}% पेक्षा कमी वाणी अचूकता",
-      "dialectFoot": "मागील १२ महिन्यांची सरासरी, कालावधीने बदलत नाही"
+      "dialectDelta": "{{threshold}}% पेक्षा कमी वाणी अचूकता"
     },
     "legend": {
       "title": "तालुका स्तरावरील अंतर नकाशा",
@@ -195,7 +243,10 @@
       "unplaced": "अनियुक्त",
       "recommendedAction": "शिफारस केलेली कारवाई"
     },
-    "actions": { "raiseProposal": "प्रस्ताव पाठवा", "assignOfficer": "अधिकारी नेमा" },
+    "actions": {
+      "raiseProposal": "प्रस्ताव पाठवा",
+      "assignOfficer": "अधिकारी नेमा"
+    },
     "notice": "{{block}} · {{district}} — फक्त या सत्रात नोंदवले. मंजुरी आणि नेमणुकीची प्रक्रिया प्रशासक ध्वज विभागासोबत येईल."
   },
   "beneficiaries": {
@@ -230,7 +281,12 @@
     "journey": {
       "eyebrow": "संपूर्ण प्रवास",
       "aria": "{{name}} यांचा संपूर्ण प्रवास",
-      "tabs": { "timeline": "कालरेषा", "calls": "कॉल · {{count}}", "attendance": "उपस्थिती", "outcome": "निकाल" },
+      "tabs": {
+        "timeline": "कालरेषा",
+        "calls": "कॉल · {{count}}",
+        "attendance": "उपस्थिती",
+        "outcome": "निकाल"
+      },
       "facts": {
         "location": "ठिकाण",
         "primaryPhone": "मुख्य फोन",
@@ -259,5 +315,156 @@
       "flagChip": "AI: {{flag}}",
       "stalled": "थांबलेले"
     }
+  },
+  "callConsole": {
+    "queue": {
+      "subtitle": "रांगेत {{count}} · सर्वाधिक प्रतीक्षा {{longest}}",
+      "identityHidden": "स्वीकारेपर्यंत ओळख लपलेली",
+      "available": "कॉलसाठी उपलब्ध",
+      "unavailable": "सध्या कॉल घेत नाही",
+      "reasonLabel": "कारण",
+      "sortLabel": "क्रम",
+      "sortLongestWait": "सर्वाधिक प्रतीक्षा",
+      "sortPosition": "रांगेतील क्रमांक",
+      "headerPosition": "क्रमांक",
+      "headerReason": "व्यक्तीकडे पाठवण्याचे कारण",
+      "headerWaiting": "प्रतीक्षा",
+      "accept": "स्वीकारा",
+      "overTarget": "{{minutes}} मिनिटांच्या लक्ष्यापेक्षा जास्त",
+      "withinTarget": "लक्ष्याच्या आत",
+      "justJoined": "आत्ताच जोडले",
+      "foot": "कॉल प्रतीक्षेच्या क्रमाने दिले जातात, सर्वात जुने आधी.",
+      "ticking": "प्रतीक्षा वेळ दर सेकंदाला अद्ययावत होते",
+      "empty": "कोणताही कॉल प्रतीक्षेत नाही.",
+      "unavailableHint": "कॉल स्वीकारण्यासाठी “{{label}}” चालू करा."
+    },
+    "reason": {
+      "ai-low-confidence": "AI कमी खात्रीशीर",
+      "beneficiary-requested-human": "व्यक्तीशी बोलण्याची मागणी",
+      "course-question": "अभ्यासक्रमाचा प्रश्न",
+      "followup-unable-to-manage": "पाठपुरावा, हाताळता आले नाही"
+    },
+    "active": {
+      "header": "सुरू असलेला कॉल · {{name}}",
+      "onHold": "होल्डवर",
+      "hold": "होल्ड",
+      "resume": "पुन्हा सुरू करा",
+      "addNote": "टीप जोडा",
+      "endCall": "कॉल संपवा",
+      "record": "लाभार्थी नोंद",
+      "prefilled": "AI ने भरलेले · संपादनयोग्य",
+      "editingWindow": "संपादन फक्त कॉल सुरू असेपर्यंत खुले",
+      "name": "नाव",
+      "age": "वय",
+      "gender": "लिंग",
+      "district": "जिल्हा",
+      "block": "तालुका",
+      "village": "गाव",
+      "education": "शिक्षण",
+      "occupation": "काम",
+      "interests": "आवडी",
+      "constraints": "अडचणी",
+      "primaryNumber": "मुख्य क्रमांक",
+      "secondaryNumber": "पर्यायी क्रमांक",
+      "noSecondary": "नोंद नाही",
+      "consent": "संमती",
+      "consentGiven": "कॉलवर दिली",
+      "consentNotGiven": "दिली नाही",
+      "addItem": "जोडा",
+      "removeItem": "काढा",
+      "notes": "कॉल टिपा",
+      "notesPlaceholder": "कॉल करणाऱ्याने काय सांगितले, तुमच्या शब्दांत",
+      "transferTitle": "संसाधन व्यक्तीकडे पाठवा",
+      "transferReason": "कारण",
+      "transferTo": "संसाधन व्यक्ती",
+      "transfer": "पाठवा",
+      "transferred": "कॉलबॅक प्रकरण {{name}} यांना पाठवले · {{reason}}",
+      "aiTitle": "AI ने काय चर्चा केली",
+      "aiCall": "कॉल {{number}} · {{when}}",
+      "aiRecommended": "AI ची शिफारस",
+      "aiConfidence": "खात्री {{score}} — {{threshold}} मर्यादेपेक्षा कमी, म्हणून कॉल व्यक्तीकडे पाठवला.",
+      "aiConfidenceOk": "खात्री {{score}}.",
+      "transcript": "उतारा · शेवटचे संवाद",
+      "priorFlags": "पूर्वीची चिन्हे",
+      "speakerSetu": "SETU",
+      "speakerCaller": "कॉलर",
+      "noFlags": "काहीही नाही"
+    },
+    "transferReason": {
+      "course-question": "अभ्यासक्रमाचा प्रश्न",
+      "person-specific": "व्यक्ती-विशिष्ट",
+      "dissatisfaction": "असमाधान"
+    },
+    "report": {
+      "required": "पुढील कॉलपूर्वी आवश्यक",
+      "title": "कॉल अहवाल तपासा",
+      "warning": "AI ने तयार केलेला. प्रत्येक भाग वाचून दुरुस्त करा — हा अहवाल लाभार्थ्याला जातो आणि त्यांच्या कायम नोंदीत राहतो.",
+      "forCall": "{{name}} · {{ref}} · {{duration}}",
+      "discussion": "चर्चा",
+      "course": "शिफारस केलेला अभ्यासक्रम",
+      "outcome": "निकाल",
+      "actions": "केलेली कार्यवाही",
+      "addAction": "कार्यवाही जोडा",
+      "actionPlaceholder": "काय केले",
+      "removeAction": "कार्यवाही काढा",
+      "sendingTo": "पाठवत आहे",
+      "smsPrimary": "SMS · {{number}}",
+      "whatsappPrimary": "WhatsApp · {{number}}",
+      "smsSecondary": "SMS · {{number}} (पर्यायी)",
+      "whatsappSecondary": "WhatsApp · {{number}} (पर्यायी)",
+      "languageNote": "{{language}} मध्ये पाठवले, कॉल करणाऱ्याने निवडलेली भाषा.",
+      "cannotSkip": "अहवाल वगळता येत नाही. तो पाठवल्यावरच पुढील कॉल मिळेल.",
+      "send": "अहवाल पाठवा",
+      "sending": "पाठवत आहे…",
+      "discussionRequired": "पाठवण्यापूर्वी काय चर्चा झाली ते लिहा."
+    },
+    "completed": {
+      "subtitle": "तुम्ही हाताळलेले {{count}} कॉल",
+      "identityNote": "ओळख लपलेली · फक्त अहवालाचा मजकूर",
+      "scopeLabel": "व्याप्ती",
+      "scopeValue": "फक्त तुमचे कॉल",
+      "searchLabel": "अहवाल शोधा",
+      "searchPlaceholder": "अहवालाचा मजकूर, अभ्यासक्रम किंवा कॉल संदर्भ शोधा",
+      "periodAll": "सर्व काळ",
+      "periodToday": "आज",
+      "periodWeek": "मागील ७ दिवस",
+      "periodMonth": "या महिन्यात",
+      "outcomeAll": "निकाल: सर्व",
+      "headerWhen": "दिनांक · कालावधी",
+      "headerDiscussed": "काय चर्चा झाली",
+      "headerCourse": "शिफारस केलेला अभ्यासक्रम",
+      "headerActions": "केलेली कार्यवाही",
+      "headerOutcome": "निकाल",
+      "ref": "संदर्भ {{ref}}",
+      "empty": "या फिल्टरशी कोणताही कॉल जुळत नाही.",
+      "countLine": "तुम्ही पाठवलेल्या {{total}} अहवालांपैकी {{shown}} दाखवत आहे",
+      "justSent": "आत्ताच पाठवले"
+    },
+    "outcome": {
+      "resolved-on-call": "कॉलवरच सुटले",
+      "question-answered": "प्रश्नाचे उत्तर दिले",
+      "enrolled": "प्रवेशित",
+      "re-enrolled": "पुन्हा प्रवेशित",
+      "transferred-nearer-centre": "जवळच्या केंद्रात पाठवले",
+      "transferred-resource-person": "संसाधन व्यक्तीकडे पाठवले",
+      "escalated-no-jobs": "पुढे पाठवले · स्थानिक रोजगार नाही",
+      "followup-closed": "पाठपुरावा बंद"
+    },
+    "shift": {
+      "label": "तुमची पाळी",
+      "handled": "कॉल हाताळले",
+      "avgDuration": "सरासरी कालावधी"
+    }
+  },
+  "detection": {
+    "panelTitle": "भाषा ओळख",
+    "greetingLabel": "SETU ची द्विभाषिक सुरुवात",
+    "confidence": "{{score}} खात्रीने ओळखली",
+    "confidenceShort": "· {{score}}",
+    "dialectGap": "बोली अंतर",
+    "lowNote": "{{threshold}} मर्यादेपेक्षा कमी — कॉल व्यक्तीकडे पाठवला आणि नमुना बोली अंतर म्हणून नोंदवला.",
+    "goodNote": "उर्वरित कॉल याच भाषेत चालतो.",
+    "headerDetected": "ओळखलेली भाषा · तालुका",
+    "dialectFoot": "प्रत्येक कॉलमधून, प्रति भाषा सरासरी ओळख खात्री"
   }
 }

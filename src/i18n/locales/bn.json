@@ -54,13 +54,9 @@
     "screenNote": "এটি এই কনসোলের ভাষা ঠিক করে। কলে SETU সুবিধাভোগীদের সঙ্গে যে ভাষায় কথা বলে, তা কনসোলের ভিতরে আলাদাভাবে ঠিক করা হয়।",
     "hint": "সাইন আউট না করেই যেকোনো কনসোল থেকে এটি পরে বদলাতে পারেন।",
     "interfaceLabel": "ইন্টারফেস ভাষা",
-    "callLabel": "কলের ভাষা",
     "interfaceDialogEyebrow": "কনসোল প্রদর্শন",
     "interfaceDialogTitle": "ইন্টারফেস ভাষা বদলান",
     "interfaceDialogNote": "এতে শুধু এই কনসোলের ভাষা বদলাবে। SETU সুবিধাভোগীদের সঙ্গে কোন ভাষায় কথা বলে তা বদলাবে না।",
-    "callDialogEyebrow": "কল ও বার্তা",
-    "callDialogTitle": "কলের ভাষা বদলান",
-    "callDialogNote": "SETU সুবিধাভোগীদের সঙ্গে এই ভাষাতেই কথা বলে এবং SMS ও WhatsApp রিপোর্ট এই ভাষায় পাঠায়। কনসোলের ভাষা আলাদাভাবে ঠিক হয়।",
     "saveLanguage": "ভাষা সংরক্ষণ করুন",
     "chooseAria": "ভাষা"
   },
@@ -101,7 +97,11 @@
     "errorHint": "অনুমতি সংক্রান্ত বার্তা থাকলে দেখুন Firestore নিরাপত্তা নিয়ম প্রকাশিত আছে কি না এবং আপনার users রেকর্ড আছে কি না।"
   },
   "console": {
-    "groups": { "Sections": "বিভাগ", "Trainer": "প্রশিক্ষক", "Expert": "বিশেষজ্ঞ" },
+    "groups": {
+      "Sections": "বিভাগ",
+      "Trainer": "প্রশিক্ষক",
+      "Expert": "বিশেষজ্ঞ"
+    },
     "titles": {
       "executive": "কল কনসোল",
       "resourcePerson": "রিসোর্স পার্সন কনসোল",
@@ -115,25 +115,70 @@
   },
   "sections": {
     "executive": {
-      "waiting": { "title": "অপেক্ষমাণ কল", "summary": "উচ্চতর স্তরে পাঠানো কলের সারি, তারপর সক্রিয় কল ও বাধ্যতামূলক রিপোর্ট।" },
-      "completed": { "title": "সম্পন্ন কল", "summary": "আপনার সামলানো কলের AI রিপোর্ট। সুবিধাভোগীর পরিচয় গোপন থাকে।" }
+      "waiting": {
+        "title": "অপেক্ষমাণ কল",
+        "summary": "উচ্চতর স্তরে পাঠানো কলের সারি, তারপর সক্রিয় কল ও বাধ্যতামূলক রিপোর্ট।"
+      },
+      "completed": {
+        "title": "সম্পন্ন কল",
+        "summary": "আপনার সামলানো কলের AI রিপোর্ট। সুবিধাভোগীর পরিচয় গোপন থাকে।"
+      }
     },
     "resourcePerson": {
-      "beneficiaries": { "title": "সুবিধাভোগী", "summary": "আপনার প্রশিক্ষার্থী: উপস্থিতি, স্থিতি হালনাগাদ ও সমাপ্তির সুপারিশ।" },
-      "materials": { "title": "কোর্স সামগ্রী", "summary": "সময়সূচি, স্থান বা অনলাইন লিঙ্ক, এবং কোর্স সামগ্রী।" },
-      "waiting": { "title": "অপেক্ষমাণ কল", "summary": "কল কনসোল থেকে পাঠানো কলব্যাক কেস।" },
-      "completed": { "title": "সম্পন্ন কল", "summary": "আপনার বিশেষজ্ঞ কলের AI রিপোর্ট। পরিচয় গোপন।" },
-      "milestones": { "title": "মাইলফলক", "summary": "যাঁদের আপনি সমাপ্তি পর্যন্ত প্রশিক্ষণ দিয়েছেন, তাঁদের রিপোর্টসহ।" }
+      "beneficiaries": {
+        "title": "সুবিধাভোগী",
+        "summary": "আপনার প্রশিক্ষার্থী: উপস্থিতি, স্থিতি হালনাগাদ ও সমাপ্তির সুপারিশ।"
+      },
+      "materials": {
+        "title": "কোর্স সামগ্রী",
+        "summary": "সময়সূচি, স্থান বা অনলাইন লিঙ্ক, এবং কোর্স সামগ্রী।"
+      },
+      "waiting": {
+        "title": "অপেক্ষমাণ কল",
+        "summary": "কল কনসোল থেকে পাঠানো কলব্যাক কেস।"
+      },
+      "completed": {
+        "title": "সম্পন্ন কল",
+        "summary": "আপনার বিশেষজ্ঞ কলের AI রিপোর্ট। পরিচয় গোপন।"
+      },
+      "milestones": {
+        "title": "মাইলফলক",
+        "summary": "যাঁদের আপনি সমাপ্তি পর্যন্ত প্রশিক্ষণ দিয়েছেন, তাঁদের রিপোর্টসহ।"
+      }
     },
     "admin": {
-      "beneficiaries": { "title": "সুবিধাভোগী", "summary": "প্রত্যেক সুবিধাভোগী, চিহ্নিত ফিল্টার এবং সম্পূর্ণ যাত্রা।" },
-      "call-executives": { "title": "কল আধিকারিক", "summary": "সব কল আধিকারিক: অ্যাকাউন্ট যোগ, কার্যকলাপ দেখা, নিষ্ক্রিয় করা।" },
-      "resource-persons": { "title": "রিসোর্স পার্সন", "summary": "সব রিসোর্স পার্সন, তাঁদের কোর্স ও কেন্দ্র।" },
-      "calls": { "title": "কল", "summary": "আধিকারিক, রিসোর্স পার্সন ও AI কল, অটোমেশন ফানেলসহ।" },
-      "follow-ups": { "title": "ফলো-আপ রিপোর্ট", "summary": "প্রতিটি স্বয়ংক্রিয় ফলো-আপ কল: সংখ্যা, উদ্দেশ্য, ফল।" },
-      "courses-centres": { "title": "কোর্স ও কেন্দ্র", "summary": "কোর্স, কেন্দ্র, আসন সংখ্যা ও স্বয়ংক্রিয় বরাদ্দ।" },
-      "flags": { "title": "প্রশাসক ফ্ল্যাগ", "summary": "রিসোর্স পার্সনদের চিহ্নিত কেস: ব্যবস্থা নিন ও আধিকারিক নিযুক্ত করুন।" },
-      "gap-map": { "title": "সুযোগ ব্যবধান মানচিত্র", "summary": "ব্লক স্তরে চাহিদা বনাম সরবরাহ, এবং ফলাফল বিশ্লেষণ।" }
+      "beneficiaries": {
+        "title": "সুবিধাভোগী",
+        "summary": "প্রত্যেক সুবিধাভোগী, চিহ্নিত ফিল্টার এবং সম্পূর্ণ যাত্রা।"
+      },
+      "call-executives": {
+        "title": "কল আধিকারিক",
+        "summary": "সব কল আধিকারিক: অ্যাকাউন্ট যোগ, কার্যকলাপ দেখা, নিষ্ক্রিয় করা।"
+      },
+      "resource-persons": {
+        "title": "রিসোর্স পার্সন",
+        "summary": "সব রিসোর্স পার্সন, তাঁদের কোর্স ও কেন্দ্র।"
+      },
+      "calls": {
+        "title": "কল",
+        "summary": "আধিকারিক, রিসোর্স পার্সন ও AI কল, অটোমেশন ফানেলসহ।"
+      },
+      "follow-ups": {
+        "title": "ফলো-আপ রিপোর্ট",
+        "summary": "প্রতিটি স্বয়ংক্রিয় ফলো-আপ কল: সংখ্যা, উদ্দেশ্য, ফল।"
+      },
+      "courses-centres": {
+        "title": "কোর্স ও কেন্দ্র",
+        "summary": "কোর্স, কেন্দ্র, আসন সংখ্যা ও স্বয়ংক্রিয় বরাদ্দ।"
+      },
+      "flags": {
+        "title": "প্রশাসক ফ্ল্যাগ",
+        "summary": "রিসোর্স পার্সনদের চিহ্নিত কেস: ব্যবস্থা নিন ও আধিকারিক নিযুক্ত করুন।"
+      },
+      "gap-map": {
+        "title": "সুযোগ ব্যবধান মানচিত্র",
+        "summary": "ব্লক স্তরে চাহিদা বনাম সরবরাহ, এবং ফলাফল বিশ্লেষণ।"
+      }
     }
   },
   "placeholder": {
@@ -145,7 +190,11 @@
     "jurisdictionLabel": "এক্তিয়ার",
     "jurisdictionValue": "ঝাড়খণ্ড · সব ২৪টি জেলা",
     "windowLabel": "সময়কাল",
-    "window": { "30": "গত ৩০ দিন", "90": "গত ৯০ দিন", "365": "গত ১২ মাস" },
+    "window": {
+      "30": "গত ৩০ দিন",
+      "90": "গত ৯০ দিন",
+      "365": "গত ১২ মাস"
+    },
     "deltaUp": "▲ {{points}} পয়েন্ট, আগের সময়ের তুলনায়",
     "deltaDown": "▼ {{points}} পয়েন্ট, আগের সময়ের তুলনায়",
     "cards": {
@@ -162,8 +211,7 @@
       "demandLabel": "কোর্সের চাহিদা",
       "demandFoot": "চিহ্নিত ব্লকে চাওয়া {{total}}টির মধ্যে শীর্ষ {{shown}}টি কাজ",
       "dialectLabel": "উপভাষার ব্যবধান",
-      "dialectDelta": "{{threshold}}%-এর কম কণ্ঠ শনাক্তি",
-      "dialectFoot": "গত ১২ মাসের গড়, সময়কালে বদলায় না"
+      "dialectDelta": "{{threshold}}%-এর কম কণ্ঠ শনাক্তি"
     },
     "legend": {
       "title": "ব্লক স্তরের ব্যবধান মানচিত্র",
@@ -195,7 +243,10 @@
       "unplaced": "অনিযুক্ত",
       "recommendedAction": "সুপারিশকৃত ব্যবস্থা"
     },
-    "actions": { "raiseProposal": "প্রস্তাব পাঠান", "assignOfficer": "আধিকারিক নিযুক্ত করুন" },
+    "actions": {
+      "raiseProposal": "প্রস্তাব পাঠান",
+      "assignOfficer": "আধিকারিক নিযুক্ত করুন"
+    },
     "notice": "{{block}} · {{district}} — শুধু এই সেশনে নথিভুক্ত। অনুমোদন ও নিয়োগের প্রক্রিয়া প্রশাসক ফ্ল্যাগ বিভাগের সঙ্গে আসবে।"
   },
   "beneficiaries": {
@@ -230,7 +281,12 @@
     "journey": {
       "eyebrow": "সম্পূর্ণ যাত্রা",
       "aria": "{{name}}-এর সম্পূর্ণ যাত্রা",
-      "tabs": { "timeline": "সময়রেখা", "calls": "কল · {{count}}", "attendance": "উপস্থিতি", "outcome": "ফলাফল" },
+      "tabs": {
+        "timeline": "সময়রেখা",
+        "calls": "কল · {{count}}",
+        "attendance": "উপস্থিতি",
+        "outcome": "ফলাফল"
+      },
       "facts": {
         "location": "স্থান",
         "primaryPhone": "প্রধান ফোন",
@@ -259,5 +315,156 @@
       "flagChip": "AI: {{flag}}",
       "stalled": "থমকে"
     }
+  },
+  "callConsole": {
+    "queue": {
+      "subtitle": "সারিতে {{count}} · দীর্ঘতম অপেক্ষা {{longest}}",
+      "identityHidden": "গ্রহণ করা পর্যন্ত পরিচয় গোপন",
+      "available": "কলের জন্য উপলব্ধ",
+      "unavailable": "এখন কল নিচ্ছেন না",
+      "reasonLabel": "কারণ",
+      "sortLabel": "ক্রম",
+      "sortLongestWait": "দীর্ঘতম অপেক্ষা",
+      "sortPosition": "সারির অবস্থান",
+      "headerPosition": "অবস্থান",
+      "headerReason": "মানুষের কাছে পাঠানোর কারণ",
+      "headerWaiting": "অপেক্ষা",
+      "accept": "গ্রহণ করুন",
+      "overTarget": "{{minutes}} মিনিটের লক্ষ্যের বেশি",
+      "withinTarget": "লক্ষ্যের মধ্যে",
+      "justJoined": "এইমাত্র যুক্ত",
+      "foot": "কল অপেক্ষার ক্রমে দেওয়া হয়, সবচেয়ে পুরোনো আগে।",
+      "ticking": "অপেক্ষার সময় প্রতি সেকেন্ডে হালনাগাদ হয়",
+      "empty": "কোনো কল অপেক্ষায় নেই।",
+      "unavailableHint": "কল নিতে “{{label}}” চালু করুন।"
+    },
+    "reason": {
+      "ai-low-confidence": "AI কম নিশ্চিত",
+      "beneficiary-requested-human": "মানুষের সঙ্গে কথা চেয়েছেন",
+      "course-question": "কোর্স সংক্রান্ত প্রশ্ন",
+      "followup-unable-to-manage": "ফলো-আপ, সামলানো যায়নি"
+    },
+    "active": {
+      "header": "চলমান কল · {{name}}",
+      "onHold": "হোল্ডে",
+      "hold": "হোল্ড",
+      "resume": "চালিয়ে যান",
+      "addNote": "নোট যোগ করুন",
+      "endCall": "কল শেষ করুন",
+      "record": "সুবিধাভোগীর রেকর্ড",
+      "prefilled": "AI পূরণ করেছে · সম্পাদনযোগ্য",
+      "editingWindow": "সম্পাদনা কেবল কল চলাকালীন খোলা",
+      "name": "নাম",
+      "age": "বয়স",
+      "gender": "লিঙ্গ",
+      "district": "জেলা",
+      "block": "ব্লক",
+      "village": "গ্রাম",
+      "education": "শিক্ষা",
+      "occupation": "কাজ",
+      "interests": "আগ্রহ",
+      "constraints": "বাধা",
+      "primaryNumber": "প্রধান নম্বর",
+      "secondaryNumber": "বিকল্প নম্বর",
+      "noSecondary": "নথিভুক্ত নয়",
+      "consent": "সম্মতি",
+      "consentGiven": "কলে দেওয়া হয়েছে",
+      "consentNotGiven": "দেওয়া হয়নি",
+      "addItem": "যোগ করুন",
+      "removeItem": "সরান",
+      "notes": "কলের নোট",
+      "notesPlaceholder": "কলকারী যা বলেছেন, আপনার ভাষায়",
+      "transferTitle": "রিসোর্স পার্সনের কাছে পাঠান",
+      "transferReason": "কারণ",
+      "transferTo": "রিসোর্স পার্সন",
+      "transfer": "পাঠান",
+      "transferred": "কলব্যাক কেস {{name}}-কে পাঠানো হয়েছে · {{reason}}",
+      "aiTitle": "AI কী আলোচনা করেছে",
+      "aiCall": "কল {{number}} · {{when}}",
+      "aiRecommended": "AI-এর সুপারিশ",
+      "aiConfidence": "নিশ্চয়তা {{score}} — {{threshold}} সীমার নিচে, তাই কলটি মানুষের কাছে পাঠানো হয়েছে।",
+      "aiConfidenceOk": "নিশ্চয়তা {{score}}।",
+      "transcript": "প্রতিলিপি · শেষ কথোপকথন",
+      "priorFlags": "পূর্ববর্তী চিহ্ন",
+      "speakerSetu": "SETU",
+      "speakerCaller": "কলকারী",
+      "noFlags": "কিছু নেই"
+    },
+    "transferReason": {
+      "course-question": "কোর্স সংক্রান্ত প্রশ্ন",
+      "person-specific": "ব্যক্তি-নির্দিষ্ট",
+      "dissatisfaction": "অসন্তোষ"
+    },
+    "report": {
+      "required": "পরবর্তী কলের আগে আবশ্যক",
+      "title": "কল রিপোর্ট পর্যালোচনা করুন",
+      "warning": "AI-এর খসড়া। প্রতিটি অংশ পড়ে সংশোধন করুন — এই রিপোর্ট সুবিধাভোগীর কাছে যায় এবং তাঁর স্থায়ী নথিতে থাকে।",
+      "forCall": "{{name}} · {{ref}} · {{duration}}",
+      "discussion": "আলোচনা",
+      "course": "সুপারিশকৃত কোর্স",
+      "outcome": "ফলাফল",
+      "actions": "নেওয়া পদক্ষেপ",
+      "addAction": "পদক্ষেপ যোগ করুন",
+      "actionPlaceholder": "কী করা হয়েছে",
+      "removeAction": "পদক্ষেপ সরান",
+      "sendingTo": "পাঠানো হচ্ছে",
+      "smsPrimary": "SMS · {{number}}",
+      "whatsappPrimary": "WhatsApp · {{number}}",
+      "smsSecondary": "SMS · {{number}} (বিকল্প)",
+      "whatsappSecondary": "WhatsApp · {{number}} (বিকল্প)",
+      "languageNote": "{{language}} ভাষায় পাঠানো হয়েছে, কলকারীর বেছে নেওয়া ভাষা।",
+      "cannotSkip": "রিপোর্ট এড়ানো যায় না। পাঠানোর পরেই পরের কল দেওয়া হবে।",
+      "send": "রিপোর্ট পাঠান",
+      "sending": "পাঠানো হচ্ছে…",
+      "discussionRequired": "পাঠানোর আগে কী আলোচনা হয়েছে লিখুন।"
+    },
+    "completed": {
+      "subtitle": "আপনার সামলানো {{count}}টি কল",
+      "identityNote": "পরিচয় গোপন · কেবল রিপোর্টের বিষয়",
+      "scopeLabel": "পরিসর",
+      "scopeValue": "কেবল আপনার কল",
+      "searchLabel": "রিপোর্ট খুঁজুন",
+      "searchPlaceholder": "রিপোর্টের লেখা, কোর্স বা কল রেফারেন্স খুঁজুন",
+      "periodAll": "সব সময়",
+      "periodToday": "আজ",
+      "periodWeek": "গত ৭ দিন",
+      "periodMonth": "এই মাস",
+      "outcomeAll": "ফলাফল: সব",
+      "headerWhen": "তারিখ · সময়কাল",
+      "headerDiscussed": "কী আলোচনা হয়েছে",
+      "headerCourse": "সুপারিশকৃত কোর্স",
+      "headerActions": "নেওয়া পদক্ষেপ",
+      "headerOutcome": "ফলাফল",
+      "ref": "রেফ {{ref}}",
+      "empty": "এই ফিল্টারে কোনো কল মেলেনি।",
+      "countLine": "আপনার পাঠানো {{total}}টি রিপোর্টের মধ্যে {{shown}}টি দেখানো হচ্ছে",
+      "justSent": "এইমাত্র পাঠানো"
+    },
+    "outcome": {
+      "resolved-on-call": "কলেই সমাধান",
+      "question-answered": "প্রশ্নের উত্তর দেওয়া হয়েছে",
+      "enrolled": "ভর্তি",
+      "re-enrolled": "পুনরায় ভর্তি",
+      "transferred-nearer-centre": "কাছের কেন্দ্রে পাঠানো",
+      "transferred-resource-person": "রিসোর্স পার্সনের কাছে পাঠানো",
+      "escalated-no-jobs": "উপরে পাঠানো · স্থানীয় কাজ নেই",
+      "followup-closed": "ফলো-আপ শেষ"
+    },
+    "shift": {
+      "label": "আপনার শিফট",
+      "handled": "কল সামলেছেন",
+      "avgDuration": "গড় সময়কাল"
+    }
+  },
+  "detection": {
+    "panelTitle": "ভাষা শনাক্তকরণ",
+    "greetingLabel": "SETU-র দ্বিভাষিক সূচনা",
+    "confidence": "{{score}} নিশ্চয়তায় শনাক্ত",
+    "confidenceShort": "· {{score}}",
+    "dialectGap": "উপভাষার ব্যবধান",
+    "lowNote": "{{threshold}} সীমার নিচে — কলটি মানুষের কাছে পাঠানো হয়েছে এবং নমুনাটি উপভাষার ব্যবধান হিসেবে নথিভুক্ত।",
+    "goodNote": "বাকি কল এই ভাষাতেই চলে।",
+    "headerDetected": "শনাক্ত ভাষা · ব্লক",
+    "dialectFoot": "প্রতিটি কল থেকে, ভাষাপ্রতি গড় শনাক্তকরণ নিশ্চয়তা"
   }
 }

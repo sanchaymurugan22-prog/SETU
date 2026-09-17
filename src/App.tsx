@@ -3,6 +3,9 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { AuthProvider } from './auth/AuthProvider'
 import { HomeRedirect, RequireRole } from './auth/RequireRole'
 import { BeneficiariesSection } from './consoles/admin/BeneficiariesSection'
+import { CallConsole } from './consoles/executive/CallConsole'
+import { CompletedCallsSection } from './consoles/executive/CompletedCallsSection'
+import { WaitingCallsSection } from './consoles/executive/WaitingCallsSection'
 import { GapMapSection } from './consoles/admin/GapMapSection'
 import { ConsoleLayout } from './consoles/ConsoleLayout'
 import { CONSOLES } from './consoles/consoles'
@@ -16,6 +19,8 @@ import { SplashGate } from './pages/SplashScreen'
 const SECTION_VIEWS: Record<string, ComponentType> = {
   'admin/beneficiaries': BeneficiariesSection,
   'admin/gap-map': GapMapSection,
+  'executive/waiting': WaitingCallsSection,
+  'executive/completed': CompletedCallsSection,
 }
 
 export default function App() {
@@ -35,7 +40,14 @@ export default function App() {
                   path={definition.basePath}
                   element={
                     <RequireRole role={definition.role}>
-                      <ConsoleLayout definition={definition} />
+                      {definition.role === 'executive' ? (
+                        // The Call Console needs a session that outlives section changes.
+                        <CallConsole>
+                          <ConsoleLayout definition={definition} />
+                        </CallConsole>
+                      ) : (
+                        <ConsoleLayout definition={definition} />
+                      )}
                     </RequireRole>
                   }
                 >

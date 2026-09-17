@@ -20,6 +20,11 @@ const SAME_ALLOWED = new Set([
   'language.chooseAria',
   'beneficiaries.flagsAi',
   'beneficiaries.journey.flagChip',
+  'callConsole.active.speakerSetu',
+  'callConsole.report.forCall',
+  'callConsole.report.smsPrimary',
+  'callConsole.report.whatsappPrimary',
+  'detection.confidenceShort',
 ])
 
 function flatten(value, prefix = '', out = new Map()) {
