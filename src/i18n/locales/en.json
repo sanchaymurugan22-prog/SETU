@@ -629,5 +629,214 @@
     "placed": "Placed",
     "unplaced": "Unplaced",
     "not-tracked": "Not tracked"
+  },
+  "admin": {
+    "staff": {
+      "headers": {
+        "name": "Name",
+        "district": "District",
+        "lastActive": "Last active"
+      },
+      "searchLabel": "Search staff",
+      "searchPlaceholder": "Search by name, email or district",
+      "showInactive": "Include deactivated",
+      "active": "Active",
+      "inactive": "Deactivated",
+      "deactivate": "Deactivate",
+      "reactivate": "Reactivate",
+      "empty": "No staff match this search.",
+      "joined": "Joined {{date}}",
+      "joinedToday": "Today",
+      "neverSignedIn": "Never signed in",
+      "email": "Official email",
+      "newAccount": "New account",
+      "addHint": "The account is created with the role fixed. They set their own password from the invitation email.",
+      "addError": "A name and an official email are both required.",
+      "create": "Create account",
+      "created": "{{name}} can now sign in.",
+      "createdTitle": "Account created",
+      "foot": "Deactivating keeps every past call and report; it only stops the sign-in."
+    },
+    "executives": {
+      "subtitle": "{{active}} of {{total}} active · {{calls}} calls handled",
+      "add": "Add call executive",
+      "headers": {
+        "calls": "Calls handled",
+        "transfers": "Transfers out",
+        "avgHandle": "Average call"
+      },
+      "reports": "{{count}} reports sent"
+    },
+    "resourcePersons": {
+      "subtitle": "{{count}} resource persons · {{trainees}} trainees · {{centres}} centres",
+      "add": "Add resource person",
+      "searchPlaceholder": "Search by name, centre or course",
+      "headers": {
+        "posting": "Centre and posting",
+        "courses": "Courses assigned",
+        "trainees": "Trainees",
+        "calls": "Expert calls"
+      },
+      "certified": "{{count}} certified",
+      "noCourses": "No courses yet",
+      "assign": "Assign",
+      "assignHint": "A resource person sees only the trainees at their centre, on the courses assigned here.",
+      "centre": "Training centre",
+      "foot": "Assignment decides what each resource person can see."
+    },
+    "calls": {
+      "subtitle": "{{total}} calls across the system · {{aiShare}}% closed by AI",
+      "scopeLabel": "Oversight",
+      "scopeValue": "Every call, every handler",
+      "part": {
+        "executive": "Executive calls",
+        "resourcePerson": "Resource person calls",
+        "ai": "AI calls"
+      },
+      "searchLabel": "Search calls",
+      "searchPlaceholder": "Search by person, block, summary or handler",
+      "period": {
+        "all": "All time",
+        "week": "Last 7 days",
+        "month": "This month"
+      },
+      "outcomeLabel": "AI outcome",
+      "outcomeAll": "Outcome: all",
+      "aiOutcome": {
+        "fully-handled": "Fully handled",
+        "escalated": "Escalated",
+        "follow-up": "Follow-up set",
+        "failed": "Failed"
+      },
+      "escalationReason": "Escalated: {{reason}}",
+      "confidence": "AI confidence {{score}}",
+      "headers": {
+        "when": "When",
+        "beneficiary": "Beneficiary",
+        "summary": "What happened",
+        "handledBy": "Handled by",
+        "aiOutcome": "Outcome"
+      },
+      "empty": "No calls match these filters.",
+      "foot": "Showing the most recent calls first.",
+      "funnelTitle": "Automation funnel",
+      "funnelClaim": "{{share}}% of calls were closed by the AI without a human ever joining.",
+      "funnelTotal": "{{total}} calls counted",
+      "funnelCalls": "{{count}} calls"
+    },
+    "followUps": {
+      "subtitle": "{{calls}} automated follow-up calls to {{people}} beneficiaries",
+      "engineLabel": "Engine",
+      "engineValue": "Automated follow-up, scheduled per beneficiary",
+      "searchLabel": "Search follow-ups",
+      "searchPlaceholder": "Search by name, ID or block",
+      "purposeLabel": "Purpose",
+      "purposeAll": "Purpose: all",
+      "outcomeLabel": "Outcome",
+      "outcomeAll": "Outcome: all",
+      "purpose": {
+        "did-you-enroll": "Did you enrol?",
+        "are-you-attending": "Are you attending?",
+        "any-problem": "Any problem?",
+        "did-you-get-placed": "Did you get work?",
+        "re-engagement": "Re-engagement"
+      },
+      "outcome": {
+        "answered": "Answered",
+        "no-answer": "No answer",
+        "problem-found": "Problem found",
+        "escalated": "Escalated"
+      },
+      "headers": {
+        "count": "Calls",
+        "purpose": "What was asked",
+        "last": "Last call",
+        "outcome": "Outcome",
+        "next": "Next due"
+      },
+      "noneDue": "Nothing due",
+      "empty": "No follow-ups match these filters.",
+      "foot": "The engine schedules the next call from where each person has reached.",
+      "cards": {
+        "callsLabel": "Follow-up calls",
+        "callsFoot": "Across {{people}} beneficiaries",
+        "answeredLabel": "Reached",
+        "answeredFoot": "{{count}} did not answer",
+        "problemsLabel": "Problems found",
+        "problemsFoot": "Sent on to a human"
+      }
+    },
+    "coursesCentres": {
+      "subtitle": "{{courses}} courses · {{centres}} centres · {{waiting}} waiting for a seat",
+      "addCourse": "Add course",
+      "addCentre": "Add centre",
+      "noticeTitle": "Courses and centres",
+      "tab": {
+        "courses": "Courses",
+        "centres": "Centres",
+        "allotment": "Waiting for allotment"
+      },
+      "headers": {
+        "course": "Course",
+        "nsqf": "NSQF",
+        "centres": "Centres",
+        "enrolled": "Enrolled",
+        "allotted": "Allotted",
+        "waiting": "Waiting",
+        "centre": "Training centre",
+        "courses": "Courses",
+        "seats": "Seats filled",
+        "trainer": "Resource person",
+        "block": "Block",
+        "nearest": "Nearest centre",
+        "demand": "Block demand"
+      },
+      "demandBlocks": "Wanted in {{count}} blocks with no centre",
+      "opened": "opened {{date}}",
+      "noTrainer": "None assigned",
+      "noNearest": "None within range",
+      "centresFull": "Every centre for this course is full",
+      "allotmentNote": "Blocks where the course is wanted and no centre serves it. Opening a centre here moves the waiting list across automatically, with a resource person attached.",
+      "openCentre": "Open a centre",
+      "suggestedName": "{{block}} Training Centre",
+      "capacity": "Seats",
+      "centreHint": "Everyone waiting in this block is allotted to the new centre, up to its capacity.",
+      "courseError": "Give the course a name.",
+      "centreError": "A centre needs a name and a block.",
+      "courseAdded": "{{course}} added to the course list.",
+      "centreAdded": "{{centre}} created.",
+      "centreAddedWithAllotment": "{{centre}} created. {{count}} waiting beneficiaries were allotted to it under {{trainer}}.",
+      "cards": {
+        "seatsLabel": "Seats across centres",
+        "seatsFoot": "{{allotted}} currently allotted",
+        "fillLabel": "Seats filled",
+        "fillFoot": "Capacity in use across all centres",
+        "waitingLabel": "Waiting for a seat",
+        "waitingFoot": "Across {{blocks}} blocks with no centre"
+      }
+    },
+    "flags": {
+      "subtitle": "{{open}} open of {{total}} flagged cases",
+      "sourceLabel": "Raised by",
+      "sourceValue": "Resource persons, from their trainee list",
+      "statusLabel": "Status",
+      "status": {
+        "open": "Open",
+        "assigned": "Assigned",
+        "resolved": "Resolved"
+      },
+      "raisedBy": "Flagged by {{name}} · {{date}}",
+      "assignedTo": "Assigned to {{name}}",
+      "unassigned": "Nobody assigned yet",
+      "assign": "Assign officer",
+      "reassign": "Reassign",
+      "resolve": "Mark resolved",
+      "officer": "Field officer",
+      "instruction": "What should they do?",
+      "instructionPlaceholder": "Say what you want inspected or arranged on the ground",
+      "instructionRequired": "Write an instruction so the officer knows what to do.",
+      "sendAssignment": "Send assignment",
+      "empty": "No flagged cases with this status."
+    }
   }
 }

@@ -629,5 +629,214 @@
     "placed": "নিযুক্ত",
     "unplaced": "অনিযুক্ত",
     "not-tracked": "নথিভুক্ত নয়"
+  },
+  "admin": {
+    "staff": {
+      "headers": {
+        "name": "নাম",
+        "district": "জেলা",
+        "lastActive": "শেষ সক্রিয়"
+      },
+      "searchLabel": "কর্মী খুঁজুন",
+      "searchPlaceholder": "নাম, ইমেল বা জেলা দিয়ে খুঁজুন",
+      "showInactive": "নিষ্ক্রিয়ও দেখান",
+      "active": "সক্রিয়",
+      "inactive": "নিষ্ক্রিয়",
+      "deactivate": "নিষ্ক্রিয় করুন",
+      "reactivate": "আবার সক্রিয় করুন",
+      "empty": "এই খোঁজে কোনও কর্মী মেলেনি।",
+      "joined": "{{date}}-এ যোগ দিয়েছেন",
+      "joinedToday": "আজ",
+      "neverSignedIn": "কখনও সাইন ইন করেননি",
+      "email": "সরকারি ইমেল",
+      "newAccount": "নতুন অ্যাকাউন্ট",
+      "addHint": "অ্যাকাউন্ট নির্দিষ্ট ভূমিকা নিয়েই তৈরি হয়। পাসওয়ার্ড তাঁরা আমন্ত্রণ ইমেল থেকে নিজেরাই ঠিক করেন।",
+      "addError": "নাম ও সরকারি ইমেল দুটোই দরকার।",
+      "create": "অ্যাকাউন্ট তৈরি করুন",
+      "created": "{{name}} এখন সাইন ইন করতে পারবেন।",
+      "createdTitle": "অ্যাকাউন্ট তৈরি হয়েছে",
+      "foot": "নিষ্ক্রিয় করলে পুরনো কল ও রিপোর্ট থেকে যায়; কেবল সাইন-ইন বন্ধ হয়।"
+    },
+    "executives": {
+      "subtitle": "{{total}}-এর মধ্যে {{active}} সক্রিয় · {{calls}}টি কল সামলানো হয়েছে",
+      "add": "কল এক্সিকিউটিভ যোগ করুন",
+      "headers": {
+        "calls": "সামলানো কল",
+        "transfers": "স্থানান্তর",
+        "avgHandle": "গড় কল"
+      },
+      "reports": "{{count}}টি রিপোর্ট পাঠানো"
+    },
+    "resourcePersons": {
+      "subtitle": "{{count}} জন রিসোর্স পার্সন · {{trainees}} প্রশিক্ষণার্থী · {{centres}} কেন্দ্র",
+      "add": "রিসোর্স পার্সন যোগ করুন",
+      "searchPlaceholder": "নাম, কেন্দ্র বা কোর্স দিয়ে খুঁজুন",
+      "headers": {
+        "posting": "কেন্দ্র ও পোস্টিং",
+        "courses": "দেওয়া কোর্স",
+        "trainees": "প্রশিক্ষণার্থী",
+        "calls": "বিশেষজ্ঞ কল"
+      },
+      "certified": "{{count}} জন শংসাপত্রপ্রাপ্ত",
+      "noCourses": "এখনও কোনও কোর্স নেই",
+      "assign": "দায়িত্ব দিন",
+      "assignHint": "রিসোর্স পার্সন কেবল নিজের কেন্দ্রের, এখানে দেওয়া কোর্সের প্রশিক্ষণার্থীদেরই দেখেন।",
+      "centre": "প্রশিক্ষণ কেন্দ্র",
+      "foot": "এই দায়িত্বই ঠিক করে কে কী দেখতে পাবেন।"
+    },
+    "calls": {
+      "subtitle": "গোটা ব্যবস্থায় {{total}}টি কল · {{aiShare}}% সামলেছে এআই",
+      "scopeLabel": "তদারকি",
+      "scopeValue": "প্রতিটি কল, প্রত্যেক হ্যান্ডলার",
+      "part": {
+        "executive": "এক্সিকিউটিভ কল",
+        "resourcePerson": "রিসোর্স পার্সন কল",
+        "ai": "এআই কল"
+      },
+      "searchLabel": "কল খুঁজুন",
+      "searchPlaceholder": "ব্যক্তি, ব্লক, সারাংশ বা হ্যান্ডলার দিয়ে খুঁজুন",
+      "period": {
+        "all": "সব সময়",
+        "week": "গত ৭ দিন",
+        "month": "এই মাস"
+      },
+      "outcomeLabel": "এআই ফল",
+      "outcomeAll": "ফল: সব",
+      "aiOutcome": {
+        "fully-handled": "সম্পূর্ণ সামলানো",
+        "escalated": "উপরে পাঠানো",
+        "follow-up": "ফলো-আপ ধার্য",
+        "failed": "ব্যর্থ"
+      },
+      "escalationReason": "উপরে পাঠানো: {{reason}}",
+      "confidence": "এআই আস্থা {{score}}",
+      "headers": {
+        "when": "কখন",
+        "beneficiary": "উপভোক্তা",
+        "summary": "কী হয়েছিল",
+        "handledBy": "কে সামলেছেন",
+        "aiOutcome": "ফল"
+      },
+      "empty": "এই ফিল্টারে কোনও কল মেলেনি।",
+      "foot": "সাম্প্রতিকতম কল আগে দেখানো হচ্ছে।",
+      "funnelTitle": "স্বয়ংক্রিয়তার ফানেল",
+      "funnelClaim": "{{share}}% কল এআই একাই শেষ করেছে, কোনও মানুষ যুক্ত হয়নি।",
+      "funnelTotal": "{{total}}টি কল গোনা হয়েছে",
+      "funnelCalls": "{{count}}টি কল"
+    },
+    "followUps": {
+      "subtitle": "{{people}} জন উপভোক্তাকে {{calls}}টি স্বয়ংক্রিয় ফলো-আপ কল",
+      "engineLabel": "ইঞ্জিন",
+      "engineValue": "স্বয়ংক্রিয় ফলো-আপ, প্রত্যেকের জন্য নির্ধারিত",
+      "searchLabel": "ফলো-আপ খুঁজুন",
+      "searchPlaceholder": "নাম, আইডি বা ব্লক দিয়ে খুঁজুন",
+      "purposeLabel": "উদ্দেশ্য",
+      "purposeAll": "উদ্দেশ্য: সব",
+      "outcomeLabel": "ফল",
+      "outcomeAll": "ফল: সব",
+      "purpose": {
+        "did-you-enroll": "ভর্তি হয়েছেন?",
+        "are-you-attending": "ক্লাসে আসছেন?",
+        "any-problem": "কোনও সমস্যা?",
+        "did-you-get-placed": "কাজ পেয়েছেন?",
+        "re-engagement": "ফের যুক্ত করা"
+      },
+      "outcome": {
+        "answered": "উত্তর মিলেছে",
+        "no-answer": "উত্তর মেলেনি",
+        "problem-found": "সমস্যা পাওয়া গেছে",
+        "escalated": "উপরে পাঠানো"
+      },
+      "headers": {
+        "count": "কল",
+        "purpose": "কী জিজ্ঞেস করা হয়েছে",
+        "last": "শেষ কল",
+        "outcome": "ফল",
+        "next": "পরেরটি কবে"
+      },
+      "noneDue": "কিছু বাকি নেই",
+      "empty": "এই ফিল্টারে কোনও ফলো-আপ মেলেনি।",
+      "foot": "প্রত্যেকে কোথায় পৌঁছেছেন দেখে ইঞ্জিন পরের কল ঠিক করে।",
+      "cards": {
+        "callsLabel": "ফলো-আপ কল",
+        "callsFoot": "{{people}} জন উপভোক্তার মধ্যে",
+        "answeredLabel": "যোগাযোগ হয়েছে",
+        "answeredFoot": "{{count}} জন উত্তর দেননি",
+        "problemsLabel": "পাওয়া সমস্যা",
+        "problemsFoot": "মানুষের কাছে পাঠানো হয়েছে"
+      }
+    },
+    "coursesCentres": {
+      "subtitle": "{{courses}}টি কোর্স · {{centres}}টি কেন্দ্র · {{waiting}} জন আসনের অপেক্ষায়",
+      "addCourse": "কোর্স যোগ করুন",
+      "addCentre": "কেন্দ্র যোগ করুন",
+      "noticeTitle": "কোর্স ও কেন্দ্র",
+      "tab": {
+        "courses": "কোর্স",
+        "centres": "কেন্দ্র",
+        "allotment": "বরাদ্দের অপেক্ষায়"
+      },
+      "headers": {
+        "course": "কোর্স",
+        "nsqf": "এনএসকিউএফ",
+        "centres": "কেন্দ্র",
+        "enrolled": "ভর্তি",
+        "allotted": "বরাদ্দ",
+        "waiting": "অপেক্ষায়",
+        "centre": "প্রশিক্ষণ কেন্দ্র",
+        "courses": "কোর্স",
+        "seats": "পূর্ণ আসন",
+        "trainer": "রিসোর্স পার্সন",
+        "block": "ব্লক",
+        "nearest": "নিকটতম কেন্দ্র",
+        "demand": "ব্লকের চাহিদা"
+      },
+      "demandBlocks": "{{count}}টি ব্লকে চাহিদা, কেন্দ্র নেই",
+      "opened": "{{date}}-এ খোলা",
+      "noTrainer": "কেউ নিযুক্ত নন",
+      "noNearest": "নাগালের মধ্যে নেই",
+      "centresFull": "এই কোর্সের সব কেন্দ্র পূর্ণ",
+      "allotmentNote": "যে ব্লকে কোর্সের চাহিদা আছে কিন্তু কোনও কেন্দ্র নেই। এখানে কেন্দ্র খুললেই অপেক্ষমাণ তালিকা রিসোর্স পার্সনসহ নিজে থেকেই সেখানে চলে যায়।",
+      "openCentre": "কেন্দ্র খুলুন",
+      "suggestedName": "{{block}} প্রশিক্ষণ কেন্দ্র",
+      "capacity": "আসন",
+      "centreHint": "এই ব্লকের সব অপেক্ষমাণ ব্যক্তি ধারণক্ষমতা পর্যন্ত নতুন কেন্দ্রে বরাদ্দ হন।",
+      "courseError": "কোর্সের নাম দিন।",
+      "centreError": "কেন্দ্রের নাম ও ব্লক দুটোই দরকার।",
+      "courseAdded": "{{course}} তালিকায় যুক্ত হয়েছে।",
+      "centreAdded": "{{centre}} তৈরি হয়েছে।",
+      "centreAddedWithAllotment": "{{centre}} তৈরি হয়েছে। {{count}} জন অপেক্ষমাণ উপভোক্তা {{trainer}}-এর অধীনে সেখানে বরাদ্দ হয়েছেন।",
+      "cards": {
+        "seatsLabel": "কেন্দ্রগুলিতে মোট আসন",
+        "seatsFoot": "{{allotted}}টি এখন বরাদ্দ",
+        "fillLabel": "পূর্ণ আসন",
+        "fillFoot": "সব কেন্দ্রে ব্যবহৃত ধারণক্ষমতা",
+        "waitingLabel": "আসনের অপেক্ষায়",
+        "waitingFoot": "কেন্দ্রহীন {{blocks}}টি ব্লকে"
+      }
+    },
+    "flags": {
+      "subtitle": "{{total}}টির মধ্যে {{open}}টি খোলা কেস",
+      "sourceLabel": "কে পাঠিয়েছেন",
+      "sourceValue": "রিসোর্স পার্সন, নিজের প্রশিক্ষণার্থী তালিকা থেকে",
+      "statusLabel": "অবস্থা",
+      "status": {
+        "open": "খোলা",
+        "assigned": "দায়িত্ব দেওয়া",
+        "resolved": "নিষ্পত্তি"
+      },
+      "raisedBy": "{{name}} পাঠিয়েছেন · {{date}}",
+      "assignedTo": "{{name}}-কে দেওয়া হয়েছে",
+      "unassigned": "এখনও কাউকে দেওয়া হয়নি",
+      "assign": "আধিকারিক নিযুক্ত করুন",
+      "reassign": "বদলান",
+      "resolve": "নিষ্পত্তি চিহ্নিত করুন",
+      "officer": "ক্ষেত্র আধিকারিক",
+      "instruction": "তাঁকে কী করতে হবে?",
+      "instructionPlaceholder": "মাঠপর্যায়ে কী দেখতে বা ব্যবস্থা করতে হবে লিখুন",
+      "instructionRequired": "নির্দেশ লিখুন, যাতে আধিকারিক বোঝেন কী করতে হবে।",
+      "sendAssignment": "দায়িত্ব পাঠান",
+      "empty": "এই অবস্থায় কোনও কেস নেই।"
+    }
   }
 }

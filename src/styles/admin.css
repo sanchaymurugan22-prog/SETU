@@ -1,0 +1,472 @@
+/* Admin console — staff directories, system calls, follow-ups, courses, flags. */
+
+.admin-header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.admin-header > .btn,
+.admin-header-actions,
+.admin-header .rp-header-side {
+  margin-left: auto;
+}
+
+.admin-header-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.admin-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.admin-panel {
+  background: var(--white);
+  border: 1px solid var(--grey-300);
+  min-width: 0;
+  overflow-x: auto;
+}
+
+.admin-panel-note {
+  margin: 0;
+  padding: 12px 16px;
+  background: var(--cyan-50);
+  border-bottom: 1px solid var(--grey-200);
+  font-size: 12.5px;
+  color: var(--ink);
+}
+
+.admin-table-head {
+  padding: 10px 16px;
+  background: var(--grey-200);
+  border-bottom: 1px solid var(--grey-300);
+  font-family: var(--font-heading);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--grey-700);
+}
+
+.admin-table-head span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.admin-rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.admin-row {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--grey-200);
+  align-items: center;
+}
+
+.admin-row:hover {
+  background: var(--paper);
+}
+
+/* One grid per table, shared by its head and rows. */
+
+.admin-table-head,
+.admin-row {
+  display: grid;
+  gap: 12px;
+}
+
+.admin-exec-grid {
+  grid-template-columns: minmax(0, 1.8fr) minmax(0, 1.2fr) 0.8fr 0.7fr 0.8fr 0.9fr 190px;
+  min-width: 1040px;
+}
+
+.admin-rp-grid {
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.4fr) minmax(0, 1.6fr) 0.9fr 0.7fr 120px;
+  min-width: 1020px;
+}
+
+.admin-calls-grid {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) minmax(0, 2.4fr) minmax(0, 1.2fr) minmax(0, 1fr);
+  min-width: 1040px;
+}
+
+.admin-followup-grid {
+  grid-template-columns: minmax(0, 1.5fr) 0.7fr minmax(0, 2fr) minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 0.9fr);
+  min-width: 1040px;
+}
+
+.admin-course-grid {
+  grid-template-columns: minmax(0, 2fr) 1fr 0.8fr 0.9fr 0.9fr 0.9fr;
+  min-width: 900px;
+}
+
+.admin-centre-grid {
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1.6fr) minmax(0, 1.2fr) 0.8fr minmax(0, 1fr);
+  min-width: 960px;
+}
+
+.admin-allotment-grid {
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1.2fr) 0.8fr minmax(0, 1.2fr) 150px;
+  min-width: 900px;
+}
+
+.admin-row-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.admin-course-chip {
+  margin: 0 4px 3px 0;
+}
+
+.admin-count {
+  font-family: var(--font-heading);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--setu-blue);
+}
+
+.admin-fill {
+  margin-top: 5px;
+}
+
+.admin-escalation {
+  display: block;
+  margin-top: 3px;
+  font-size: 11px;
+  color: var(--magenta-ink);
+}
+
+/* ── Tabs ── */
+
+.admin-tabs {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--grey-300);
+}
+
+.admin-tab {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 16px;
+  background: none;
+  border: 0;
+  border-bottom: 3px solid transparent;
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--grey-700);
+  cursor: pointer;
+}
+
+.admin-tab.is-active {
+  color: var(--setu-blue);
+  border-bottom-color: var(--signal-cyan);
+}
+
+.admin-tab-count {
+  font-size: 11px;
+  padding: 2px 6px;
+  background: var(--grey-200);
+  color: var(--grey-700);
+}
+
+.admin-tab.is-active .admin-tab-count {
+  background: var(--cyan-100);
+  color: var(--teal);
+}
+
+/* ── Automation funnel ── */
+
+.admin-funnel {
+  background: var(--white);
+  border: 1px solid var(--grey-300);
+  border-top: 3px solid var(--signal-cyan);
+  padding: 16px 18px;
+}
+
+.admin-funnel-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.admin-funnel-eyebrow {
+  font-family: var(--font-heading);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--grey-700);
+}
+
+.admin-funnel-claim {
+  margin: 4px 0 0;
+  font-family: var(--font-heading);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--setu-blue);
+  max-width: 70ch;
+}
+
+.admin-funnel-total {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--grey-700);
+}
+
+.admin-funnel-bar {
+  display: flex;
+  height: 22px;
+  margin: 14px 0 10px;
+  background: var(--grey-200);
+  overflow: hidden;
+}
+
+.admin-funnel-slice {
+  height: 100%;
+}
+
+.admin-funnel-slice.is-ai {
+  background: var(--signal-cyan);
+}
+
+.admin-funnel-slice.is-executive {
+  background: var(--setu-blue);
+}
+
+.admin-funnel-slice.is-resourcePerson {
+  background: var(--magenta);
+}
+
+.admin-funnel-legend {
+  display: flex;
+  gap: 22px;
+  flex-wrap: wrap;
+}
+
+.admin-funnel-item {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  font-size: 12.5px;
+}
+
+.admin-funnel-dot {
+  width: 10px;
+  height: 10px;
+  flex: none;
+}
+
+.admin-funnel-dot.is-ai {
+  background: var(--signal-cyan);
+}
+
+.admin-funnel-dot.is-executive {
+  background: var(--setu-blue);
+}
+
+.admin-funnel-dot.is-resourcePerson {
+  background: var(--magenta);
+}
+
+.admin-funnel-value {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--setu-blue);
+}
+
+.admin-funnel-sub {
+  color: var(--grey-700);
+  font-size: 11.5px;
+}
+
+.admin-outcome-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--grey-200);
+}
+
+.admin-outcome {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.admin-outcome-value {
+  font-family: var(--font-heading);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--setu-blue);
+}
+
+.admin-outcome-value.is-escalated {
+  color: var(--amber);
+}
+
+.admin-outcome-value.is-failed {
+  color: var(--magenta);
+}
+
+.admin-outcome-label {
+  font-size: 11.5px;
+  color: var(--grey-700);
+}
+
+.admin-stat-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 12px;
+}
+
+/* ── Status chips specific to these sections ── */
+
+.chip.is-ai-fully-handled {
+  background: var(--cyan-100);
+  color: var(--teal);
+}
+
+.chip.is-ai-escalated {
+  background: #fdf3cf;
+  color: #7a5c00;
+}
+
+.chip.is-ai-follow-up {
+  background: var(--grey-200);
+  color: var(--grey-700);
+}
+
+.chip.is-ai-failed,
+.chip.is-followup-escalated {
+  background: var(--pink-50);
+  color: var(--magenta-ink);
+}
+
+.chip.is-followup-answered {
+  background: var(--cyan-100);
+  color: var(--teal);
+}
+
+.chip.is-followup-no-answer {
+  background: var(--grey-200);
+  color: var(--grey-700);
+}
+
+.chip.is-followup-problem-found {
+  background: #fdf3cf;
+  color: #7a5c00;
+}
+
+/* ── Flags ── */
+
+.admin-flag-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  gap: 12px;
+  align-items: start;
+}
+
+.admin-flag {
+  background: var(--white);
+  border: 1px solid var(--grey-300);
+  border-left: 4px solid var(--grey-500);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.admin-flag.is-open {
+  border-left-color: var(--magenta-bright);
+}
+
+.admin-flag.is-assigned {
+  border-left-color: var(--signal-cyan);
+}
+
+.admin-flag.is-resolved {
+  border-left-color: var(--teal);
+  opacity: 0.86;
+}
+
+.admin-flag-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.admin-flag-head h2 {
+  margin: 2px 0;
+  font-size: 18px;
+}
+
+.admin-flag-chips {
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+}
+
+.admin-flag-note {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.admin-flag-foot {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding-top: 10px;
+  border-top: 1px solid var(--grey-200);
+}
+
+.admin-flag-assigned {
+  font-size: 12.5px;
+  color: var(--teal);
+}
+
+.admin-flag-unassigned {
+  font-size: 12.5px;
+  color: var(--magenta-ink);
+}
+
+.admin-flag-actions {
+  margin-left: auto;
+  display: flex;
+  gap: 8px;
+}
+
+.admin-course-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+@media (max-width: 720px) {
+  .admin-flag-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

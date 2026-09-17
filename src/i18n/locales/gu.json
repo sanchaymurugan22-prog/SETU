@@ -629,5 +629,214 @@
     "placed": "નિયુક્ત",
     "unplaced": "અનિયુક્ત",
     "not-tracked": "નોંધાયેલ નથી"
+  },
+  "admin": {
+    "staff": {
+      "headers": {
+        "name": "નામ",
+        "district": "જિલ્લો",
+        "lastActive": "છેલ્લી સક્રિયતા"
+      },
+      "searchLabel": "કર્મચારી શોધો",
+      "searchPlaceholder": "નામ, ઈમેલ કે જિલ્લાથી શોધો",
+      "showInactive": "નિષ્ક્રિય પણ બતાવો",
+      "active": "સક્રિય",
+      "inactive": "નિષ્ક્રિય",
+      "deactivate": "નિષ્ક્રિય કરો",
+      "reactivate": "ફરી સક્રિય કરો",
+      "empty": "આ શોધમાં કોઈ કર્મચારી મળ્યો નથી.",
+      "joined": "{{date}}ના રોજ જોડાયા",
+      "joinedToday": "આજે",
+      "neverSignedIn": "ક્યારેય સાઇન ઇન કર્યું નથી",
+      "email": "સત્તાવાર ઈમેલ",
+      "newAccount": "નવું ખાતું",
+      "addHint": "ખાતું નક્કી ભૂમિકા સાથે બને છે. પાસવર્ડ તેઓ આમંત્રણ ઈમેલથી જાતે નક્કી કરે છે.",
+      "addError": "નામ અને સત્તાવાર ઈમેલ બંને જરૂરી છે.",
+      "create": "ખાતું બનાવો",
+      "created": "{{name}} હવે સાઇન ઇન કરી શકે છે.",
+      "createdTitle": "ખાતું બન્યું",
+      "foot": "નિષ્ક્રિય કરવાથી જૂના કોલ અને અહેવાલ રહે છે; ફક્ત સાઇન-ઇન બંધ થાય છે."
+    },
+    "executives": {
+      "subtitle": "{{total}}માંથી {{active}} સક્રિય · {{calls}} કોલ સંભાળ્યા",
+      "add": "કોલ એક્ઝિક્યુટિવ ઉમેરો",
+      "headers": {
+        "calls": "સંભાળેલા કોલ",
+        "transfers": "તબદીલ કરેલા",
+        "avgHandle": "સરેરાશ કોલ"
+      },
+      "reports": "{{count}} અહેવાલ મોકલ્યા"
+    },
+    "resourcePersons": {
+      "subtitle": "{{count}} સંસાધન વ્યક્તિ · {{trainees}} તાલીમાર્થી · {{centres}} કેન્દ્રો",
+      "add": "સંસાધન વ્યક્તિ ઉમેરો",
+      "searchPlaceholder": "નામ, કેન્દ્ર કે અભ્યાસક્રમથી શોધો",
+      "headers": {
+        "posting": "કેન્દ્ર અને નિમણૂક",
+        "courses": "સોંપેલા અભ્યાસક્રમ",
+        "trainees": "તાલીમાર્થી",
+        "calls": "નિષ્ણાત કોલ"
+      },
+      "certified": "{{count}} પ્રમાણિત",
+      "noCourses": "હજી કોઈ અભ્યાસક્રમ નથી",
+      "assign": "સોંપો",
+      "assignHint": "સંસાધન વ્યક્તિ ફક્ત પોતાના કેન્દ્રના, અહીં સોંપેલા અભ્યાસક્રમના તાલીમાર્થી જુએ છે.",
+      "centre": "તાલીમ કેન્દ્ર",
+      "foot": "આ જ નક્કી કરે છે કે કોણ શું જોઈ શકે."
+    },
+    "calls": {
+      "subtitle": "સમગ્ર તંત્રમાં {{total}} કોલ · {{aiShare}}% એઆઈએ પતાવ્યા",
+      "scopeLabel": "દેખરેખ",
+      "scopeValue": "દરેક કોલ, દરેક સંભાળનાર",
+      "part": {
+        "executive": "એક્ઝિક્યુટિવ કોલ",
+        "resourcePerson": "સંસાધન વ્યક્તિ કોલ",
+        "ai": "એઆઈ કોલ"
+      },
+      "searchLabel": "કોલ શોધો",
+      "searchPlaceholder": "વ્યક્તિ, તાલુકો, સારાંશ કે સંભાળનારથી શોધો",
+      "period": {
+        "all": "બધો સમય",
+        "week": "છેલ્લા ૭ દિવસ",
+        "month": "આ મહિને"
+      },
+      "outcomeLabel": "એઆઈ પરિણામ",
+      "outcomeAll": "પરિણામ: બધા",
+      "aiOutcome": {
+        "fully-handled": "સંપૂર્ણ પતાવ્યું",
+        "escalated": "આગળ મોકલ્યું",
+        "follow-up": "અનુવર્તી નક્કી",
+        "failed": "નિષ્ફળ"
+      },
+      "escalationReason": "આગળ મોકલ્યું: {{reason}}",
+      "confidence": "એઆઈ વિશ્વાસ {{score}}",
+      "headers": {
+        "when": "ક્યારે",
+        "beneficiary": "લાભાર્થી",
+        "summary": "શું થયું",
+        "handledBy": "કોણે સંભાળ્યું",
+        "aiOutcome": "પરિણામ"
+      },
+      "empty": "આ ફિલ્ટરથી કોઈ કોલ મળ્યો નથી.",
+      "foot": "સૌથી તાજેતરના કોલ પહેલાં બતાવ્યા છે.",
+      "funnelTitle": "સ્વયંસંચાલન ફનલ",
+      "funnelClaim": "{{share}}% કોલ એઆઈએ કોઈ માણસ જોડાયા વિના જ પૂરા કર્યા.",
+      "funnelTotal": "{{total}} કોલ ગણ્યા",
+      "funnelCalls": "{{count}} કોલ"
+    },
+    "followUps": {
+      "subtitle": "{{people}} લાભાર્થીઓને {{calls}} સ્વયંસંચાલિત અનુવર્તી કોલ",
+      "engineLabel": "એન્જિન",
+      "engineValue": "સ્વયંસંચાલિત અનુવર્તી, દરેક માટે નક્કી",
+      "searchLabel": "અનુવર્તી શોધો",
+      "searchPlaceholder": "નામ, આઈડી કે તાલુકાથી શોધો",
+      "purposeLabel": "હેતુ",
+      "purposeAll": "હેતુ: બધા",
+      "outcomeLabel": "પરિણામ",
+      "outcomeAll": "પરિણામ: બધા",
+      "purpose": {
+        "did-you-enroll": "પ્રવેશ લીધો?",
+        "are-you-attending": "વર્ગમાં આવો છો?",
+        "any-problem": "કોઈ મુશ્કેલી?",
+        "did-you-get-placed": "કામ મળ્યું?",
+        "re-engagement": "ફરી જોડાણ"
+      },
+      "outcome": {
+        "answered": "જવાબ મળ્યો",
+        "no-answer": "જવાબ નહીં",
+        "problem-found": "મુશ્કેલી મળી",
+        "escalated": "આગળ મોકલ્યું"
+      },
+      "headers": {
+        "count": "કોલ",
+        "purpose": "શું પૂછ્યું",
+        "last": "છેલ્લો કોલ",
+        "outcome": "પરિણામ",
+        "next": "આગળનો ક્યારે"
+      },
+      "noneDue": "કંઈ બાકી નથી",
+      "empty": "આ ફિલ્ટરથી કોઈ અનુવર્તી મળી નથી.",
+      "foot": "દરેક ક્યાં પહોંચ્યું છે તે જોઈને એન્જિન આગળનો કોલ નક્કી કરે છે.",
+      "cards": {
+        "callsLabel": "અનુવર્તી કોલ",
+        "callsFoot": "{{people}} લાભાર્થીઓમાં",
+        "answeredLabel": "સંપર્ક થયો",
+        "answeredFoot": "{{count}}એ જવાબ ન આપ્યો",
+        "problemsLabel": "મળેલી મુશ્કેલીઓ",
+        "problemsFoot": "માણસ પાસે મોકલી"
+      }
+    },
+    "coursesCentres": {
+      "subtitle": "{{courses}} અભ્યાસક્રમ · {{centres}} કેન્દ્રો · {{waiting}} બેઠકની રાહમાં",
+      "addCourse": "અભ્યાસક્રમ ઉમેરો",
+      "addCentre": "કેન્દ્ર ઉમેરો",
+      "noticeTitle": "અભ્યાસક્રમ અને કેન્દ્રો",
+      "tab": {
+        "courses": "અભ્યાસક્રમ",
+        "centres": "કેન્દ્રો",
+        "allotment": "ફાળવણીની રાહમાં"
+      },
+      "headers": {
+        "course": "અભ્યાસક્રમ",
+        "nsqf": "એનએસક્યુએફ",
+        "centres": "કેન્દ્રો",
+        "enrolled": "પ્રવેશિત",
+        "allotted": "ફાળવેલ",
+        "waiting": "રાહમાં",
+        "centre": "તાલીમ કેન્દ્ર",
+        "courses": "અભ્યાસક્રમ",
+        "seats": "ભરાયેલી બેઠકો",
+        "trainer": "સંસાધન વ્યક્તિ",
+        "block": "તાલુકો",
+        "nearest": "નજીકનું કેન્દ્ર",
+        "demand": "તાલુકાની માંગ"
+      },
+      "demandBlocks": "{{count}} તાલુકામાં માંગ, કેન્દ્ર નહીં",
+      "opened": "{{date}}ના રોજ શરૂ",
+      "noTrainer": "કોઈ નિમાયું નથી",
+      "noNearest": "પહોંચમાં કોઈ નથી",
+      "centresFull": "આ અભ્યાસક્રમનાં બધાં કેન્દ્રો ભરેલાં છે",
+      "allotmentNote": "જ્યાં અભ્યાસક્રમની માંગ છે પણ કેન્દ્ર નથી એવા તાલુકા. અહીં કેન્દ્ર ખોલતાં જ રાહ યાદી સંસાધન વ્યક્તિ સાથે આપોઆપ ત્યાં જાય છે.",
+      "openCentre": "કેન્દ્ર ખોલો",
+      "suggestedName": "{{block}} તાલીમ કેન્દ્ર",
+      "capacity": "બેઠકો",
+      "centreHint": "આ તાલુકાના બધા રાહ જોતા લોકો ક્ષમતા સુધી નવા કેન્દ્રમાં ફાળવાય છે.",
+      "courseError": "અભ્યાસક્રમનું નામ આપો.",
+      "centreError": "કેન્દ્ર માટે નામ અને તાલુકો જરૂરી છે.",
+      "courseAdded": "{{course}} યાદીમાં ઉમેરાયો.",
+      "centreAdded": "{{centre}} બન્યું.",
+      "centreAddedWithAllotment": "{{centre}} બન્યું. {{count}} રાહ જોતા લાભાર્થી {{trainer}} હેઠળ ત્યાં ફાળવાયા.",
+      "cards": {
+        "seatsLabel": "કેન્દ્રોમાં કુલ બેઠકો",
+        "seatsFoot": "{{allotted}} હાલ ફાળવેલી",
+        "fillLabel": "ભરાયેલી બેઠકો",
+        "fillFoot": "બધાં કેન્દ્રોમાં વપરાતી ક્ષમતા",
+        "waitingLabel": "બેઠકની રાહમાં",
+        "waitingFoot": "કેન્દ્ર વગરના {{blocks}} તાલુકામાં"
+      }
+    },
+    "flags": {
+      "subtitle": "{{total}}માંથી {{open}} ખુલ્લા કેસ",
+      "sourceLabel": "કોણે મોકલ્યું",
+      "sourceValue": "સંસાધન વ્યક્તિ, પોતાની તાલીમાર્થી યાદીમાંથી",
+      "statusLabel": "સ્થિતિ",
+      "status": {
+        "open": "ખુલ્લું",
+        "assigned": "સોંપાયેલું",
+        "resolved": "ઉકેલાયેલું"
+      },
+      "raisedBy": "{{name}}એ મોકલ્યું · {{date}}",
+      "assignedTo": "{{name}}ને સોંપાયું",
+      "unassigned": "હજી કોઈને સોંપાયું નથી",
+      "assign": "અધિકારી નીમો",
+      "reassign": "બદલો",
+      "resolve": "ઉકેલાયેલું ગણો",
+      "officer": "ક્ષેત્ર અધિકારી",
+      "instruction": "તેમણે શું કરવાનું?",
+      "instructionPlaceholder": "સ્થળ પર શું જોવાનું કે કરાવવાનું છે તે લખો",
+      "instructionRequired": "સૂચના લખો જેથી અધિકારીને ખબર પડે કે શું કરવાનું છે.",
+      "sendAssignment": "સોંપણી મોકલો",
+      "empty": "આ સ્થિતિમાં કોઈ કેસ નથી."
+    }
   }
 }

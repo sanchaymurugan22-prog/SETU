@@ -629,5 +629,214 @@
     "placed": "नियुक्त",
     "unplaced": "अनियुक्त",
     "not-tracked": "नोंद नाही"
+  },
+  "admin": {
+    "staff": {
+      "headers": {
+        "name": "नाव",
+        "district": "जिल्हा",
+        "lastActive": "शेवटची सक्रियता"
+      },
+      "searchLabel": "कर्मचारी शोधा",
+      "searchPlaceholder": "नाव, ईमेल किंवा जिल्ह्याने शोधा",
+      "showInactive": "निष्क्रियसुद्धा दाखवा",
+      "active": "सक्रिय",
+      "inactive": "निष्क्रिय",
+      "deactivate": "निष्क्रिय करा",
+      "reactivate": "पुन्हा सक्रिय करा",
+      "empty": "या शोधात कोणीही आढळले नाही.",
+      "joined": "{{date}} रोजी रुजू",
+      "joinedToday": "आज",
+      "neverSignedIn": "कधीही साइन इन केले नाही",
+      "email": "अधिकृत ईमेल",
+      "newAccount": "नवे खाते",
+      "addHint": "खाते ठरलेल्या भूमिकेसह तयार होते. पासवर्ड ते आमंत्रण ईमेलमधून स्वतः ठरवतात.",
+      "addError": "नाव आणि अधिकृत ईमेल दोन्ही आवश्यक आहेत.",
+      "create": "खाते तयार करा",
+      "created": "{{name}} आता साइन इन करू शकतात.",
+      "createdTitle": "खाते तयार झाले",
+      "foot": "निष्क्रिय केल्यावर जुने कॉल आणि अहवाल राहतात; फक्त साइन-इन बंद होते."
+    },
+    "executives": {
+      "subtitle": "{{total}} पैकी {{active}} सक्रिय · {{calls}} कॉल हाताळले",
+      "add": "कॉल कार्यकारी जोडा",
+      "headers": {
+        "calls": "हाताळलेले कॉल",
+        "transfers": "वर्ग केलेले",
+        "avgHandle": "सरासरी कॉल"
+      },
+      "reports": "{{count}} अहवाल पाठवले"
+    },
+    "resourcePersons": {
+      "subtitle": "{{count}} संसाधन व्यक्ती · {{trainees}} प्रशिक्षणार्थी · {{centres}} केंद्रे",
+      "add": "संसाधन व्यक्ती जोडा",
+      "searchPlaceholder": "नाव, केंद्र किंवा अभ्यासक्रमाने शोधा",
+      "headers": {
+        "posting": "केंद्र आणि नियुक्ती",
+        "courses": "दिलेले अभ्यासक्रम",
+        "trainees": "प्रशिक्षणार्थी",
+        "calls": "तज्ज्ञ कॉल"
+      },
+      "certified": "{{count}} प्रमाणित",
+      "noCourses": "अद्याप अभ्यासक्रम नाही",
+      "assign": "नेमून द्या",
+      "assignHint": "संसाधन व्यक्ती फक्त आपल्या केंद्रातील, इथे दिलेल्या अभ्यासक्रमांचे प्रशिक्षणार्थी पाहतात.",
+      "centre": "प्रशिक्षण केंद्र",
+      "foot": "हेच ठरवते की कोणती व्यक्ती काय पाहू शकते."
+    },
+    "calls": {
+      "subtitle": "संपूर्ण प्रणालीत {{total}} कॉल · {{aiShare}}% एआयने हाताळले",
+      "scopeLabel": "देखरेख",
+      "scopeValue": "प्रत्येक कॉल, प्रत्येक हाताळणारा",
+      "part": {
+        "executive": "कार्यकारी कॉल",
+        "resourcePerson": "संसाधन व्यक्ती कॉल",
+        "ai": "एआय कॉल"
+      },
+      "searchLabel": "कॉल शोधा",
+      "searchPlaceholder": "व्यक्ती, तालुका, सारांश किंवा हाताळणाऱ्याने शोधा",
+      "period": {
+        "all": "सर्व काळ",
+        "week": "मागील ७ दिवस",
+        "month": "या महिन्यात"
+      },
+      "outcomeLabel": "एआय निष्कर्ष",
+      "outcomeAll": "निष्कर्ष: सर्व",
+      "aiOutcome": {
+        "fully-handled": "पूर्ण हाताळले",
+        "escalated": "पुढे पाठवले",
+        "follow-up": "पाठपुरावा ठरवला",
+        "failed": "अयशस्वी"
+      },
+      "escalationReason": "पुढे पाठवले: {{reason}}",
+      "confidence": "एआय विश्वास {{score}}",
+      "headers": {
+        "when": "केव्हा",
+        "beneficiary": "लाभार्थी",
+        "summary": "काय घडले",
+        "handledBy": "कोणी हाताळले",
+        "aiOutcome": "निष्कर्ष"
+      },
+      "empty": "या फिल्टरनुसार कॉल आढळले नाहीत.",
+      "foot": "सर्वात अलीकडचे कॉल आधी दाखवले आहेत.",
+      "funnelTitle": "स्वयंचलन फनेल",
+      "funnelClaim": "{{share}}% कॉल एआयने कोणताही माणूस न जोडता पूर्ण केले.",
+      "funnelTotal": "{{total}} कॉल मोजले",
+      "funnelCalls": "{{count}} कॉल"
+    },
+    "followUps": {
+      "subtitle": "{{people}} लाभार्थींना {{calls}} स्वयंचलित पाठपुरावा कॉल",
+      "engineLabel": "इंजिन",
+      "engineValue": "स्वयंचलित पाठपुरावा, प्रत्येकासाठी ठरवलेला",
+      "searchLabel": "पाठपुरावा शोधा",
+      "searchPlaceholder": "नाव, आयडी किंवा तालुक्याने शोधा",
+      "purposeLabel": "उद्देश",
+      "purposeAll": "उद्देश: सर्व",
+      "outcomeLabel": "निष्कर्ष",
+      "outcomeAll": "निष्कर्ष: सर्व",
+      "purpose": {
+        "did-you-enroll": "प्रवेश घेतला का?",
+        "are-you-attending": "वर्गाला येताय का?",
+        "any-problem": "काही अडचण?",
+        "did-you-get-placed": "काम मिळाले का?",
+        "re-engagement": "पुन्हा जोडणी"
+      },
+      "outcome": {
+        "answered": "उत्तर मिळाले",
+        "no-answer": "उत्तर नाही",
+        "problem-found": "अडचण आढळली",
+        "escalated": "पुढे पाठवले"
+      },
+      "headers": {
+        "count": "कॉल",
+        "purpose": "काय विचारले",
+        "last": "शेवटचा कॉल",
+        "outcome": "निष्कर्ष",
+        "next": "पुढील केव्हा"
+      },
+      "noneDue": "काही बाकी नाही",
+      "empty": "या फिल्टरनुसार पाठपुरावा आढळला नाही.",
+      "foot": "प्रत्येकजण कुठवर पोहोचला हे पाहून इंजिन पुढचा कॉल ठरवते.",
+      "cards": {
+        "callsLabel": "पाठपुरावा कॉल",
+        "callsFoot": "{{people}} लाभार्थींमध्ये",
+        "answeredLabel": "संपर्क झाला",
+        "answeredFoot": "{{count}} जणांनी उत्तर दिले नाही",
+        "problemsLabel": "आढळलेल्या अडचणी",
+        "problemsFoot": "माणसाकडे पाठवल्या"
+      }
+    },
+    "coursesCentres": {
+      "subtitle": "{{courses}} अभ्यासक्रम · {{centres}} केंद्रे · {{waiting}} जागेच्या प्रतीक्षेत",
+      "addCourse": "अभ्यासक्रम जोडा",
+      "addCentre": "केंद्र जोडा",
+      "noticeTitle": "अभ्यासक्रम आणि केंद्रे",
+      "tab": {
+        "courses": "अभ्यासक्रम",
+        "centres": "केंद्रे",
+        "allotment": "वाटपाच्या प्रतीक्षेत"
+      },
+      "headers": {
+        "course": "अभ्यासक्रम",
+        "nsqf": "एनएसक्यूएफ",
+        "centres": "केंद्रे",
+        "enrolled": "प्रवेशित",
+        "allotted": "वाटप",
+        "waiting": "प्रतीक्षेत",
+        "centre": "प्रशिक्षण केंद्र",
+        "courses": "अभ्यासक्रम",
+        "seats": "भरलेल्या जागा",
+        "trainer": "संसाधन व्यक्ती",
+        "block": "तालुका",
+        "nearest": "जवळचे केंद्र",
+        "demand": "तालुक्यातील मागणी"
+      },
+      "demandBlocks": "{{count}} तालुक्यांत मागणी, केंद्र नाही",
+      "opened": "{{date}} रोजी सुरू",
+      "noTrainer": "कोणी नेमलेले नाही",
+      "noNearest": "आवाक्यात कोणतेही नाही",
+      "centresFull": "या अभ्यासक्रमाची सर्व केंद्रे भरली आहेत",
+      "allotmentNote": "जिथे अभ्यासक्रमाची मागणी आहे पण केंद्र नाही असे तालुके. इथे केंद्र सुरू करताच प्रतीक्षा यादी संसाधन व्यक्तीसह आपोआप तिथे जाते.",
+      "openCentre": "केंद्र सुरू करा",
+      "suggestedName": "{{block}} प्रशिक्षण केंद्र",
+      "capacity": "जागा",
+      "centreHint": "या तालुक्यातील सर्व प्रतीक्षेतील लोक क्षमतेपर्यंत नव्या केंद्रात वाटले जातात.",
+      "courseError": "अभ्यासक्रमाला नाव द्या.",
+      "centreError": "केंद्रासाठी नाव आणि तालुका आवश्यक आहेत.",
+      "courseAdded": "{{course}} यादीत जोडला.",
+      "centreAdded": "{{centre}} तयार झाले.",
+      "centreAddedWithAllotment": "{{centre}} तयार झाले. {{count}} प्रतीक्षेतील लाभार्थी {{trainer}} यांच्याकडे तिथे वाटले गेले.",
+      "cards": {
+        "seatsLabel": "केंद्रांतील एकूण जागा",
+        "seatsFoot": "{{allotted}} सध्या वाटलेल्या",
+        "fillLabel": "भरलेल्या जागा",
+        "fillFoot": "सर्व केंद्रांतील वापरातील क्षमता",
+        "waitingLabel": "जागेच्या प्रतीक्षेत",
+        "waitingFoot": "केंद्र नसलेल्या {{blocks}} तालुक्यांत"
+      }
+    },
+    "flags": {
+      "subtitle": "{{total}} पैकी {{open}} खुली प्रकरणे",
+      "sourceLabel": "कोणी कळवले",
+      "sourceValue": "संसाधन व्यक्ती, त्यांच्या प्रशिक्षणार्थी यादीतून",
+      "statusLabel": "स्थिती",
+      "status": {
+        "open": "खुले",
+        "assigned": "नेमून दिले",
+        "resolved": "निकाली"
+      },
+      "raisedBy": "{{name}} यांनी कळवले · {{date}}",
+      "assignedTo": "{{name}} यांना दिले",
+      "unassigned": "अद्याप कोणालाही दिलेले नाही",
+      "assign": "अधिकारी नेमा",
+      "reassign": "बदला",
+      "resolve": "निकाली म्हणून नोंदवा",
+      "officer": "क्षेत्र अधिकारी",
+      "instruction": "त्यांनी काय करायचे?",
+      "instructionPlaceholder": "प्रत्यक्ष जागी काय पाहायचे किंवा करायचे ते लिहा",
+      "instructionRequired": "सूचना लिहा म्हणजे अधिकाऱ्याला काय करायचे ते कळेल.",
+      "sendAssignment": "नेमणूक पाठवा",
+      "empty": "या स्थितीत कोणतेही प्रकरण नाही."
+    }
   }
 }

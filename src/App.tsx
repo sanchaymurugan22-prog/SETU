@@ -2,7 +2,13 @@ import type { ComponentType } from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { AuthProvider } from './auth/AuthProvider'
 import { HomeRedirect, RequireRole } from './auth/RequireRole'
+import { AdminFlagsSection } from './consoles/admin/AdminFlagsSection'
 import { BeneficiariesSection } from './consoles/admin/BeneficiariesSection'
+import { CallExecutivesSection } from './consoles/admin/CallExecutivesSection'
+import { CallsSection } from './consoles/admin/CallsSection'
+import { CoursesCentresSection } from './consoles/admin/CoursesCentresSection'
+import { FollowUpsSection } from './consoles/admin/FollowUpsSection'
+import { ResourcePersonsSection } from './consoles/admin/ResourcePersonsSection'
 import { CallConsole } from './consoles/executive/CallConsole'
 import { CompletedCallsSection } from './consoles/executive/CompletedCallsSection'
 import { WaitingCallsSection } from './consoles/executive/WaitingCallsSection'
@@ -23,6 +29,12 @@ import { SplashGate } from './pages/SplashScreen'
 /** Sections that are built. Anything absent still renders its placeholder. */
 const SECTION_VIEWS: Record<string, ComponentType> = {
   'admin/beneficiaries': BeneficiariesSection,
+  'admin/call-executives': CallExecutivesSection,
+  'admin/resource-persons': ResourcePersonsSection,
+  'admin/calls': CallsSection,
+  'admin/follow-ups': FollowUpsSection,
+  'admin/courses-centres': CoursesCentresSection,
+  'admin/flags': AdminFlagsSection,
   'admin/gap-map': GapMapSection,
   'executive/waiting': WaitingCallsSection,
   'executive/completed': CompletedCallsSection,
