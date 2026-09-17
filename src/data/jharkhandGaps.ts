@@ -572,17 +572,6 @@ const STATEWIDE: Record<WindowDays, StatewideTotals> = {
   },
 }
 
-/** Voice-model accuracy per dialect, measured over a rolling 12 months. */
-export const DIALECT_ACCURACY = [
-  { dialect: 'Santali', accuracy: 61 },
-  { dialect: 'Kurukh', accuracy: 64 },
-  { dialect: 'Magahi', accuracy: 73 },
-  { dialect: 'Ho', accuracy: 76 },
-  { dialect: 'Kharia', accuracy: 78 },
-  { dialect: 'Nagpuri', accuracy: 79 },
-  { dialect: 'Hindi', accuracy: 94 },
-] as const
-
 export const DIALECT_THRESHOLD = 80
 export const PLACEMENT_TARGET = 55
 

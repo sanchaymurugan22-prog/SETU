@@ -1,7 +1,8 @@
 /**
- * The ten languages SETU supports, shared by the two independent settings:
- *  - interface language (this console's UI, via i18next)  — src/lib/uiLanguage.ts
- *  - call language (what SETU speaks to beneficiaries)     — src/lib/callLanguage.ts
+ * The ten languages an official can read the console in (i18next), stored by
+ * src/lib/uiLanguage.ts. What SETU speaks to a beneficiary is not in this list and is not
+ * a setting at all: it is detected from the caller's own speech, and may be a dialect
+ * outside these ten. See src/lib/languageDetection.ts.
  */
 
 export interface Language {

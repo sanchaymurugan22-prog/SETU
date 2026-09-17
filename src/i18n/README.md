@@ -33,6 +33,6 @@ report text) stays in its own language and is not translated here.
 - Keys are stable identifiers; change the English value freely, rename keys rarely.
 - `aria-label`, `title` and `placeholder` are user-visible too — translate them.
 - Data from `src/data/**` is sample content, not UI copy. Leave it alone.
-- Two separate settings, never mix them up:
-  - `uiLanguage.ts` — the console's own language (this file's job).
-  - `callLanguage.ts` — what SETU speaks to beneficiaries on calls and messages.
+- `uiLanguage.ts` holds the console's own language — the only language an official picks.
+  What SETU speaks to a caller is detected per call (`lib/languageDetection.ts`) and is
+  never a setting; display it from the call's detection record.

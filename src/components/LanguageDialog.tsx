@@ -4,14 +4,14 @@ import { useLanguages } from '../language/LanguageContext'
 import { LANGUAGES } from '../lib/languages'
 import '../styles/language.css'
 
-export type LanguageDialogMode = 'interface' | 'call'
-
-/** Change either language setting from inside a console, without signing out. */
-export function LanguageDialog({ mode, onClose }: { mode: LanguageDialogMode; onClose: () => void }) {
+/**
+ * Change the interface language from inside a console, without signing out.
+ * There is no equivalent for the caller's language: SETU detects that per call.
+ */
+export function LanguageDialog({ onClose }: { onClose: () => void }) {
   const { t } = useTranslation()
-  const { uiLanguage, setUiLanguage, callLanguage, setCallLanguage } = useLanguages()
-  const current = mode === 'interface' ? uiLanguage : callLanguage
-  const [selected, setSelected] = useState(current.code)
+  const { uiLanguage, setUiLanguage } = useLanguages()
+  const [selected, setSelected] = useState(uiLanguage.code)
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -22,12 +22,11 @@ export function LanguageDialog({ mode, onClose }: { mode: LanguageDialogMode; on
   }, [onClose])
 
   const save = () => {
-    if (mode === 'interface') setUiLanguage(selected)
-    else setCallLanguage(selected)
+    setUiLanguage(selected)
     onClose()
   }
 
-  const title = mode === 'interface' ? t('language.interfaceDialogTitle') : t('language.callDialogTitle')
+  const title = t('language.interfaceDialogTitle')
 
   return (
     <div className="language-dialog-backdrop" onClick={onClose} role="presentation">
@@ -40,9 +39,7 @@ export function LanguageDialog({ mode, onClose }: { mode: LanguageDialogMode; on
       >
         <div className="language-dialog-head">
           <div>
-            <span className="language-dialog-eyebrow">
-              {mode === 'interface' ? t('language.interfaceDialogEyebrow') : t('language.callDialogEyebrow')}
-            </span>
+            <span className="language-dialog-eyebrow">{t('language.interfaceDialogEyebrow')}</span>
             <h2>{title}</h2>
           </div>
           <button type="button" className="language-dialog-close" onClick={onClose} aria-label={t('common.close')}>
@@ -50,9 +47,7 @@ export function LanguageDialog({ mode, onClose }: { mode: LanguageDialogMode; on
           </button>
         </div>
 
-        <p className="language-dialog-note">
-          {mode === 'interface' ? t('language.interfaceDialogNote') : t('language.callDialogNote')}
-        </p>
+        <p className="language-dialog-note">{t('language.interfaceDialogNote')}</p>
 
         <div className="language-dialog-grid" role="radiogroup" aria-label={t('language.chooseAria')}>
           {LANGUAGES.map((option) => {

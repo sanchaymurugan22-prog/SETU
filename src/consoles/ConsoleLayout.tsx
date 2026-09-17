@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { NavLink, Outlet } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext'
 import { useSignOut } from '../auth/useSignOut'
-import { LanguageDialog, type LanguageDialogMode } from '../components/LanguageDialog'
+import { LanguageDialog } from '../components/LanguageDialog'
 import { SetuMark } from '../components/SetuMark'
 import { useLanguages } from '../language/LanguageContext'
 import type { ConsoleDefinition } from './consoles'
@@ -19,9 +19,9 @@ function initials(name: string): string {
 export function ConsoleLayout({ definition }: { definition: ConsoleDefinition }) {
   const { t } = useTranslation()
   const { state } = useAuth()
-  const { uiLanguage, callLanguage } = useLanguages()
+  const { uiLanguage } = useLanguages()
   const signOut = useSignOut()
-  const [dialog, setDialog] = useState<LanguageDialogMode | null>(null)
+  const [languageOpen, setLanguageOpen] = useState(false)
 
   // RequireRole only renders this for a ready official.
   if (state.status !== 'ready') return null
@@ -54,21 +54,10 @@ export function ConsoleLayout({ definition }: { definition: ConsoleDefinition })
         ))}
 
         <div className="console-user">
-          <button type="button" className="console-language" onClick={() => setDialog('interface')}>
+          <button type="button" className="console-language" onClick={() => setLanguageOpen(true)}>
             <span className="console-language-label">{t('language.interfaceLabel')}</span>
             <span className="console-language-value" lang={uiLanguage.code} style={{ fontFamily: uiLanguage.fontFamily }}>
               {uiLanguage.nativeName}
-            </span>
-          </button>
-
-          <button type="button" className="console-language" onClick={() => setDialog('call')}>
-            <span className="console-language-label">{t('language.callLabel')}</span>
-            <span
-              className="console-language-value"
-              lang={callLanguage.code}
-              style={{ fontFamily: callLanguage.fontFamily }}
-            >
-              {callLanguage.nativeName}
             </span>
           </button>
 
@@ -100,7 +89,7 @@ export function ConsoleLayout({ definition }: { definition: ConsoleDefinition })
         <Outlet />
       </main>
 
-      {dialog && <LanguageDialog mode={dialog} onClose={() => setDialog(null)} />}
+      {languageOpen && <LanguageDialog onClose={() => setLanguageOpen(false)} />}
     </div>
   )
 }

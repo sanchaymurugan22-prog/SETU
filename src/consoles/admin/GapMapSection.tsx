@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { callDetections } from '../../data/jharkhandCalls'
+import { dialectAccuracy } from '../../data/languageDetections'
 import {
   courseDemand,
   DEFAULT_WINDOW,
-  DIALECT_ACCURACY,
   DIALECT_THRESHOLD,
   formatNumber,
   gapsInWindow,
@@ -45,7 +46,12 @@ export function GapMapSection() {
 
   const demandBlocks = gaps.filter((gap) => gap.gapType === 'no-centre')
   const unplacedBlocks = gaps.filter((gap) => gap.gapType === 'no-local-jobs')
-  const dialectGaps = DIALECT_ACCURACY.filter((entry) => entry.accuracy < DIALECT_THRESHOLD)
+  // Dialect gaps are the languages SETU hears least reliably, averaged from the
+  // confidence the detector reported on every call.
+  const dialectGaps = useMemo(
+    () => dialectAccuracy(callDetections()).filter((entry) => entry.accuracy < DIALECT_THRESHOLD),
+    [],
+  )
   const topDemand = demandByCourse[0]?.people ?? 1
   const priorityGaps = gaps.slice(0, 6)
 
@@ -181,7 +187,7 @@ export function GapMapSection() {
                 </div>
               ))}
             </div>
-            <span className="gap-card-foot">{t('gapMap.cards.dialectFoot')}</span>
+            <span className="gap-card-foot">{t('detection.dialectFoot')}</span>
           </article>
         </div>
 

@@ -5,9 +5,6 @@ export interface LanguageValue {
   /** The console's own display language (i18next). */
   uiLanguage: Language
   setUiLanguage: (code: string) => void
-  /** What SETU speaks to beneficiaries on calls and in messages. Independent of the UI. */
-  callLanguage: Language
-  setCallLanguage: (code: string) => void
   /** True when the selection screen should be shown before sign-in. */
   promptNeeded: boolean
   /** Choose on the selection screen: applies the language and dismisses the prompt. */
