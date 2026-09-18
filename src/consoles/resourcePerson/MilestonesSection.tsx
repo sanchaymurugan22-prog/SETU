@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { EMPLOYMENT_TONE, TRAINING_TONE } from '../../data/jharkhandBeneficiaries'
 import { RESOURCE_PERSON, type Trainee } from '../../data/resourcePerson'
+import { WriteError } from '../admin/WriteError'
 import { CertificateSheet } from './CertificateSheet'
 import { formatLastContact } from '../../i18n/format'
 import { useTrainer } from './TrainerContext'
@@ -13,7 +14,8 @@ import '../../styles/resource-person.css'
 export function MilestonesSection() {
   const { t } = useTranslation()
   const source = useDataSource('beneficiaries')
-  const { trainees, batches, attendanceOf } = useTrainer()
+  const { trainees, batches, attendanceOf, issueCertificate, writeError, writePending, clearWriteError } =
+    useTrainer()
   const [openId, setOpenId] = useState<string | null>(null)
   const [certificateFor, setCertificateFor] = useState<Trainee | null>(null)
 
@@ -49,6 +51,8 @@ export function MilestonesSection() {
       </header>
 
       <div className="section-body rp-body">
+        <WriteError error={writeError} onDismiss={clearWriteError} />
+
         <div className="rp-milestone-stats">
           <article className="gap-card">
             <span className="gap-card-label">{t('resourcePerson.milestones.certifiedLabel')}</span>
@@ -117,8 +121,8 @@ export function MilestonesSection() {
                       </span>
                     </button>
 
-                    {trainee.certificateId && (
-                      <div className="rp-milestone-actions">
+                    <div className="rp-milestone-actions">
+                      {trainee.certificateId ? (
                         <button
                           type="button"
                           className="btn btn-outline btn-small"
@@ -126,8 +130,19 @@ export function MilestonesSection() {
                         >
                           {t('certificate.viewAction')}
                         </button>
-                      </div>
-                    )}
+                      ) : (
+                        // Certifying normally issues the certificate in the same write.
+                        // This is for a record certified before that was true.
+                        <button
+                          type="button"
+                          className="btn btn-primary btn-small"
+                          disabled={writePending}
+                          onClick={() => issueCertificate(trainee.beneficiaryId)}
+                        >
+                          {writePending ? t('writes.saving') : t('certificate.generateAction')}
+                        </button>
+                      )}
+                    </div>
 
                     {open && (
                       <div className="rp-milestone-body">

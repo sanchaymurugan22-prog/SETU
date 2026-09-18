@@ -4,6 +4,7 @@ import { ATTENDANCE_WATCH_PERCENT, useTrainer } from './TrainerContext'
 import { useDataSource } from '../../data/useDataSource'
 import { SourceBadge } from '../admin/SourceBadge'
 import '../../styles/resource-person.css'
+import { WriteError } from '../admin/WriteError'
 
 /** Long date in the interface language. */
 function formatDate(iso: string, language: string): string {
@@ -24,7 +25,7 @@ function formatDate(iso: string, language: string): string {
 export function SessionsSection() {
   const { t, i18n } = useTranslation()
   const source = useDataSource('attendance')
-  const { sessions, concerns, trainees, batches } = useTrainer()
+  const { sessions, concerns, trainees, batches, writeError, clearWriteError } = useTrainer()
   const [batchId, setBatchId] = useState('all')
   const [openId, setOpenId] = useState<string | null>(null)
 
@@ -63,6 +64,8 @@ export function SessionsSection() {
       </header>
 
       <div className="section-body rp-body">
+        <WriteError error={writeError} onDismiss={clearWriteError} />
+
         <div className="rp-milestone-stats">
           <article className="gap-card">
             <span className="gap-card-label">{t('resourcePerson.sessions.cards.heldLabel')}</span>

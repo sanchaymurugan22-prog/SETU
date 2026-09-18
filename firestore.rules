@@ -100,15 +100,24 @@ service cloud.firestore {
           && call.beneficiaryId == beneficiaryId;
       }
 
-      // Spec 4.1 Stage 2: correct AI-captured data, only while the call is active.
+      /**
+       * Spec 4.1 Stage 2: correct what the AI captured, only while the call is active.
+       *
+       * The list is the identity and circumstances the caller gave over the phone — the
+       * things an official on the line is in a position to correct. It deliberately stops
+       * short of trainingStatus, employmentStatus and the attendance record: those are the
+       * trainer's to set from what actually happened at the centre, not something to be
+       * changed on a caller's say-so.
+       */
       function editsDuringCall() {
         return heldByMe(resource.data)
           && getAfter(callPath(resource.data.activeCallId)).data.status == 'active'
           && changesOnly([
             'name', 'age', 'gender', 'primaryNumber', 'secondaryNumber',
             'hasWhatsAppPrimary', 'hasWhatsAppSecondary', 'isBasicPhoneOnly',
-            'preferredLanguage', 'location', 'profile', 'consent',
-            'recommendation', 'rejectedCourses', 'updatedAt'
+            'preferredLanguage', 'district', 'block', 'village',
+            'educationLevel', 'currentWork', 'interests', 'constraints',
+            'consentGiven', 'recommendation', 'rejectedCourses', 'updatedAt'
           ]);
       }
 
@@ -127,15 +136,34 @@ service cloud.firestore {
         return isMyTrainee(resource.data)
           && changesOnly([
             'trainingStatus', 'employmentStatus', 'statusHistory',
-            'completionRecommendation', 'flags', 'updatedAt'
-          ]);
+            'completionRecommendation', 'certificateId', 'certificateIssuedAt',
+            'flags', 'updatedAt'
+          ])
+          // A certificate is only ever issued against a certified record. Certifying and
+          // issuing are one act in the console; this is what stops them coming apart.
+          && (!request.resource.data.diff(resource.data).affectedKeys().hasAny(['certificateId'])
+              || request.resource.data.trainingStatus == 'certified');
       }
 
       allow read: if isAdmin()
         || (isStaff() && heldByMe(resource.data))
         || isMyTrainee(resource.data);
 
-      allow create: if isAdmin();
+      /**
+       * A caller the AI line has just spoken to for the first time. Same reasoning as the
+       * gapData counter: in production the AI writes this server-side, and on Spark the
+       * call runs in the browser. The record is created cold — no handler holds it, so it
+       * is immediately subject to the same privacy lock as every other beneficiary — and
+       * it must say the AI line produced it.
+       */
+      function createsFromAiCall() {
+        return isStaff()
+          && request.resource.data.createdBy == 'ai-call'
+          && request.resource.data.get('activeHandler', null) == null
+          && request.resource.data.get('activeCallId', null) == null;
+      }
+
+      allow create: if isAdmin() || createsFromAiCall();
       allow update: if isAdmin()
         || (isStaff() && (takesLock() || editsDuringCall() || releasesLock() || trainerUpdate()));
       allow delete: if false;
@@ -157,7 +185,7 @@ service cloud.firestore {
           && resource.data.get('handledBy', null) == null
           && request.resource.data.status == 'active'
           && request.resource.data.handledBy == me()
-          && changesOnly(['status', 'handledBy', 'startedAt']);
+          && changesOnly(['status', 'handledBy', 'startedAt', 'updatedAt']);
       }
 
       // During the call: record a transfer; ending it moves to mandatory report review.
@@ -165,7 +193,7 @@ service cloud.firestore {
         return resource.data.get('handledBy', null) == me()
           && resource.data.status == 'active'
           && request.resource.data.status in ['active', 'report-review']
-          && changesOnly(['status', 'endedAt', 'duration', 'transferredTo', 'transferReason', 'outcome']);
+          && changesOnly(['status', 'endedAt', 'duration', 'transferredTo', 'transferReason', 'outcome', 'updatedAt']);
       }
 
       // Report review: edit and send. Once 'completed' the call is locked.
@@ -173,7 +201,7 @@ service cloud.firestore {
         return resource.data.get('handledBy', null) == me()
           && resource.data.status == 'report-review'
           && request.resource.data.status in ['report-review', 'completed']
-          && changesOnly(['status', 'editedReport', 'reportSentAt', 'reportChannels', 'outcome']);
+          && changesOnly(['status', 'editedReport', 'reportSentAt', 'reportChannels', 'outcome', 'updatedAt']);
       }
 
       // Spec 7.2: a resource person receives cases only as callbacks from an executive's active call.
@@ -192,6 +220,25 @@ service cloud.firestore {
           && target.isActive == true;
       }
 
+      /**
+       * The report an official files at the end of their own call.
+       *
+       * It is a separate document because it is what the Completed Calls list reads, and
+       * that list carries no identity — so the report cannot simply be fields added to
+       * the call. An official may file one only against a call they handled, and only
+       * once it has reached report review: the review is mandatory, and a report that
+       * could be created straight from an active call would make it optional.
+       */
+      function filesOwnReport() {
+        let source = get(callPath(request.resource.data.sourceCallId)).data;
+        return isStaff()
+          && request.resource.data.recordType == 'completed'
+          && request.resource.data.status == 'completed'
+          && request.resource.data.handledBy == me()
+          && source.get('handledBy', null) == me()
+          && source.status in ['report-review', 'completed'];
+      }
+
       // Call documents carry no beneficiary identity (that lives in /private), so the
       // queue is visible to every executive. AI calls are admin-only.
       allow read: if isAdmin()
@@ -200,7 +247,7 @@ service cloud.firestore {
         || (isResourcePerson() && resource.data.callType == 'resourcePerson'
             && resource.data.get('assignedTo', null) == me());
 
-      allow create: if isAdmin() || createsTransfer();
+      allow create: if isAdmin() || createsTransfer() || filesOwnReport();
       allow update: if isAdmin()
         || (isStaff() && (accepts() || updatesActiveCall() || reviewsReport()));
       allow delete: if false;
@@ -229,6 +276,37 @@ service cloud.firestore {
               && changesOnly(['notes']));
         allow delete: if false;
       }
+    }
+
+    // ───────── staff ─────────
+
+    // The Admin console's staff directory: postings, assigned courses, activity.
+    // Separate from /users, which holds the sign-in accounts — creating an auth account
+    // for somebody else needs a server, and this project runs on Spark. So an admin
+    // files the directory record here and the account is issued separately.
+    match /staff/{staffId} {
+      allow read: if isStaff();
+      allow create, update: if isAdmin()
+        && request.resource.data.role in ['executive', 'resourcePerson']
+        && request.resource.data.active is bool;
+      // Deactivate rather than delete, so the history survives (spec 6.2).
+      allow delete: if false;
+    }
+
+    // ───────── batches ─────────
+
+    // A batch carries the schedule that decides when an attendance sheet opens, and the
+    // course materials. Spec 5.2: the trainer running the batch maintains both.
+    match /batches/{batchId} {
+      function isMyBatch() {
+        return isResourcePerson() && resource.data.get('assignedResourcePerson', null) == me();
+      }
+
+      allow read: if isStaff();
+      allow create: if isAdmin();
+      allow update: if isAdmin()
+        || (isMyBatch() && changesOnly(['schedule', 'materials', 'updatedAt']));
+      allow delete: if false;
     }
 
     // ───────── followUps ─────────
@@ -291,14 +369,47 @@ service cloud.firestore {
             && request.resource.data.status == 'open'
             && get(/databases/$(database)/documents/beneficiaries/$(request.resource.data.beneficiaryId)).data
                  .get('assignedResourcePerson', null) == me());
-      allow update: if isAdmin();
+      // Spec 6.7: the admin acts on a flag — assigns an officer, or closes it.
+      //
+      // Stated as what must not change rather than what may: the reason, the note and the
+      // name on it are the trainer's account of what happened, and an admin closing a case
+      // must not be able to edit the report that raised it. Anything else about the flag
+      // is the admin's to set, which is also what lets the seeder rewrite it wholesale.
+      allow update: if isAdmin()
+        && request.resource.data.status in ['open', 'assigned', 'resolved']
+        && request.resource.data.reason == resource.data.reason
+        && request.resource.data.note == resource.data.get('note', '')
+        && request.resource.data.raisedBy == resource.data.raisedBy;
       allow delete: if false;
     }
 
     // ───────── gapData ─────────
 
     match /gapData/{gapId} {
-      allow read, create, update: if isAdmin();
+      /**
+       * The one place these rules go beyond Part 7, and deliberately.
+       *
+       * Part 7 makes gap analytics admin-only, and reads stay that way. But the dialect
+       * gap is discovered by the AI line, not by an official: when the two detection
+       * models disagree about a caller, that block has a language SETU cannot serve, and
+       * the map has to learn it. In production the AI answers the phone on a server with
+       * its own credentials. On Spark there is no server — the call runs in the browser
+       * under whichever official is signed in — so the increment has to be allowed from
+       * a staff session.
+       *
+       * It is kept as narrow as the rules language allows: one named counter, one step at
+       * a time, nothing else on the document touched. A staff member can record that a
+       * dialect gap happened. They cannot read the analytics, invent a block, or move any
+       * other number on it.
+       */
+      function recordsContestedDetection() {
+        return isStaff()
+          && changesOnly(['contestedDetections', 'updatedAt'])
+          && request.resource.data.contestedDetections == resource.data.get('contestedDetections', 0) + 1;
+      }
+
+      allow read, create: if isAdmin();
+      allow update: if isAdmin() || recordsContestedDetection();
       allow delete: if false;
     }
 

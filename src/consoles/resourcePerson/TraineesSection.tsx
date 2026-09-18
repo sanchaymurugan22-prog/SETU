@@ -14,6 +14,7 @@ import {
 } from '../../data/resourcePerson'
 import { formatLastContact } from '../../i18n/format'
 import { TraineePanel } from './TraineePanel'
+import { WriteError } from '../admin/WriteError'
 import { useTrainer } from './TrainerContext'
 import { useDataSource } from '../../data/useDataSource'
 import { SourceBadge } from '../admin/SourceBadge'
@@ -25,7 +26,19 @@ const DAY_KEYS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
 export function TraineesSection() {
   const { t } = useTranslation()
   const source = useDataSource('beneficiaries')
-  const { trainees, batches, openSession, nextSession, markFor, mark, attendanceOf, flagTrainee, flags } = useTrainer()
+  const {
+    trainees,
+    batches,
+    openSession,
+    nextSession,
+    markFor,
+    mark,
+    attendanceOf,
+    flagTrainee,
+    flags,
+    writeError,
+    clearWriteError,
+  } = useTrainer()
   const [search, setSearch] = useState('')
   const [batchId, setBatchId] = useState('all')
   const [status, setStatus] = useState<TrainingStatus | 'all'>('all')
@@ -86,6 +99,8 @@ export function TraineesSection() {
       </header>
 
       <div className="section-body rp-body">
+        <WriteError error={writeError} onDismiss={clearWriteError} />
+
         <div className={openSession ? 'rp-session is-open' : 'rp-session'} role="status">
           <span className="rp-session-dot" aria-hidden="true" />
           {openSession ? (

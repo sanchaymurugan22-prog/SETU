@@ -670,6 +670,7 @@
     "verificationTitle": "Verification",
     "verification": "Verify this certificate against the SETU record using certificate ID {{id}}. Issued electronically by the training centre; the trainer's record is the source of truth.",
     "viewAction": "View certificate",
+    "generateAction": "Generate certificate",
     "printAction": "Print"
   },
   "training": {
@@ -977,5 +978,9 @@
     "firestore": "Firestore · {{count}}",
     "error": "Sample data · {{count}}",
     "fellBack": "Firestore unavailable"
+  },
+  "writes": {
+    "failedLabel": "Not saved",
+    "saving": "Saving…"
   }
 }

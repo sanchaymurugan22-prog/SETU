@@ -82,6 +82,17 @@ export interface TrainerValue {
   updateSchedule: (batchId: string, patch: Partial<SessionSchedule>) => void
   addMaterial: (batchId: string, material: Omit<CourseMaterial, 'id'>) => void
   removeMaterial: (batchId: string, materialId: string) => void
+  /** Issues the certificate for a trainee already certified. */
+  issueCertificate: (beneficiaryId: string) => void
+
+  /**
+   * Whatever the last write said. Every action above is optimistic: the screen changes
+   * first and this is set if Firestore then refused, by which point the change has been
+   * rolled back — so a section showing these actions has to show this too.
+   */
+  writeError: string | null
+  writePending: boolean
+  clearWriteError: () => void
 }
 
 export const TrainerContext = createContext<TrainerValue | null>(null)

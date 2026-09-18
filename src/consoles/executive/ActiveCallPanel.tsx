@@ -7,18 +7,36 @@ import {
   TRANSFER_REASONS,
   type TransferReason,
 } from '../../data/jharkhandCalls'
+import { loadResourcePersonRecords } from '../../data/adminConsole'
 import { useCallSession } from './CallSessionContext'
 import { BILINGUAL_GREETING, isDialectGap, languageNameFor } from '../../lib/languageDetection'
+import { WriteError } from '../admin/WriteError'
 
 /** Stage 2. Identity is visible and every field is editable — but only while the call runs. */
 export function ActiveCallPanel() {
   const { t } = useTranslation()
-  const { active, editRecord, setNotes, toggleHold, transfer, endCall, allowTransfer } = useCallSession()
+  const {
+    active,
+    editRecord,
+    commitRecord,
+    setNotes,
+    toggleHold,
+    transfer,
+    endCall,
+    allowTransfer,
+    writeError,
+    clearWriteError,
+  } = useCallSession()
   const [showNotes, setShowNotes] = useState(false)
   const [newInterest, setNewInterest] = useState('')
   const [newConstraint, setNewConstraint] = useState('')
   const [transferReason, setTransferReason] = useState<TransferReason>('course-question')
-  const [resourcePersonId, setResourcePersonId] = useState(RESOURCE_PERSONS[0]!.userId)
+  // The directory, not the seeded option list: it carries the sign-in uid a transfer has
+  // to be addressed to, and it follows whatever the admin has since changed.
+  const experts = loadResourcePersonRecords()
+  const targets: { userId: string; name: string; block: string; uid?: string | null }[] =
+    experts.length > 0 ? experts : RESOURCE_PERSONS.map((person) => ({ ...person, uid: null }))
+  const [resourcePersonId, setResourcePersonId] = useState(targets[0]?.userId ?? '')
 
   if (!active) return null
   const { record, call, beneficiary } = active
@@ -31,9 +49,11 @@ export function ActiveCallPanel() {
   }
 
   const doTransfer = () => {
-    const person = RESOURCE_PERSONS.find((rp) => rp.userId === resourcePersonId)
+    const person = targets.find((rp) => rp.userId === resourcePersonId)
     if (!person) return
-    transfer(transferReason, person.userId, person.name)
+    // Addressed to the account, not the directory row — that is what the rules check, and
+    // what puts the case in that person's own queue.
+    transfer(transferReason, person.uid ?? person.userId, person.name)
   }
 
   return (
@@ -60,6 +80,8 @@ export function ActiveCallPanel() {
       </header>
 
       <div className="section-body call-active-body">
+        <WriteError error={writeError} onDismiss={clearWriteError} />
+
         <section className="call-record" aria-label={t('callConsole.active.record')}>
           <div className="call-record-head">
             <span className="call-record-title">{t('callConsole.active.record')}</span>
@@ -70,48 +92,48 @@ export function ActiveCallPanel() {
           <div className="call-fields">
             <label className="call-field">
               <span>{t('callConsole.active.name')}</span>
-              <input value={record.name} onChange={(event) => editRecord({ name: event.target.value })} />
+              <input value={record.name} onBlur={commitRecord} onChange={(event) => editRecord({ name: event.target.value })} />
             </label>
             <label className="call-field is-narrow">
               <span>{t('callConsole.active.age')}</span>
               <input
                 type="number"
                 value={record.age}
-                onChange={(event) => editRecord({ age: Number(event.target.value) })}
+                onBlur={commitRecord} onChange={(event) => editRecord({ age: Number(event.target.value) })}
               />
             </label>
             <label className="call-field is-narrow">
               <span>{t('callConsole.active.gender')}</span>
-              <input value={record.gender} onChange={(event) => editRecord({ gender: event.target.value })} />
+              <input value={record.gender} onBlur={commitRecord} onChange={(event) => editRecord({ gender: event.target.value })} />
             </label>
             <label className="call-field">
               <span>{t('callConsole.active.district')}</span>
-              <input value={record.district} onChange={(event) => editRecord({ district: event.target.value })} />
+              <input value={record.district} onBlur={commitRecord} onChange={(event) => editRecord({ district: event.target.value })} />
             </label>
             <label className="call-field">
               <span>{t('callConsole.active.block')}</span>
-              <input value={record.block} onChange={(event) => editRecord({ block: event.target.value })} />
+              <input value={record.block} onBlur={commitRecord} onChange={(event) => editRecord({ block: event.target.value })} />
             </label>
             <label className="call-field">
               <span>{t('callConsole.active.village')}</span>
-              <input value={record.village} onChange={(event) => editRecord({ village: event.target.value })} />
+              <input value={record.village} onBlur={commitRecord} onChange={(event) => editRecord({ village: event.target.value })} />
             </label>
             <label className="call-field">
               <span>{t('callConsole.active.education')}</span>
               <input
                 value={record.educationLevel}
-                onChange={(event) => editRecord({ educationLevel: event.target.value })}
+                onBlur={commitRecord} onChange={(event) => editRecord({ educationLevel: event.target.value })}
               />
             </label>
             <label className="call-field">
               <span>{t('callConsole.active.occupation')}</span>
-              <input value={record.currentWork} onChange={(event) => editRecord({ currentWork: event.target.value })} />
+              <input value={record.currentWork} onBlur={commitRecord} onChange={(event) => editRecord({ currentWork: event.target.value })} />
             </label>
             <label className="call-field">
               <span>{t('callConsole.active.primaryNumber')}</span>
               <input
                 value={record.primaryNumber}
-                onChange={(event) => editRecord({ primaryNumber: event.target.value })}
+                onBlur={commitRecord} onChange={(event) => editRecord({ primaryNumber: event.target.value })}
               />
             </label>
             <label className="call-field">
@@ -119,7 +141,7 @@ export function ActiveCallPanel() {
               <input
                 value={record.secondaryNumber}
                 placeholder={t('callConsole.active.noSecondary')}
-                onChange={(event) => editRecord({ secondaryNumber: event.target.value })}
+                onBlur={commitRecord} onChange={(event) => editRecord({ secondaryNumber: event.target.value })}
               />
             </label>
             <label className="call-field call-consent">
@@ -128,7 +150,7 @@ export function ActiveCallPanel() {
                 <input
                   type="checkbox"
                   checked={record.consentGiven}
-                  onChange={(event) => editRecord({ consentGiven: event.target.checked })}
+                  onBlur={commitRecord} onChange={(event) => editRecord({ consentGiven: event.target.checked })}
                 />
                 {record.consentGiven ? t('callConsole.active.consentGiven') : t('callConsole.active.consentNotGiven')}
               </span>
@@ -199,7 +221,7 @@ export function ActiveCallPanel() {
               <label className="call-field">
                 <span>{t('callConsole.active.transferTo')}</span>
                 <select value={resourcePersonId} onChange={(event) => setResourcePersonId(event.target.value)}>
-                  {RESOURCE_PERSONS.map((person) => (
+                  {targets.map((person) => (
                     <option key={person.userId} value={person.userId}>
                       {person.name} · {person.block}
                     </option>

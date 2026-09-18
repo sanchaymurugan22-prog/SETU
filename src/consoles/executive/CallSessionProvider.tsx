@@ -8,6 +8,15 @@ import {
   type TransferReason,
 } from '../../data/jharkhandCalls'
 import type { Beneficiary } from '../../data/jharkhandBeneficiaries'
+import { useAuth } from '../../auth/AuthContext'
+import {
+  acceptCall,
+  endCallForReview,
+  sendReport as writeReport,
+  transferToResourcePerson,
+  updateBeneficiaryDuringCall,
+} from '../../data/actions'
+import { useAction } from '../../data/useAction'
 import { liveVersion, subscribeLiveCalls } from '../../data/liveCalls'
 import { sourceVersion, subscribeSource } from '../../data/source'
 import { bhashiniConfigFromEnv } from '../../lib/env'
@@ -76,6 +85,10 @@ export function CallSessionProvider({
 }: CallSessionProviderProps) {
   // Accepted calls leave the queue and sent reports join the completed list, but both
   // lists themselves are derived rather than snapshotted — see the memos below.
+  const { state: auth } = useAuth()
+  const uid = auth.status === 'ready' ? auth.staff.userId : ''
+  const role = auth.status === 'ready' ? auth.staff.role : 'executive'
+  const action = useAction()
   const [accepted, setAccepted] = useState<string[]>([])
   const [sentReports, setSentReports] = useState<CompletedCall[]>([])
   const [state, setState] = useState<CallState | null>(null)
@@ -93,6 +106,10 @@ export function CallSessionProvider({
   )
   const [now, setNow] = useState(() => Date.now())
   const sentCount = useRef(0)
+  // The write handlers below run from event callbacks and need the call as it is now,
+  // not as it was when this render's closure was built.
+  const stateRef = useRef<CallState | null>(null)
+  stateRef.current = state
 
   /**
    * Two things move under this provider while it is mounted: a call placed in the AI Demo
@@ -162,6 +179,12 @@ export function CallSessionProvider({
         if (!call) return
         const beneficiary = beneficiaryForCall(call.beneficiaryId)
         setAccepted((ids) => [...ids, callId])
+        /**
+         * Claiming the call and taking the beneficiary privacy lock is one write, which
+         * is what the rules require: the lock is only grantable when the call document in
+         * the same batch says this official now handles it.
+         */
+        void action.run(() => acceptCall(callId, call.beneficiaryId, uid))
 
         // The caller has already answered the bilingual greeting by the time an executive
         // picks up, so detection runs on accept. With telephony wired in, sample.audio is
@@ -188,8 +211,32 @@ export function CallSessionProvider({
           transfer: null,
         })
       },
+      /**
+       * Spec 4.1 Stage 2. Typing is local; the write goes out when the field is left, so
+       * a correction is one document write rather than one per keystroke. `commitRecord`
+       * below is what the panel calls on blur.
+       */
       editRecord: (patch: Partial<EditableRecord>) =>
         setState((current) => (current ? { ...current, record: { ...current.record, ...patch } } : current)),
+      commitRecord: () => {
+        const current = stateRef.current
+        if (!current) return
+        void action.run(() =>
+          updateBeneficiaryDuringCall(current.call.beneficiaryId, {
+            name: current.record.name,
+            age: current.record.age,
+            gender: current.record.gender === 'M' ? 'M' : 'F',
+            primaryNumber: current.record.primaryNumber,
+            secondaryNumber: current.record.secondaryNumber || null,
+            district: current.record.district,
+            block: current.record.block,
+            village: current.record.village,
+            educationLevel: current.record.educationLevel,
+            currentWork: current.record.currentWork,
+            interests: current.record.interests,
+          }),
+        )
+      },
       setNotes: (notes: string) => setState((current) => (current ? { ...current, notes } : current)),
       toggleHold: () =>
         setState((current) => {
@@ -197,13 +244,32 @@ export function CallSessionProvider({
           if (current.onHold) return { ...current, onHold: false, startedAt: Date.now() - current.heldElapsed * 1000 }
           return { ...current, onHold: true, heldElapsed: Math.floor((Date.now() - current.startedAt) / 1000) }
         }),
-      transfer: (reason: TransferReason, resourcePersonId: string, resourcePersonName: string) =>
+      transfer: (reason: TransferReason, resourcePersonId: string, resourcePersonName: string) => {
         setState((current) =>
           current ? { ...current, transfer: { reason, resourcePersonId, resourcePersonName } } : current,
-        ),
+        )
+        const current = stateRef.current
+        if (!current) return
+        void action.run(() =>
+          transferToResourcePerson(
+            current.call,
+            { userId: resourcePersonId, name: resourcePersonName },
+            {
+              reason,
+              // Spec 7.2: a case reaching a resource person is one or the other. A course
+              // question is about the course; the other two reasons are about the person.
+              subType: reason === 'course-question' ? 'course-related' : 'common-related',
+              fromCallId: current.call.callId,
+            },
+          ),
+        )
+      },
       endCall: () => {
         if (!state) return
         const elapsedSeconds = elapsedOf(state)
+        // The mandatory report review is a real state the call passes through, not just a
+        // modal: the rules refuse active → completed, so it has to be recorded.
+        void action.run(() => endCallForReview(state.call.callId))
         setReport({ state, elapsedSeconds })
         setDraft({
           discussion: state.call.draftDiscussion,
@@ -237,7 +303,21 @@ export function CallSessionProvider({
         setSentReports((entries) => [sent, ...entries])
         setReport(null)
         setDraft(null)
+        // Completing the call releases the privacy lock in the same batch — the mirror of
+        // accepting it. Identity goes back to being invisible the moment the report is
+        // filed, which is the rule the whole lock exists to enforce.
+        void action.run(() =>
+          writeReport(sent, {
+            sourceCallId: report.state.call.callId,
+            beneficiaryId: report.state.call.beneficiaryId,
+            uid,
+            callType: role === 'resourcePerson' ? 'resourcePerson' : 'executive',
+          }),
+        )
       },
+      writeError: action.error,
+      writePending: action.pending,
+      clearWriteError: action.clear,
     }),
     [
       allowTransfer,
@@ -249,9 +329,12 @@ export function CallSessionProvider({
       queue,
       refPrefix,
       report,
+      role,
       state,
       toActive,
+      uid,
       waitedSeconds,
+      action,
     ],
   )
 

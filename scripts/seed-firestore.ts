@@ -19,10 +19,11 @@ import {
   sampleAdminFlags,
   sampleCentres,
   sampleFollowUps,
+  sampleStaff,
   sampleSystemCalls,
 } from '../src/data/adminConsole'
 import { sampleCourseRecords } from '../src/data/courseCatalogue'
-import { RESOURCE_PERSON, sampleAttendance } from '../src/data/resourcePerson'
+import { RESOURCE_PERSON, sampleAttendance, sampleBatches } from '../src/data/resourcePerson'
 import {
   sampleCompleted,
   sampleQueue,
@@ -142,10 +143,13 @@ async function main(): Promise<void> {
   const completed = sampleCompleted()
   const rpQueue = sampleResourcePersonQueue()
   const rpCompleted = sampleResourcePersonCompleted()
+  const staffDirectory = sampleStaff()
+  const batches = sampleBatches()
 
   await writeAll(
     'gapData',
-    gaps.map((gap) => ({ id: gap.gapId, data: { ...gap, seededAt } })),
+    // Seeded at zero: every contested detection on the map is one the demo produced.
+    gaps.map((gap) => ({ id: gap.gapId, data: { ...gap, contestedDetections: 0, seededAt } })),
   )
 
   await writeAll(
@@ -283,12 +287,41 @@ async function main(): Promise<void> {
   )
 
   const callDocs = calls.length + queue.length + completed.length + rpQueue.length + rpCompleted.length
+  // The staff directory the Admin console edits. Deliberately not `users`: those are real
+  // sign-in accounts and the seeder never touches them.
+  await writeAll(
+    'staff',
+    staffDirectory.map((person, index) => ({
+      id: person.userId,
+      data: {
+        ...person,
+        // The sign-in account behind the entry, where there is one: the rules address a
+        // transfer target by uid, so a directory id alone cannot receive a case.
+        uid:
+          person.role === 'resourcePerson'
+            ? (staff.resourcePerson[index % Math.max(1, staff.resourcePerson.length)] ?? null)
+            : (executives[index % Math.max(1, executives.length)] ?? null),
+        seededAt,
+      },
+    })),
+  )
+
+  // The trainer's batches: schedule and materials, both editable from the console.
+  await writeAll(
+    'batches',
+    batches.map((batch) => ({
+      id: batch.batchId,
+      data: { ...batch, assignedResourcePerson: trainerUid, seededAt },
+    })),
+  )
+
   console.log(
     `\nDone. ${gaps.length} gaps · ${beneficiaries.length} beneficiaries · ${callDocs} calls ` +
       `(${calls.length} overview, ${queue.length + rpQueue.length} waiting, ` +
       `${completed.length + rpCompleted.length} reports) · ` +
       `${followUps.length} follow-ups · ${courses.length} courses · ${centres.length} centres · ` +
-      `${attendance.length} attendance rows · ${flags.length} flags.`,
+      `${attendance.length} attendance rows · ${flags.length} flags · ` +
+      `${staffDirectory.length} staff · ${batches.length} batches.`,
   )
   console.log('Every write is keyed by id, so running this again overwrites rather than duplicates.')
   console.log('Open the consoles — each section badge should read "Firestore".')

@@ -8,6 +8,7 @@ import {
   type CourseMaterial,
   type DocumentType,
 } from '../../data/resourcePerson'
+import { WriteError } from '../admin/WriteError'
 import { useTrainer } from './TrainerContext'
 import { useDataSource } from '../../data/useDataSource'
 import { SourceBadge } from '../admin/SourceBadge'
@@ -19,7 +20,16 @@ const DAY_KEYS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
 export function CourseMaterialsSection() {
   const { t } = useTranslation()
   const source = useDataSource('courses')
-  const { batches, openSession, nextSession, updateSchedule, addMaterial, removeMaterial } = useTrainer()
+  const {
+    batches,
+    openSession,
+    nextSession,
+    updateSchedule,
+    addMaterial,
+    removeMaterial,
+    writeError,
+    clearWriteError,
+  } = useTrainer()
   const [draftFor, setDraftFor] = useState<string | null>(null)
   const [kind, setKind] = useState<CourseMaterial['kind']>('note')
   const [title, setTitle] = useState('')
@@ -99,6 +109,8 @@ export function CourseMaterialsSection() {
       </header>
 
       <div className="section-body rp-body">
+        <WriteError error={writeError} onDismiss={clearWriteError} />
+
         <div className={openSession ? 'rp-session is-open' : 'rp-session'} role="status">
           <span className="rp-session-dot" aria-hidden="true" />
           <span>

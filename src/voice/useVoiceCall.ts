@@ -18,7 +18,10 @@ import {
   type LanguageDetection,
 } from '../lib/languageDetection'
 import { addCompletedCall, addQueuedCall } from '../data/liveCalls'
+import { queueEscalatedCall, recordAiCall, recordContestedDetection } from '../data/actions'
+import { gapForBlock } from '../data/jharkhandGaps'
 import { registerLiveBeneficiary, type CompletedCall, type QueuedCall, type ReasonTag } from '../data/jharkhandCalls'
+import type { SystemCall } from '../data/adminConsole'
 import type { Beneficiary } from '../data/jharkhandBeneficiaries'
 import { blobToWavBase64, play, playCached, startRecording, stopSpeaking, type Recorder } from './audio'
 import { synthesise, transcribe } from './bhashini'
@@ -60,6 +63,60 @@ const ESCALATION_TAG: Record<EscalationReason, ReasonTag> = {
   placement: 'placement',
   'self-employment': 'self-employment',
   'repeated-rejection': 'course-question',
+}
+
+/**
+ * The row the Admin console's Calls section reads, for a call the AI line just handled.
+ *
+ * Built here rather than derived later because only this hook knows what actually
+ * happened: what was captured, whether it was escalated and why, and which two answers
+ * the detection models gave.
+ */
+function aiCallRecord(
+  beneficiaryId: string,
+  person: Beneficiary,
+  final: CallState,
+  detection: LanguageDetection,
+  seconds: number,
+  outcome: 'escalated' | 'recommended',
+): SystemCall {
+  return {
+    callId: `ai-${beneficiaryId}`,
+    handler: 'ai',
+    // Null is the point: nobody handled it.
+    handlerName: null,
+    beneficiaryId,
+    beneficiaryName: person.name,
+    district: person.district,
+    block: person.block,
+    whenLabel: nowLabel(),
+    daysAgo: 0,
+    durationSeconds: seconds,
+    detection,
+    summary:
+      outcome === 'escalated'
+        ? `Live voice call, handed to an executive. ${final.escalation?.note ?? ''}`.trim()
+        : `Live voice call handled end to end. ${
+            final.recommendation ? `Recommended ${final.recommendation.course.course}.` : 'No course matched.'
+          }`,
+    aiOutcome: outcome === 'escalated' ? 'escalated' : 'fully-handled',
+    escalationReason: final.escalation?.note,
+    confidence: detection.confidence,
+  }
+}
+
+/**
+ * Counts a contested detection against the caller's block.
+ *
+ * The two models disagreeing is the dialect-gap signal — not low confidence, which an
+ * unsupported language does not produce. A block with no gap record is simply not
+ * counted: inventing one would put a marker on the map that no data stands behind.
+ */
+async function countContestedDetection(block: string, course?: string): Promise<void> {
+  const gap = gapForBlock(block, course)
+  if (!gap) return
+  const result = await recordContestedDetection(gap.gapId)
+  if (!result.ok) console.warn('Contested detection not counted on the map:', result.error)
 }
 
 function nowLabel(): string {
@@ -235,6 +292,20 @@ export function useVoiceCall(options: VoiceCallOptions = {}) {
           course: final.recommendation?.course.course ?? 'Not matched',
           noLocalDemand: final.noLocalDemand,
         })
+
+        // The database is where this call actually lives; the in-memory store above is
+        // what lets the already-mounted console show it without waiting for a reload.
+        // Failures are recorded rather than thrown: the caller has hung up, and losing
+        // the demo call to an unhandled rejection would be worse than a console warning.
+        void recordAiCall(person, aiCallRecord(id, person, final, finalDetection, seconds, 'escalated'), null).then(
+          (result) => {
+            if (!result.ok) console.warn('AI call not written:', result.error)
+          },
+        )
+        void queueEscalatedCall(queued, id).then((result) => {
+          if (!result.ok) console.warn('Escalated call not queued in Firestore:', result.error)
+        })
+        if (final.dialectGap) void countContestedDetection(block, final.recommendation?.course.course)
         return
       }
 
@@ -261,6 +332,43 @@ export function useVoiceCall(options: VoiceCallOptions = {}) {
         district,
         course: final.recommendation?.course.course ?? 'Not matched',
         noLocalDemand: final.noLocalDemand,
+      })
+
+      const person: Beneficiary = {
+        ...({} as Beneficiary),
+        beneficiaryId: id,
+        name: final.profile.name ?? 'Caller (name not given)',
+        age: 0,
+        gender: 'F',
+        primaryNumber: '+91 00000 00000',
+        secondaryNumber: final.profile.secondaryNumber,
+        preferredLanguage: finalDetection.languageName,
+        district,
+        block,
+        village: final.profile.village ?? '—',
+        educationLevel: final.profile.schoolYears === null ? 'Not recorded' : `Class ${final.profile.schoolYears}`,
+        currentWork: final.profile.currentWork ?? 'Not recorded',
+        interests: final.profile.interests,
+        course: final.recommendation?.course.course ?? 'Not yet matched',
+        centre: final.recommendation?.centreName ?? null,
+        trainingStatus: final.recommendation ? 'recommended' : 'new',
+        employmentStatus: 'in-training',
+        lastContactDays: 0,
+        aiFlags: [],
+        isStalled: false,
+        hasDialectGap: false,
+        attendance: null,
+        calls: [],
+        journey: [],
+        outcome: 'Handled end to end by the AI line',
+      }
+      registerLiveBeneficiary(person)
+      void recordAiCall(
+        person,
+        aiCallRecord(id, person, final, finalDetection, seconds, 'recommended'),
+        completed,
+      ).then((result) => {
+        if (!result.ok) console.warn('AI call not written:', result.error)
       })
     },
     [],

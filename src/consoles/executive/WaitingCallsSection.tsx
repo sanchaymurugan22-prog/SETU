@@ -15,6 +15,7 @@ import { useDataSource } from '../../data/useDataSource'
 import type { SlotName } from '../../data/source'
 import { SourceBadge } from '../admin/SourceBadge'
 import { useCallSession } from './CallSessionContext'
+import { WriteError } from '../admin/WriteError'
 
 type SortMode = 'wait' | 'position'
 
@@ -31,7 +32,8 @@ export function WaitingCallsSection({
 } = {}) {
   const { t } = useTranslation()
   const source = useDataSource(slot)
-  const { queue, active, accept, available, setAvailable, waitedSeconds } = useCallSession()
+  const { queue, active, accept, available, setAvailable, waitedSeconds, writeError, clearWriteError } =
+    useCallSession()
   const [reason, setReason] = useState<ReasonTag | 'all'>('all')
   const [subType, setSubType] = useState<CallSubType | 'all'>('all')
   const [sort, setSort] = useState<SortMode>('wait')
@@ -105,6 +107,8 @@ export function WaitingCallsSection({
       </header>
 
       <div className="section-body call-queue-body">
+        <WriteError error={writeError} onDismiss={clearWriteError} />
+
         {hasSubTypes && (
           <div className="call-filters">
             <span className="call-filter-label">{t('resourcePerson.calls.subTypeLabel')}</span>

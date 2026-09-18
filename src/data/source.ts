@@ -35,6 +35,8 @@ export type SlotName =
   | 'completed'
   | 'rpQueue'
   | 'rpCompleted'
+  | 'staff'
+  | 'batches'
 
 export const SLOT_NAMES: SlotName[] = [
   'gaps',
@@ -49,6 +51,8 @@ export const SLOT_NAMES: SlotName[] = [
   'completed',
   'rpQueue',
   'rpCompleted',
+  'staff',
+  'batches',
 ]
 
 function emptySlot(): SlotState<unknown> {
@@ -68,6 +72,8 @@ const slots: Record<SlotName, SlotState<unknown>> = {
   completed: emptySlot(),
   rpQueue: emptySlot(),
   rpCompleted: emptySlot(),
+  staff: emptySlot(),
+  batches: emptySlot(),
 }
 
 const listeners = new Set<() => void>()
@@ -115,4 +121,45 @@ export function fillFromFirestore<T>(slot: SlotName, items: T[]): void {
 export function markFailed(slot: SlotName, error: string): void {
   slots[slot] = { ...slots[slot], status: 'error', error }
   announce()
+}
+
+/* ─────────────────────── Writing back ─────────────────────── */
+
+/**
+ * A slot is mutated optimistically so the console responds at once, then the Firestore
+ * write either confirms it or it is rolled back. These helpers return the previous items
+ * so the caller can restore them; see `commit()` in writes.ts, which is the only place
+ * that should be calling them.
+ */
+export function replaceSlot<T>(slot: SlotName, items: T[]): T[] {
+  const previous = slots[slot].items as T[]
+  slots[slot] = { ...slots[slot], items: items as unknown[] }
+  announce()
+  return previous
+}
+
+/** Adds the item, or replaces the one already carrying that id. */
+export function upsertInSlot<T>(slot: SlotName, item: T, idOf: (entry: T) => string): T[] {
+  const items = slots[slot].items as T[]
+  const id = idOf(item)
+  const index = items.findIndex((entry) => idOf(entry) === id)
+  const next = index === -1 ? [item, ...items] : items.map((entry, at) => (at === index ? item : entry))
+  return replaceSlot(slot, next)
+}
+
+/** Applies a patch to one item. A no-op if nothing carries that id. */
+export function patchInSlot<T>(slot: SlotName, id: string, idOf: (entry: T) => string, patch: Partial<T>): T[] {
+  const items = slots[slot].items as T[]
+  return replaceSlot(
+    slot,
+    items.map((entry) => (idOf(entry) === id ? { ...entry, ...patch } : entry)),
+  )
+}
+
+export function removeFromSlot<T>(slot: SlotName, id: string, idOf: (entry: T) => string): T[] {
+  const items = slots[slot].items as T[]
+  return replaceSlot(
+    slot,
+    items.filter((entry) => idOf(entry) !== id),
+  )
 }

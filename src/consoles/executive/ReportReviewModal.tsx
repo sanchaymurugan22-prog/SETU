@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { formatDuration, OUTCOME_KEYS, type OutcomeKey } from '../../data/jharkhandCalls'
 import { useCallSession } from './CallSessionContext'
+import { WriteError } from '../admin/WriteError'
 
 /**
  * Stage 3. Opens when the call ends and offers exactly one way out: Send.
@@ -9,7 +10,7 @@ import { useCallSession } from './CallSessionContext'
  */
 export function ReportReviewModal() {
   const { t } = useTranslation()
-  const { reportFor, draft, editDraft, sendReport } = useCallSession()
+  const { reportFor, draft, editDraft, sendReport, writeError, writePending, clearWriteError } = useCallSession()
   const [newAction, setNewAction] = useState('')
   const [touched, setTouched] = useState(false)
 
@@ -45,6 +46,8 @@ export function ReportReviewModal() {
         <p className="report-warning">{t('callConsole.report.warning')}</p>
 
         <div className="report-body">
+          <WriteError error={writeError} onDismiss={clearWriteError} />
+
           <label className="report-field">
             <span className="report-label">{t('callConsole.report.discussion')}</span>
             <textarea
@@ -140,7 +143,7 @@ export function ReportReviewModal() {
           <span className="report-cannot-skip">
             {touched && !canSend ? t('callConsole.report.discussionRequired') : t('callConsole.report.cannotSkip')}
           </span>
-          <button type="button" className="btn btn-primary" disabled={!canSend} onClick={sendReport}>
+          <button type="button" className="btn btn-primary" disabled={!canSend || writePending} onClick={sendReport}>
             {t('callConsole.report.send')}
           </button>
         </div>

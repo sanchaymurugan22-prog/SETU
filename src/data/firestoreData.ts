@@ -11,10 +11,10 @@ import { collection, getDocs, limit, query, where, type QueryConstraint } from '
 import { db } from '../lib/firebase'
 import type { BlockGap } from './jharkhandGaps'
 import type { Beneficiary, EmploymentStatus, TrainingStatus } from './jharkhandBeneficiaries'
-import type { AdminFlagRecord, Centre, FollowUpRecord, SystemCall } from './adminConsole'
+import type { AdminFlagRecord, Centre, FollowUpRecord, StaffRecord, SystemCall } from './adminConsole'
 import type { CompletedCall, OutcomeKey, QueuedCall, ReasonTag } from './jharkhandCalls'
 import type { CourseRecord } from './courseCatalogue'
-import type { AttendanceRecord } from './resourcePerson'
+import type { AttendanceRecord, Batch, CourseMaterial, SessionSchedule } from './resourcePerson'
 import { fillFromFirestore, markFailed, markLoading, type SlotName } from './source'
 
 /**
@@ -36,6 +36,8 @@ const LIMITS: Record<SlotName, number> = {
   completed: 60,
   rpQueue: 60,
   rpCompleted: 60,
+  staff: 100,
+  batches: 40,
 }
 
 function text(value: unknown, fallback = ''): string {
@@ -70,6 +72,7 @@ function toGap(id: string, data: Record<string, unknown>): BlockGap {
     flaggedDaysAgo: count(data.flaggedDaysAgo),
     detail: text(data.detail),
     recommendedAction: text(data.recommendedAction),
+    contestedDetections: count(data.contestedDetections),
   }
 }
 
@@ -117,6 +120,17 @@ function toBeneficiary(id: string, data: Record<string, unknown>): Beneficiary {
     calls: Array.isArray(data.calls) ? (data.calls as Beneficiary['calls']) : [],
     journey: Array.isArray(data.journey) ? (data.journey as Beneficiary['journey']) : [],
     outcome: text(data.outcome),
+    assignedResourcePerson: typeof data.assignedResourcePerson === 'string' ? data.assignedResourcePerson : null,
+    statusHistory: Array.isArray(data.statusHistory)
+      ? (data.statusHistory as Beneficiary['statusHistory'])
+      : undefined,
+    completionRecommendation:
+      data.completionRecommendation && typeof data.completionRecommendation === 'object'
+        ? (data.completionRecommendation as Beneficiary['completionRecommendation'])
+        : null,
+    certificateId: typeof data.certificateId === 'string' ? data.certificateId : null,
+    certificateIssuedAt: typeof data.certificateIssuedAt === 'string' ? data.certificateIssuedAt : null,
+    createdBy: typeof data.createdBy === 'string' ? data.createdBy : undefined,
   }
 }
 
@@ -234,6 +248,87 @@ function toAdminFlag(id: string, data: Record<string, unknown>): AdminFlagRecord
  * executive genuinely has no calls assigned yet — and showing them another official's
  * sample rows instead would be a lie.
  */
+function toStaff(id: string, data: Record<string, unknown>): StaffRecord {
+  const common = {
+    userId: text(data.userId, id),
+    name: text(data.name, '—'),
+    email: text(data.email),
+    district: text(data.district),
+    active: data.active !== false,
+    joinedLabel: text(data.joinedLabel),
+    callsHandled: count(data.callsHandled),
+    lastActiveLabel: text(data.lastActiveLabel),
+  }
+  if (data.role === 'resourcePerson') {
+    return {
+      role: 'resourcePerson',
+      ...common,
+      block: text(data.block),
+      centre: text(data.centre),
+      courses: list(data.courses),
+      uid: typeof data.uid === 'string' ? data.uid : null,
+      traineeCount: count(data.traineeCount),
+      certifiedCount: count(data.certifiedCount),
+    }
+  }
+  return {
+    role: 'executive',
+    ...common,
+    reportsSent: count(data.reportsSent),
+    transfersOut: count(data.transfersOut),
+    avgHandleSeconds: count(data.avgHandleSeconds),
+  }
+}
+
+const MATERIAL_KINDS: CourseMaterial['kind'][] = ['link', 'note', 'document']
+
+function toMaterial(value: unknown): CourseMaterial | null {
+  if (!value || typeof value !== 'object') return null
+  const data = value as Record<string, unknown>
+  const kind = MATERIAL_KINDS.includes(data.kind as CourseMaterial['kind'])
+    ? (data.kind as CourseMaterial['kind'])
+    : 'note'
+  return {
+    id: text(data.id),
+    title: text(data.title),
+    kind,
+    body: text(data.body),
+    documentType: typeof data.documentType === 'string' ? (data.documentType as CourseMaterial['documentType']) : undefined,
+    fileName: typeof data.fileName === 'string' ? data.fileName : undefined,
+    fileSize: typeof data.fileSize === 'number' ? data.fileSize : undefined,
+    source: data.source === 'demo-upload' ? 'demo-upload' : 'link',
+  }
+}
+
+function toSchedule(value: unknown): SessionSchedule {
+  const data = (value ?? {}) as Record<string, unknown>
+  return {
+    days: Array.isArray(data.days) ? data.days.filter((day): day is number => typeof day === 'number') : [],
+    startTime: text(data.startTime, '10:00'),
+    endTime: text(data.endTime, '13:00'),
+    mode: data.mode === 'online' || data.mode === 'hybrid' ? data.mode : 'in-person',
+    location: text(data.location),
+    onlineLink: typeof data.onlineLink === 'string' ? data.onlineLink : null,
+  }
+}
+
+function toBatch(id: string, data: Record<string, unknown>): Batch {
+  return {
+    batchId: text(data.batchId, id),
+    course: text(data.course),
+    centre: text(data.centre),
+    block: text(data.block),
+    district: text(data.district),
+    schedule: toSchedule(data.schedule),
+    totalSessions: count(data.totalSessions),
+    startDate: text(data.startDate),
+    // A demo-only attachment never reached Firestore, so nothing read back is one.
+    materials: (Array.isArray(data.materials) ? data.materials : [])
+      .map(toMaterial)
+      .filter((entry): entry is CourseMaterial => entry !== null),
+  }
+}
+
 const REASONS: ReasonTag[] = [
   'ai-low-confidence',
   'beneficiary-requested-human',
@@ -318,6 +413,8 @@ export async function loadAdminData(): Promise<void> {
     loadCollection('centres', 'centres', toCentre),
     loadCollection('attendance', 'attendance', toAttendance),
     loadCollection('adminFlags', 'adminFlags', toAdminFlag),
+    loadCollection('staff', 'staff', toStaff),
+    loadCollection('batches', 'batches', toBatch),
   ])
 }
 
@@ -356,6 +453,10 @@ export async function loadExecutiveData(uid: string): Promise<void> {
     ),
     loadCollection('courses', 'courses', toCourse),
     loadCollection('centres', 'centres', toCentre),
+    // The directory, because a transfer has to be addressed to a resource person's
+    // sign-in account: the rules check users/{assignedTo}, and only the directory knows
+    // which account is behind which name.
+    loadCollection('staff', 'staff', toStaff),
   ])
 }
 
@@ -389,6 +490,7 @@ export async function loadResourcePersonData(uid: string): Promise<void> {
     loadCollection('adminFlags', 'adminFlags', toAdminFlag, [where('raisedBy', '==', uid)], true),
     loadCollection('courses', 'courses', toCourse),
     loadCollection('centres', 'centres', toCentre),
+    loadCollection('batches', 'batches', toBatch),
   ])
 }
 

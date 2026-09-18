@@ -265,6 +265,15 @@ function batchFor(course: string): string {
   return RESOURCE_PERSON.batches.find((batch) => batch.course === course)?.batchId ?? RESOURCE_PERSON.batches[0]!.batchId
 }
 
+/**
+ * A stored value always beats a derived one.
+ *
+ * The seeded records carry no history, certificate or recommendation, so those are
+ * reconstructed from the status to give the console something to show. The moment the
+ * trainer writes one it is on the beneficiary document, and the derived version must get
+ * out of the way — otherwise a status change would appear to save and then revert on the
+ * next reload.
+ */
 export function loadTrainees(): Trainee[] {
   return loadBeneficiaries()
     .filter((person) => person.centre === OWN_CENTRE)
@@ -275,11 +284,19 @@ export function loadTrainees(): Trainee[] {
       completedOn: isFinished(person) ? completionOf(person) : null,
       // Completing the course is what issues the certificate, so everyone past that
       // point already has one.
-      certificateId: isFinished(person) ? `SETU-CERT-${person.beneficiaryId.slice(-4)}` : null,
-      nextCourse: isFinished(person) ? nextCourseAfter(person.course) : null,
-      jobRecommendation: isFinished(person) ? 'Ghaghra SHG garment cluster · piece work' : null,
-      statusHistory: historyFor(person),
+      certificateId: person.certificateId ?? (isFinished(person) ? certificateIdFor(person.beneficiaryId) : null),
+      nextCourse:
+        person.completionRecommendation?.nextCourse ?? (isFinished(person) ? nextCourseAfter(person.course) : null),
+      jobRecommendation:
+        person.completionRecommendation?.jobRecommendation ??
+        (isFinished(person) ? 'Ghaghra SHG garment cluster · piece work' : null),
+      statusHistory: person.statusHistory ?? historyFor(person),
     }))
+}
+
+/** The certificate number, derived from the beneficiary id so it never collides. */
+export function certificateIdFor(beneficiaryId: string): string {
+  return `SETU-CERT-${beneficiaryId.slice(-4)}`
 }
 
 /** Descriptions the trainer wrote at each stage — every status change carries one. */
@@ -487,4 +504,28 @@ export function loadAttendance(): AttendanceRecord[] {
 
 export function sampleAttendance(): AttendanceRecord[] {
   return ATTENDANCE
+}
+
+/**
+ * The batches this resource person runs, as a collection rather than a constant.
+ *
+ * The schedule decides when an attendance sheet opens and the materials list is edited
+ * from the console, so both have to outlive a reload — which means they belong in
+ * Firestore beside everything else rather than in a module the browser re-imports
+ * with the original values every time.
+ *
+ * Demo-only attachments are the exception: the bytes live in browser memory because
+ * Storage needs the Blaze plan, so only the label travels to Firestore (see
+ * CourseMaterial.storage).
+ */
+const BATCHES: Batch[] = RESOURCE_PERSON.batches.map((batch) => ({ ...batch }))
+
+registerSample('batches', BATCHES)
+
+export function loadBatches(): Batch[] {
+  return readSlot<Batch>('batches')
+}
+
+export function sampleBatches(): Batch[] {
+  return BATCHES
 }

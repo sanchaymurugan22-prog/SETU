@@ -1,6 +1,11 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { CALL_EXECUTIVES, type CallExecutive } from '../../data/adminConsole'
+import { loadCallExecutives, type CallExecutive } from '../../data/adminConsole'
+import { addStaff, setStaffActive, slug } from '../../data/actions'
+import { useAction } from '../../data/useAction'
+import { useDataSource } from '../../data/useDataSource'
+import { SourceBadge } from './SourceBadge'
+import { WriteError } from './WriteError'
 import { districts } from '../../data/jharkhandBeneficiaries'
 import { formatDuration } from '../../data/jharkhandCalls'
 import { SeededDirectoryNote } from './SeededDirectoryNote'
@@ -9,7 +14,9 @@ import '../../styles/admin.css'
 /** All call executives: activity, new accounts, and deactivation (SETU-SPEC 6.2). */
 export function CallExecutivesSection() {
   const { t } = useTranslation()
-  const [staff, setStaff] = useState<CallExecutive[]>(CALL_EXECUTIVES)
+  const source = useDataSource('staff')
+  const action = useAction()
+  const staff = loadCallExecutives()
   const [search, setSearch] = useState('')
   const [showInactive, setShowInactive] = useState(true)
   const [adding, setAdding] = useState(false)
@@ -32,18 +39,22 @@ export function CallExecutivesSection() {
           person.district.toLowerCase().includes(needle)) &&
         (showInactive || person.active),
     )
-  }, [search, showInactive, staff])
+    // loadCallExecutives reads the module-level slot, which the linter cannot see change.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search, showInactive, staff, source.loadedAt, source.items])
 
   const activeCount = staff.filter((person) => person.active).length
   const totalCalls = staff.reduce((sum, person) => sum + person.callsHandled, 0)
 
-  const submit = () => {
+  const submit = async () => {
     if (!form.name.trim() || !form.email.trim()) {
       setError(t('admin.staff.addError'))
       return
     }
     const created: CallExecutive = {
-      userId: `exec-new-${staff.length + 1}`,
+      // From the email, so filing the same person twice corrects the record rather than
+      // creating a second one — the same property that makes the seeder safe to re-run.
+      userId: `exec-${slug(form.email.trim().split('@')[0] ?? form.name)}`,
       name: form.name.trim(),
       email: form.email.trim(),
       district: form.district,
@@ -55,17 +66,16 @@ export function CallExecutivesSection() {
       avgHandleSeconds: 0,
       lastActiveLabel: t('admin.staff.neverSignedIn'),
     }
-    setStaff((current) => [created, ...current])
+    setError(null)
+    const ok = await action.run(() => addStaff({ role: 'executive', ...created }))
+    if (!ok) return
     setNotice(t('admin.staff.created', { name: created.name }))
     setForm({ name: '', email: '', district: districts()[0] ?? '' })
-    setError(null)
     setAdding(false)
   }
 
-  const toggleActive = (userId: string) =>
-    setStaff((current) =>
-      current.map((person) => (person.userId === userId ? { ...person, active: !person.active } : person)),
-    )
+  const toggleActive = (person: CallExecutive) =>
+    void action.run(() => setStaffActive(person.userId, !person.active))
 
   return (
     <>
@@ -76,13 +86,17 @@ export function CallExecutivesSection() {
             {t('admin.executives.subtitle', { active: activeCount, total: staff.length, calls: totalCalls })}
           </p>
         </div>
-        <button type="button" className="btn btn-primary btn-small" onClick={() => setAdding(true)}>
-          {t('admin.executives.add')}
-        </button>
+        <div className="admin-header-actions">
+          <SourceBadge state={source} count={staff.length} />
+          <button type="button" className="btn btn-primary btn-small" onClick={() => setAdding(true)}>
+            {t('admin.executives.add')}
+          </button>
+        </div>
       </header>
 
       <div className="section-body admin-body">
         <SeededDirectoryNote />
+        <WriteError error={action.error} onDismiss={action.clear} />
 
         {notice && (
           <div className="gap-notice" role="status">
@@ -152,7 +166,12 @@ export function CallExecutivesSection() {
                     <span className={person.active ? 'chip is-teal' : 'chip is-bright'}>
                       {person.active ? t('admin.staff.active') : t('admin.staff.inactive')}
                     </span>
-                    <button type="button" className="link-button" onClick={() => toggleActive(person.userId)}>
+                    <button
+                      type="button"
+                      className="link-button"
+                      disabled={action.pending}
+                      onClick={() => toggleActive(person)}
+                    >
                       {person.active ? t('admin.staff.deactivate') : t('admin.staff.reactivate')}
                     </button>
                   </span>
@@ -214,8 +233,8 @@ export function CallExecutivesSection() {
               <button type="button" className="btn btn-outline btn-small" onClick={() => setAdding(false)}>
                 {t('common.cancel')}
               </button>
-              <button type="button" className="btn btn-primary btn-small" onClick={submit}>
-                {t('admin.staff.create')}
+              <button type="button" className="btn btn-primary btn-small" disabled={action.pending} onClick={() => void submit()}>
+                {action.pending ? t('writes.saving') : t('admin.staff.create')}
               </button>
             </footer>
           </div>

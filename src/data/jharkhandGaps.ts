@@ -37,6 +37,12 @@ export interface BlockGap {
   flaggedDaysAgo: number
   detail: string
   recommendedAction: string
+  /**
+   * Calls from this block where the two detection models disagreed — a language SETU
+   * cannot serve. Counted rather than averaged: confidence is not the signal, because an
+   * unsupported language comes back wrong and confident (see lib/languageDetection.ts).
+   */
+  contestedDetections?: number
 }
 
 const BLOCK_GAPS: BlockGap[] = [
@@ -584,6 +590,17 @@ registerSample('gaps', BLOCK_GAPS)
  * Every block gap. Served from Firestore once `gapData` has loaded, and from the seeded
  * sample until then — or for good, if the query fails.
  */
+/**
+ * The gap record for a block, so a live call can be counted against the right one.
+ * Prefers the block's gap for that course; falls back to any gap in the block, because a
+ * dialect gap is about where the caller is, not what they asked for.
+ */
+export function gapForBlock(block: string, course?: string): BlockGap | null {
+  const inBlock = loadBlockGaps().filter((gap) => gap.block.toLowerCase() === block.trim().toLowerCase())
+  if (inBlock.length === 0) return null
+  return (course ? inBlock.find((gap) => gap.course === course) : null) ?? inBlock[0]!
+}
+
 export function loadBlockGaps(): BlockGap[] {
   return readSlot<BlockGap>('gaps')
 }

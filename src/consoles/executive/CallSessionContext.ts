@@ -52,12 +52,19 @@ export interface CallSessionValue {
   waitedSeconds: (call: QueuedCall) => number
   accept: (callId: string) => void
   editRecord: (patch: Partial<EditableRecord>) => void
+  /** Saves the edited record. Called on blur, so a correction is one write, not one per key. */
+  commitRecord: () => void
   setNotes: (notes: string) => void
   toggleHold: () => void
   transfer: (reason: TransferReason, resourcePersonId: string, resourcePersonName: string) => void
   endCall: () => void
   editDraft: (patch: Partial<ReportDraft>) => void
   sendReport: () => void
+
+  /** Set when the last write was refused; the optimistic change has been rolled back. */
+  writeError: string | null
+  writePending: boolean
+  clearWriteError: () => void
 }
 
 export const CallSessionContext = createContext<CallSessionValue | null>(null)

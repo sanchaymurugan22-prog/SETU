@@ -132,6 +132,20 @@ export interface Beneficiary {
   calls: CallRecord[]
   journey: JourneyEvent[]
   outcome: string
+
+  /* Written from the consoles. Absent on a seeded record, where the trainer view
+     derives an equivalent from the status — a stored value always wins over that. */
+
+  /** Which resource person's trainee list this person appears on. */
+  assignedResourcePerson?: string | null
+  /** Every status change the trainer made, each with the description they had to write. */
+  statusHistory?: { status: TrainingStatus; description: string; whenLabel: string }[]
+  /** What the trainer recommends next, recorded when they certify. */
+  completionRecommendation?: { nextCourse: string | null; jobRecommendation: string | null } | null
+  certificateId?: string | null
+  certificateIssuedAt?: string | null
+  /** 'ai-call' when the voice line met this person; absent on a seeded record. */
+  createdBy?: string
 }
 
 /** Fixed reporting date, so every derived date and count stays stable. */

@@ -1,15 +1,22 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { loadCentres, RESOURCE_PERSON_RECORDS, type ResourcePersonRecord } from '../../data/adminConsole'
+import { loadCentres, loadResourcePersonRecords, type ResourcePersonRecord } from '../../data/adminConsole'
 import { courses, districts } from '../../data/jharkhandBeneficiaries'
+import { addStaff, assignResourcePerson, setStaffActive, slug } from '../../data/actions'
+import { useAction } from '../../data/useAction'
+import { useDataSource } from '../../data/useDataSource'
 import { SeededDirectoryNote } from './SeededDirectoryNote'
+import { SourceBadge } from './SourceBadge'
+import { WriteError } from './WriteError'
 import '../../styles/admin.css'
 
 /** All resource persons, their postings, and the courses they are assigned (SETU-SPEC 6.3). */
 export function ResourcePersonsSection() {
   const { t } = useTranslation()
+  const source = useDataSource('staff')
+  const action = useAction()
   const centres = loadCentres()
-  const [staff, setStaff] = useState<ResourcePersonRecord[]>(RESOURCE_PERSON_RECORDS)
+  const staff = loadResourcePersonRecords()
   const [search, setSearch] = useState('')
   const [adding, setAdding] = useState(false)
   const [assigning, setAssigning] = useState<ResourcePersonRecord | null>(null)
@@ -31,18 +38,20 @@ export function ResourcePersonsSection() {
         person.centre.toLowerCase().includes(needle) ||
         person.courses.some((course) => course.toLowerCase().includes(needle)),
     )
-  }, [search, staff])
+    // loadResourcePersonRecords reads the module-level slot the linter cannot see change.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search, staff, source.loadedAt, source.items])
 
   const trainees = staff.reduce((sum, person) => sum + person.traineeCount, 0)
 
-  const submit = () => {
+  const submit = async () => {
     if (!form.name.trim() || !form.email.trim()) {
       setError(t('admin.staff.addError'))
       return
     }
     const centre = centres.find((entry) => entry.name === form.centre)
     const created: ResourcePersonRecord = {
-      userId: `rp-new-${staff.length + 1}`,
+      userId: `rp-${slug(form.email.trim().split('@')[0] ?? form.name)}`,
       name: form.name.trim(),
       email: form.email.trim(),
       district: centre?.district ?? form.district,
@@ -56,40 +65,47 @@ export function ResourcePersonsSection() {
       callsHandled: 0,
       lastActiveLabel: t('admin.staff.neverSignedIn'),
     }
-    setStaff((current) => [created, ...current])
-    setNotice(t('admin.staff.created', { name: created.name }))
     setError(null)
+    const ok = await action.run(() => addStaff({ role: 'resourcePerson', ...created }))
+    if (!ok) return
+    setNotice(t('admin.staff.created', { name: created.name }))
     setAdding(false)
     setForm({ name: '', email: '', district: districts()[0] ?? '', centre: centres[0]?.name ?? '' })
   }
 
-  const toggleCourse = (userId: string, course: string) =>
-    setStaff((current) =>
-      current.map((person) =>
-        person.userId === userId
-          ? {
-              ...person,
-              courses: person.courses.includes(course)
-                ? person.courses.filter((entry) => entry !== course)
-                : [...person.courses, course],
-            }
-          : person,
-      ),
-    )
-
-  const moveCentre = (userId: string, centreName: string) =>
-    setStaff((current) =>
-      current.map((person) => {
-        if (person.userId !== userId) return person
-        const centre = centres.find((entry) => entry.name === centreName)
-        return {
-          ...person,
+  /**
+   * A posting is one write: the centre, the block it sits in, and the courses taught
+   * there. The centre document records the trainer too, because that is what the
+   * attendance rules read to decide whether they may mark a sheet at it.
+   */
+  const savePosting = (person: ResourcePersonRecord, centreName: string, courseList: string[]) => {
+    const centre = centres.find((entry) => entry.name === centreName)
+    return action.run(() =>
+      assignResourcePerson(
+        person.userId,
+        {
           centre: centreName,
+          centreId: centre?.centreId ?? null,
           district: centre?.district ?? person.district,
           block: centre?.block ?? person.block,
-        }
-      }),
+          courses: courseList,
+        },
+        person.name,
+      ),
     )
+  }
+
+  const toggleCourse = (person: ResourcePersonRecord, course: string) =>
+    void savePosting(
+      person,
+      person.centre,
+      person.courses.includes(course)
+        ? person.courses.filter((entry) => entry !== course)
+        : [...person.courses, course],
+    )
+
+  const moveCentre = (person: ResourcePersonRecord, centreName: string) =>
+    void savePosting(person, centreName, person.courses)
 
   const open = assigning ? (staff.find((person) => person.userId === assigning.userId) ?? null) : null
 
@@ -102,13 +118,17 @@ export function ResourcePersonsSection() {
             {t('admin.resourcePersons.subtitle', { count: staff.length, trainees, centres: centres.length })}
           </p>
         </div>
-        <button type="button" className="btn btn-primary btn-small" onClick={() => setAdding(true)}>
-          {t('admin.resourcePersons.add')}
-        </button>
+        <div className="admin-header-actions">
+          <SourceBadge state={source} count={staff.length} />
+          <button type="button" className="btn btn-primary btn-small" onClick={() => setAdding(true)}>
+            {t('admin.resourcePersons.add')}
+          </button>
+        </div>
       </header>
 
       <div className="section-body admin-body">
         <SeededDirectoryNote />
+        <WriteError error={action.error} onDismiss={action.clear} />
 
         {notice && (
           <div className="gap-notice" role="status">
@@ -174,8 +194,19 @@ export function ResourcePersonsSection() {
                 </span>
                 <span className="ben-cell">{person.callsHandled}</span>
                 <span className="admin-row-actions">
+                  <span className={person.active ? 'chip is-teal' : 'chip is-bright'}>
+                    {person.active ? t('admin.staff.active') : t('admin.staff.inactive')}
+                  </span>
                   <button type="button" className="btn btn-outline btn-small" onClick={() => setAssigning(person)}>
                     {t('admin.resourcePersons.assign')}
+                  </button>
+                  <button
+                    type="button"
+                    className="link-button"
+                    disabled={action.pending}
+                    onClick={() => void action.run(() => setStaffActive(person.userId, !person.active))}
+                  >
+                    {person.active ? t('admin.staff.deactivate') : t('admin.staff.reactivate')}
                   </button>
                 </span>
               </li>
@@ -204,7 +235,7 @@ export function ResourcePersonsSection() {
             <div className="rp-modal-body">
               <label className="call-field">
                 <span>{t('admin.resourcePersons.centre')}</span>
-                <select value={open.centre} onChange={(event) => moveCentre(open.userId, event.target.value)}>
+                <select value={open.centre} onChange={(event) => moveCentre(open, event.target.value)}>
                   {centres.map((centre) => (
                     <option key={centre.centreId} value={centre.name}>
                       {centre.name} · {centre.block}
@@ -222,7 +253,8 @@ export function ResourcePersonsSection() {
                       type="button"
                       className={open.courses.includes(course) ? 'call-chip is-selected' : 'call-chip'}
                       aria-pressed={open.courses.includes(course)}
-                      onClick={() => toggleCourse(open.userId, course)}
+                      disabled={action.pending}
+                      onClick={() => toggleCourse(open, course)}
                     >
                       {course}
                     </button>
@@ -282,8 +314,8 @@ export function ResourcePersonsSection() {
               <button type="button" className="btn btn-outline btn-small" onClick={() => setAdding(false)}>
                 {t('common.cancel')}
               </button>
-              <button type="button" className="btn btn-primary btn-small" onClick={submit}>
-                {t('admin.staff.create')}
+              <button type="button" className="btn btn-primary btn-small" disabled={action.pending} onClick={() => void submit()}>
+                {action.pending ? t('writes.saving') : t('admin.staff.create')}
               </button>
             </footer>
           </div>

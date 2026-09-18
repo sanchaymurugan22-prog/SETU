@@ -7,8 +7,11 @@ import {
   type AdminFlagRecord,
   type FlagStatus,
 } from '../../data/adminConsole'
+import { assignFlagOfficer, resolveFlag } from '../../data/actions'
+import { useAction } from '../../data/useAction'
 import { useDataSource } from '../../data/useDataSource'
 import { SourceBadge } from './SourceBadge'
+import { WriteError } from './WriteError'
 import '../../styles/admin.css'
 
 const STATUS_TONE: Record<FlagStatus, string> = { open: 'bright', assigned: 'cyan', resolved: 'teal' }
@@ -17,7 +20,8 @@ const STATUS_TONE: Record<FlagStatus, string> = { open: 'bright', assigned: 'cya
 export function AdminFlagsSection() {
   const { t } = useTranslation()
   const source = useDataSource('adminFlags')
-  const [flags, setFlags] = useState<AdminFlagRecord[]>(loadAdminFlags)
+  const action = useAction()
+  const flags = loadAdminFlags()
   const [status, setStatus] = useState<FlagStatus | 'all'>('all')
   const [assigning, setAssigning] = useState<AdminFlagRecord | null>(null)
   const [officerId, setOfficerId] = useState(FIELD_OFFICERS[0]!.userId)
@@ -38,30 +42,28 @@ export function AdminFlagsSection() {
     const map = new Map<FlagStatus, number>()
     for (const flag of flags) map.set(flag.status, (map.get(flag.status) ?? 0) + 1)
     return map
-  }, [flags])
+    // loadAdminFlags reads the module-level slot, which the linter cannot see change.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [flags, source.loadedAt, source.items])
 
-  const assign = () => {
+  const assign = async () => {
     if (!assigning) return
     if (instruction.trim().length < 10) {
       setError(t('admin.flags.instructionRequired'))
       return
     }
     const officer = FIELD_OFFICERS.find((entry) => entry.userId === officerId)!
-    setFlags((current) =>
-      current.map((flag) =>
-        flag.flagId === assigning.flagId
-          ? { ...flag, status: 'assigned', assignedToId: officer.userId, assignedToName: officer.name }
-          : flag,
-      ),
-    )
+    setError(null)
+    const ok = await action.run(() => assignFlagOfficer(assigning.flagId, officer))
+    if (!ok) return
     setAssigning(null)
     setInstruction('')
-    setError(null)
   }
 
-  const resolve = (flagId: string) =>
-    setFlags((current) =>
-      current.map((flag) => (flag.flagId === flagId ? { ...flag, status: 'resolved' } : flag)),
+  const resolve = (flag: AdminFlagRecord) =>
+    void action.run(() =>
+      // The note records what was done; the trainer's own reason and note stay as written.
+      resolveFlag(flag.flagId, flag.assignedToName ? `Closed after action by ${flag.assignedToName}.` : 'Closed by the admin.'),
     )
 
   return (
@@ -81,6 +83,8 @@ export function AdminFlagsSection() {
       </header>
 
       <div className="section-body admin-body">
+        <WriteError error={action.error} onDismiss={action.clear} />
+
         <div className="call-filters">
           <span className="call-filter-label">{t('admin.flags.statusLabel')}</span>
           <button
@@ -155,7 +159,7 @@ export function AdminFlagsSection() {
                       </button>
                     )}
                     {flag.status !== 'resolved' && (
-                      <button type="button" className="btn btn-outline btn-small" onClick={() => resolve(flag.flagId)}>
+                      <button type="button" className="btn btn-outline btn-small" disabled={action.pending} onClick={() => resolve(flag)}>
                         {t('admin.flags.resolve')}
                       </button>
                     )}
@@ -210,7 +214,7 @@ export function AdminFlagsSection() {
               <button type="button" className="btn btn-outline btn-small" onClick={() => setAssigning(null)}>
                 {t('common.cancel')}
               </button>
-              <button type="button" className="btn btn-primary btn-small" onClick={assign}>
+              <button type="button" className="btn btn-primary btn-small" disabled={action.pending} onClick={() => void assign()}>
                 {t('admin.flags.sendAssignment')}
               </button>
             </footer>

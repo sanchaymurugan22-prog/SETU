@@ -14,6 +14,7 @@ import { detected } from './languageDetections'
 import { loadBeneficiaries, type Beneficiary } from './jharkhandBeneficiaries'
 import { loadBlockGaps } from './jharkhandGaps'
 import { RESOURCE_PERSONS } from './jharkhandCalls'
+import { loadCourseRecords } from './courseCatalogue'
 import { readSlot, registerSample } from './source'
 import type { LanguageDetection } from '../lib/languageDetection'
 
@@ -139,6 +140,14 @@ export const CALL_EXECUTIVES: CallExecutive[] = [
 
 export interface ResourcePersonRecord {
   userId: string
+  /**
+   * The sign-in account behind this directory entry, when there is one.
+   *
+   * The rules address people by uid, never by directory id — so a transfer can only be
+   * addressed to a resource person who actually has an account. The seeder fills this in
+   * from `users`; a record added from the console has none until an account is issued.
+   */
+  uid?: string | null
   name: string
   email: string
   district: string
@@ -185,6 +194,44 @@ export const RESOURCE_PERSON_RECORDS: ResourcePersonRecord[] = RESOURCE_PERSONS.
     lastActiveLabel: pickFrom(['Today', 'Today', 'Yesterday', '3 days ago'], index),
   }
 })
+
+/**
+ * Both kinds of official in one `staff` collection, told apart by `role`.
+ *
+ * This is the directory the Admin console works on — postings, assigned courses, activity
+ * — and it is deliberately NOT the `users` collection. `users` holds the real sign-in
+ * accounts, which the seeder never writes to; creating an auth account for someone else
+ * needs a server, and SETU runs on Spark. So "Add a call executive" files the directory
+ * record an admin would file, and the account itself is issued separately.
+ */
+export type StaffRecord =
+  | ({ role: 'executive' } & CallExecutive)
+  | ({ role: 'resourcePerson' } & ResourcePersonRecord)
+
+const STAFF: StaffRecord[] = [
+  ...CALL_EXECUTIVES.map((person) => ({ role: 'executive' as const, ...person })),
+  ...RESOURCE_PERSON_RECORDS.map((person) => ({ role: 'resourcePerson' as const, ...person })),
+]
+
+registerSample('staff', STAFF)
+
+export function loadStaff(): StaffRecord[] {
+  return readSlot<StaffRecord>('staff')
+}
+
+export function sampleStaff(): StaffRecord[] {
+  return STAFF
+}
+
+export function loadCallExecutives(): CallExecutive[] {
+  return loadStaff().filter((person): person is { role: 'executive' } & CallExecutive => person.role === 'executive')
+}
+
+export function loadResourcePersonRecords(): ResourcePersonRecord[] {
+  return loadStaff().filter(
+    (person): person is { role: 'resourcePerson' } & ResourcePersonRecord => person.role === 'resourcePerson',
+  )
+}
 
 /** Officers an admin can send a flagged case to. */
 export const FIELD_OFFICERS = [
@@ -592,7 +639,11 @@ const NSQF_BY_COURSE: Record<string, string> = {
 
 export function loadCourses(): CourseRecord[] {
   const gaps = loadBlockGaps()
-  const names = [...new Set(people().map((person) => person.course))].sort()
+  // The catalogue as well as the courses people are already on, so a course an admin adds
+  // appears immediately — with zeros against it, which is the truth about a new course.
+  const names = [
+    ...new Set([...people().map((person) => person.course), ...loadCourseRecords().map((record) => record.course)]),
+  ].sort()
   return names.map((course) => {
     const learners = people().filter((person) => person.course === course)
     const centres = CENTRES.filter((centre) => centre.courses.includes(course))
@@ -643,6 +694,24 @@ export function allotmentSuggestions(): AllotmentSuggestion[] {
       ),
     }))
     .sort((a, b) => b.demand - a.demand)
+}
+
+/**
+ * Who is waiting for a seat in a block, for the course a new centre will run.
+ *
+ * Returns ids rather than counts because allotment writes to these people's records:
+ * a seat count that moved without the people it counts would be a number with nothing
+ * behind it.
+ */
+export function waitingInBlock(block: string, course: string): string[] {
+  return people()
+    .filter(
+      (person) =>
+        person.centre === null &&
+        person.block.toLowerCase() === block.trim().toLowerCase() &&
+        person.course === course,
+    )
+    .map((person) => person.beneficiaryId)
 }
 
 /* ─────────────────────────── Admin flags ─────────────────────────── */

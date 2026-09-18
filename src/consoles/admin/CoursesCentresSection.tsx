@@ -4,12 +4,16 @@ import {
   allotmentSuggestions,
   loadCentres,
   loadCourses,
-  RESOURCE_PERSON_RECORDS,
+  loadResourcePersonRecords,
+  waitingInBlock,
   type Centre,
 } from '../../data/adminConsole'
 import { districts } from '../../data/jharkhandBeneficiaries'
+import { addCentre as writeCentre, addCourse as writeCourse, allotToCentre, slug } from '../../data/actions'
+import { useAction } from '../../data/useAction'
 import { useDataSource } from '../../data/useDataSource'
 import { SourceBadge } from './SourceBadge'
+import { WriteError } from './WriteError'
 import '../../styles/admin.css'
 
 type Tab = 'courses' | 'centres' | 'allotment'
@@ -18,8 +22,10 @@ type Tab = 'courses' | 'centres' | 'allotment'
 export function CoursesCentresSection() {
   const { t } = useTranslation()
   const source = useDataSource('centres')
+  const action = useAction()
+  const staff = loadResourcePersonRecords()
   const courseRecords = loadCourses()
-  const [centres, setCentres] = useState<Centre[]>(loadCentres)
+  const centres = loadCentres()
   const [tab, setTab] = useState<Tab>('courses')
   const [adding, setAdding] = useState<'course' | 'centre' | null>(null)
   const [courseForm, setCourseForm] = useState({ name: '', level: '3' })
@@ -29,9 +35,8 @@ export function CoursesCentresSection() {
     block: '',
     capacity: '20',
     course: courseRecords[0]?.course ?? '',
-    resourcePersonId: RESOURCE_PERSON_RECORDS[0]?.userId ?? '',
+    resourcePersonId: staff[0]?.userId ?? '',
   })
-  const [extraCourses, setExtraCourses] = useState<{ course: string; nsqfLevel: string }[]>([])
   const [notice, setNotice] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
 
@@ -45,54 +50,82 @@ export function CoursesCentresSection() {
   const totalSeats = centres.reduce((sum, centre) => sum + centre.capacity, 0)
   const totalAllotted = centres.reduce((sum, centre) => sum + centre.allotted, 0)
 
-  const addCourse = () => {
-    if (!courseForm.name.trim()) {
+  const addCourse = async () => {
+    const name = courseForm.name.trim()
+    if (!name) {
       setError(t('admin.coursesCentres.courseError'))
       return
     }
-    setExtraCourses((current) => [...current, { course: courseForm.name.trim(), nsqfLevel: courseForm.level }])
-    setNotice(t('admin.coursesCentres.courseAdded', { course: courseForm.name.trim() }))
-    setCourseForm({ name: '', level: '3' })
     setError(null)
+    const ok = await action.run(() =>
+      writeCourse({
+        course: name,
+        nsqfLevel: Number(courseForm.level) || 3,
+        jobRole: '',
+        minimumClass: 0,
+        needsLiteracy: false,
+        homeBased: false,
+        needsSmartphone: false,
+        durationWeeks: 0,
+        whatYouLearn: '',
+        toolsUsed: '',
+        typicalWork: '',
+        // Not a guess. Part 4 of the conversation script: the assistant never invents an
+        // earning figure, so a course filed without one has none until somebody fills it in.
+        earningRange: null,
+        feeNote: '',
+      }),
+    )
+    if (!ok) return
+    setNotice(t('admin.coursesCentres.courseAdded', { course: name }))
+    setCourseForm({ name: '', level: '3' })
     setAdding(null)
   }
 
-  const addCentre = () => {
+  const addCentre = async () => {
     if (!centreForm.name.trim() || !centreForm.block.trim()) {
       setError(t('admin.coursesCentres.centreError'))
       return
     }
-    // The spec's rule: a new centre absorbs the block's waiting list, with a trainer attached.
-    const demandHere = suggestions.find(
-      (entry) => entry.block.toLowerCase() === centreForm.block.trim().toLowerCase(),
-    )
-    const expert = RESOURCE_PERSON_RECORDS.find((person) => person.userId === centreForm.resourcePersonId)
-    const moved = demandHere?.demand ?? 0
+    const expert = staff.find((person) => person.userId === centreForm.resourcePersonId)
+    const capacity = Number(centreForm.capacity) || 20
+    // Spec 6.6: a new centre absorbs the block's waiting list, up to its capacity. The
+    // people are named rather than counted, because allotment writes to their records.
+    const waiting = waitingInBlock(centreForm.block, centreForm.course)
+    const seated = waiting.slice(0, capacity)
     const created: Centre = {
-      centreId: `centre-new-${centres.length + 1}`,
+      centreId: `centre-${slug(`${centreForm.block}-${centreForm.name}`)}`,
       name: centreForm.name.trim(),
       district: centreForm.district,
       block: centreForm.block.trim(),
       courses: [centreForm.course],
-      capacity: Number(centreForm.capacity) || 20,
-      allotted: Math.min(moved, Number(centreForm.capacity) || 20),
-      waiting: Math.max(0, moved - (Number(centreForm.capacity) || 20)),
+      capacity,
+      allotted: seated.length,
+      waiting: Math.max(0, waiting.length - seated.length),
       resourcePersonId: expert?.userId ?? null,
       resourcePersonName: expert?.name ?? null,
       openedLabel: t('admin.staff.joinedToday'),
     }
-    setCentres((current) => [created, ...current])
+    setError(null)
+    // The centre first: the allotment updates its seat counts, so it has to exist.
+    const madeCentre = await action.run(() => writeCentre(created))
+    if (!madeCentre) return
+    if (seated.length > 0) {
+      const allotted = await action.run(() =>
+        allotToCentre({ ...created, allotted: 0, waiting: waiting.length }, seated),
+      )
+      if (!allotted) return
+    }
     setNotice(
-      moved > 0
+      seated.length > 0
         ? t('admin.coursesCentres.centreAddedWithAllotment', {
             centre: created.name,
-            count: created.allotted,
+            count: seated.length,
             trainer: created.resourcePersonName ?? t('common.none'),
           })
         : t('admin.coursesCentres.centreAdded', { centre: created.name }),
     )
     setCentreForm({ ...centreForm, name: '', block: '' })
-    setError(null)
     setAdding(null)
     setTab('centres')
   }
@@ -104,14 +137,14 @@ export function CoursesCentresSection() {
           <h1>{title}</h1>
           <p className="call-subtitle">
             {t('admin.coursesCentres.subtitle', {
-              courses: courseRecords.length + extraCourses.length,
+              courses: courseRecords.length,
               centres: centres.length,
               waiting: totalWaiting,
             })}
           </p>
         </div>
-        <SourceBadge state={source} count={centres.length} />
         <div className="admin-header-actions">
+          <SourceBadge state={source} count={centres.length} />
           <button type="button" className="btn btn-outline btn-small" onClick={() => setAdding('course')}>
             {t('admin.coursesCentres.addCourse')}
           </button>
@@ -122,6 +155,8 @@ export function CoursesCentresSection() {
       </header>
 
       <div className="section-body admin-body">
+        <WriteError error={action.error} onDismiss={action.clear} />
+
         {notice && (
           <div className="gap-notice" role="status">
             <span className="gap-notice-action">{t('admin.coursesCentres.noticeTitle')}</span>
@@ -183,14 +218,7 @@ export function CoursesCentresSection() {
               <span>{t('admin.coursesCentres.headers.waiting')}</span>
             </div>
             <ul className="admin-rows">
-              {[...courseRecords, ...extraCourses.map((entry) => ({
-                ...entry,
-                centres: 0,
-                enrolled: 0,
-                allotted: 0,
-                waiting: 0,
-                demandBlocks: 0,
-              }))].map((record) => (
+              {courseRecords.map((record) => (
                 <li className="admin-row admin-course-grid" key={record.course}>
                   <span className="ben-cell-name">
                     <span className="ben-name">{record.course}</span>
@@ -423,7 +451,7 @@ export function CoursesCentresSection() {
                       value={centreForm.resourcePersonId}
                       onChange={(event) => setCentreForm({ ...centreForm, resourcePersonId: event.target.value })}
                     >
-                      {RESOURCE_PERSON_RECORDS.map((person) => (
+                      {staff.map((person) => (
                         <option key={person.userId} value={person.userId}>
                           {person.name}
                         </option>
@@ -447,9 +475,14 @@ export function CoursesCentresSection() {
               <button
                 type="button"
                 className="btn btn-primary btn-small"
-                onClick={adding === 'course' ? addCourse : addCentre}
+                disabled={action.pending}
+                onClick={() => void (adding === 'course' ? addCourse() : addCentre())}
               >
-                {adding === 'course' ? t('admin.coursesCentres.addCourse') : t('admin.coursesCentres.addCentre')}
+                {action.pending
+                  ? t('writes.saving')
+                  : adding === 'course'
+                    ? t('admin.coursesCentres.addCourse')
+                    : t('admin.coursesCentres.addCentre')}
               </button>
             </footer>
           </div>
