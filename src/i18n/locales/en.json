@@ -338,7 +338,9 @@
       "ai-low-confidence": "AI low confidence",
       "beneficiary-requested-human": "Requested human",
       "course-question": "Course question",
-      "followup-unable-to-manage": "Follow-up, unable to manage"
+      "followup-unable-to-manage": "Follow-up, unable to manage",
+      "placement": "Placement",
+      "self-employment": "Self-employment guidance"
     },
     "active": {
       "header": "Active call · {{name}}",
@@ -890,5 +892,75 @@
       "sendAssignment": "Send assignment",
       "empty": "No flagged cases with this status."
     }
+  },
+  "voice": {
+    "title": "Beneficiary call",
+    "backToConsoles": "Back to the consoles",
+    "transcriptTitle": "Call transcript",
+    "empty": "Press Start call. SETU greets in Hindi and English, then listens — hold the button to speak, or type instead if the microphone misbehaves.",
+    "setu": "SETU",
+    "caller": "Caller",
+    "startCall": "Start call",
+    "newCall": "New call",
+    "holdToSpeak": "Hold to speak",
+    "releaseToSend": "Release to send",
+    "typedLabel": "Type the caller's reply",
+    "typedPlaceholder": "Or type the reply and press Enter",
+    "send": "Send",
+    "textOnly": "Text only — audio unavailable",
+    "detectionPending": "Detection runs on the caller's first reply, using both models.",
+    "stageTitle": "Where the call is",
+    "capturedTitle": "Captured so far",
+    "phase": {
+      "idle": "Ready",
+      "speaking": "SETU is speaking",
+      "listening": "Listening",
+      "thinking": "Working out the reply",
+      "ended": "Call ended"
+    },
+    "stage": {
+      "greeting": "Greeting",
+      "consent": "Consent",
+      "name": "Name",
+      "location": "Location",
+      "work": "Current work",
+      "family": "Family trade",
+      "education": "Schooling",
+      "interest": "Interest",
+      "travel": "Travel",
+      "connectivity": "Phone and internet",
+      "preference": "Job or own work",
+      "secondary": "Second number",
+      "recommendation": "Recommendation",
+      "enrolment": "Enrolment details",
+      "close": "Close"
+    },
+    "outcome": {
+      "in-progress": "In progress",
+      "completed": "Completed — in the executive's completed calls",
+      "escalated": "Escalated — in the executive's queue",
+      "ended": "Ended without a record"
+    },
+    "mic": {
+      "deniedTitle": "The microphone was blocked",
+      "deniedBody": "Allow microphone access in the browser's address bar, or type the reply instead — the whole call works by typing.",
+      "unavailableTitle": "No microphone found",
+      "unavailableBody": "This browser cannot reach a microphone. Type the reply instead — the whole call works by typing."
+    },
+    "notice": {
+      "not-heard": "SETU could not make out that reply. Say it again, or type it.",
+      "detection-failed": "Language detection could not be reached. The call continues in Hindi.",
+      "audio-unreadable": "That recording could not be read. Try again, or type the reply."
+    },
+    "captured": {
+      "name": "Name",
+      "location": "Village · block · district",
+      "work": "Current work",
+      "family": "Family occupation",
+      "education": "Schooling",
+      "classValue": "Class {{years}}",
+      "recommendation": "Recommendation"
+    },
+    "rehearsalContested": "Rehearsal mode: detection is forced to contested (Hindi 0.92 against Maithili 0.98, the values the two models returned for Magahi speech in testing). Remove ?rehearse=contested for the live path."
   }
 }

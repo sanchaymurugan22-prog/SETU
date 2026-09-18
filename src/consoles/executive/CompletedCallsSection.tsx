@@ -157,9 +157,11 @@ export function CompletedCallsSection({
                     </span>
                     <span className="call-when-meta">
                       {call.detection.languageName}
-                      <span className="call-confidence">
-                        {t('detection.confidenceShort', { score: call.detection.confidence.toFixed(2) })}
-                      </span>
+                      {call.detection.confidence > 0 && (
+                        <span className="call-confidence">
+                          {t('detection.confidenceShort', { score: call.detection.confidence.toFixed(2) })}
+                        </span>
+                      )}
                     </span>
                     {call.detection.secondary && isDialectGap(call.detection) && (
                       <span className="call-contested">

@@ -12,7 +12,8 @@
     "test:rules": "firebase emulators:exec --project demo-setu --only firestore \"vitest run tests/firestore.rules.test.ts --testTimeout=20000\"",
     "deploy:rules": "firebase deploy --only firestore:rules,firestore:indexes",
     "i18n:check": "node scripts/check-i18n.mjs",
-    "test:bhashini": "node --env-file=.env node_modules/vitest/vitest.mjs run tests/bhashini.live.test.ts"
+    "test:bhashini": "node --env-file=.env node_modules/vitest/vitest.mjs run tests/bhashini.live.test.ts",
+    "voice:build": "node --env-file=.env scripts/pregenerate-voice.mjs"
   },
   "dependencies": {
     "firebase": "^12.19.0",

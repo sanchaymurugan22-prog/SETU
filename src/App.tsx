@@ -26,6 +26,7 @@ import { LanguageProvider } from './language/LanguageProvider'
 import { LanguageScreen } from './pages/LanguageScreen'
 import { LoginPage } from './pages/LoginPage'
 import { SplashGate } from './pages/SplashScreen'
+import { VoiceCallPage } from './pages/VoiceCallPage'
 
 /** Sections that are built. Anything absent still renders its placeholder. */
 const SECTION_VIEWS: Record<string, ComponentType> = {
@@ -55,6 +56,8 @@ export default function App() {
           <BrowserRouter>
             <Routes>
               <Route path="/language" element={<LanguageScreen />} />
+              {/* The beneficiary side: nobody signs in to call SETU. */}
+              <Route path="/call" element={<VoiceCallPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/" element={<HomeRedirect />} />
 

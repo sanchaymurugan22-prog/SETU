@@ -12,18 +12,23 @@
 
 import { loadBeneficiaries, type Beneficiary } from './jharkhandBeneficiaries'
 import { detected } from './languageDetections'
+import { liveCompleted, liveDetections, liveQueued } from './liveCalls'
 import type { LanguageDetection } from '../lib/languageDetection'
 
 export type ReasonTag =
   | 'ai-low-confidence'
   | 'beneficiary-requested-human'
   | 'course-question'
+  | 'placement'
+  | 'self-employment'
   | 'followup-unable-to-manage'
 
 export const REASON_TAGS: ReasonTag[] = [
   'ai-low-confidence',
   'beneficiary-requested-human',
   'course-question',
+  'placement',
+  'self-employment',
   'followup-unable-to-manage',
 ]
 
@@ -507,16 +512,24 @@ const COMPLETED: CompletedCall[] = [
 
 /** Swap for a Firestore query on calls where status == 'waiting' and callType == 'executive'. */
 export function loadQueue(): QueuedCall[] {
-  return QUEUE
+  // A call the voice line escalated joins the queue ahead of the seeded ones.
+  return [...liveQueued(), ...QUEUE]
 }
 
 /** Swap for a query on calls where handledBy == this executive and status == 'completed'. */
 export function loadCompleted(): CompletedCall[] {
-  return COMPLETED
+  return [...liveCompleted(), ...COMPLETED]
+}
+
+/** Beneficiaries created by the voice line this session, keyed by id. */
+const liveBeneficiaries = new Map<string, Beneficiary>()
+
+export function registerLiveBeneficiary(person: Beneficiary): void {
+  liveBeneficiaries.set(person.beneficiaryId, person)
 }
 
 export function beneficiaryForCall(beneficiaryId: string): Beneficiary {
-  return all.find((person) => person.beneficiaryId === beneficiaryId) ?? all[0]!
+  return liveBeneficiaries.get(beneficiaryId) ?? all.find((person) => person.beneficiaryId === beneficiaryId) ?? all[0]!
 }
 
 /** mm:ss for the queue, the call timer and completed durations. */
@@ -685,7 +698,7 @@ export function loadResourcePersonCompleted(): CompletedCall[] {
 
 /** Detection records from every call this console knows about, for the dialect-gap figures. */
 export function callDetections(): LanguageDetection[] {
-  return [...QUEUE, ...COMPLETED, ...RP_QUEUE, ...RP_COMPLETED].map((call) => call.detection)
+  return [...liveDetections(), ...[...QUEUE, ...COMPLETED, ...RP_QUEUE, ...RP_COMPLETED].map((call) => call.detection)]
 }
 
 /** Calls waiting longer than this are shown as over target. */

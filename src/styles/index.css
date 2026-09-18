@@ -794,3 +794,13 @@ input {
 .notice-details dd {
   margin: 0;
 }
+
+/* Link from sign-in to the beneficiary call demo. */
+.login-demo-link {
+  display: inline-block;
+  margin-top: 18px;
+  font-size: 13px;
+  color: var(--cyan-200);
+  border-bottom: 1px solid rgb(153 224 255 / 40%);
+  padding-bottom: 2px;
+}

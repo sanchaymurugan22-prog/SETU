@@ -13,6 +13,8 @@
 
 export type GapType = 'no-centre' | 'no-local-jobs'
 
+import { liveDemand } from './liveCalls'
+
 export interface BlockGap {
   gapId: string
   block: string
@@ -579,10 +581,39 @@ export function loadBlockGaps(): BlockGap[] {
   return BLOCK_GAPS
 }
 
+/**
+ * Gaps inside the window, with anything the live voice line reported folded in. A demo
+ * call from a block raises that block's demand by one — or puts the block on the map if
+ * it was not there — so the call can be shown landing on the map straight afterwards.
+ */
 export function gapsInWindow(windowDays: WindowDays): BlockGap[] {
-  return loadBlockGaps()
+  const gaps = loadBlockGaps()
     .filter((gap) => gap.flaggedDaysAgo <= windowDays)
-    .sort((a, b) => b.peopleAffected - a.peopleAffected)
+    .map((gap) => ({ ...gap }))
+
+  for (const entry of liveDemand()) {
+    const existing = gaps.find((gap) => gap.block === entry.block && gap.course === entry.course)
+    if (existing) {
+      existing.demandCount += 1
+      existing.peopleAffected += 1
+      existing.flaggedDaysAgo = 0
+      continue
+    }
+    const known = loadBlockGaps().find((gap) => gap.block === entry.block)
+    if (!known) continue
+    gaps.push({
+      ...known,
+      gapId: `${known.gapId}-live`,
+      course: entry.course,
+      gapType: entry.noLocalDemand ? 'no-local-jobs' : 'no-centre',
+      demandCount: 1,
+      peopleAffected: 1,
+      flaggedDaysAgo: 0,
+      detail: `Reported on a live call today: ${entry.course} wanted in ${entry.block}.`,
+    })
+  }
+
+  return gaps.sort((a, b) => b.peopleAffected - a.peopleAffected)
 }
 
 export function statewideTotals(windowDays: WindowDays): StatewideTotals {

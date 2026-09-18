@@ -37,3 +37,6 @@ ui-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
+# Pre-generated demo audio — rebuild with: npm run voice:build
+public/voice/

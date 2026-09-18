@@ -1,0 +1,127 @@
+{
+  "greetingHi": {
+    "id": "greetingHi",
+    "hi": "नमस्ते। मैं सेतु हूँ। मैं आपको प्रशिक्षण और काम खोजने में मदद करती हूँ। आप अपनी भाषा में बोलिए — मैं उसी में बात करूँगी।",
+    "en": "Hello. I am SETU. I help you find training and work. Please speak in your own language — I will continue in it."
+  },
+  "greetingEn": {
+    "id": "greetingEn",
+    "hi": "Hello. I am SETU. I help you find training and work. Please speak in your own language.",
+    "en": "Hello. I am SETU. I help you find training and work. Please speak in your own language — I will continue in it."
+  },
+  "consent": {
+    "id": "consent",
+    "hi": "शुरू करने से पहले — क्या मैं यह बातचीत सहेज सकती हूँ, ताकि मैं आपकी मदद कर सकूँ और कोई अधिकारी आगे बात कर सके? कृपया हाँ या नहीं कहिए।",
+    "en": "Before we begin — may I save what you tell me, so that I can help you and an officer can follow up? Please say yes or no."
+  },
+  "consentRefused": {
+    "id": "consentRefused",
+    "hi": "ठीक है। मैं फिर भी आपके क्षेत्र के प्रशिक्षण के बारे में बता सकती हूँ, पर आपके बारे में कुछ नहीं सहेजूँगी।",
+    "en": "That is fine. I can still tell you about training in your area, but I will not save anything about you."
+  },
+  "consentUnclear": {
+    "id": "consentUnclear",
+    "hi": "क्या यह ठीक है कि आप जो बताएँ वह मैं याद रखूँ?",
+    "en": "Is it alright if I remember what you tell me?"
+  },
+  "name": {
+    "id": "name",
+    "hi": "आपका नाम क्या है?",
+    "en": "What is your name?"
+  },
+  "location": {
+    "id": "location",
+    "hi": "आप किस गाँव में रहते हैं, और कौन सा प्रखंड है?",
+    "en": "Which village do you live in, and which block?"
+  },
+  "locationRetry": {
+    "id": "locationRetry",
+    "hi": "कोई बात नहीं — आप किस ज़िले में हैं?",
+    "en": "No problem — which district are you in?"
+  },
+  "work": {
+    "id": "work",
+    "hi": "अभी आप क्या काम करते हैं?",
+    "en": "What work do you do now?"
+  },
+  "family": {
+    "id": "family",
+    "hi": "और आपके परिवार ने क्या काम किया — आपके पिता या माता ने?",
+    "en": "And what work did your family do — your father or mother?"
+  },
+  "education": {
+    "id": "education",
+    "hi": "क्या आप स्कूल गए थे? किस कक्षा तक?",
+    "en": "Did you go to school? Up to which class?"
+  },
+  "educationNone": {
+    "id": "educationNone",
+    "hi": "यह बिल्कुल ठीक है। उसके लिए भी प्रशिक्षण है।",
+    "en": "That is completely fine. There is training for that too."
+  },
+  "interest": {
+    "id": "interest",
+    "hi": "आप किस तरह का काम सीखना चाहेंगे? या बताइए आपको क्या करना अच्छा लगता है।",
+    "en": "What kind of work would you like to learn? Or tell me what you enjoy doing."
+  },
+  "interestProbe": {
+    "id": "interestProbe",
+    "hi": "क्या आपको हाथ से काम करना पसंद है — कुछ बनाना या ठीक करना? या लोगों के साथ काम करना?",
+    "en": "Do you like working with your hands — making or repairing things? Or would you rather work with people?"
+  },
+  "travel": {
+    "id": "travel",
+    "hi": "क्या आप प्रशिक्षण के लिए दूसरे गाँव या कस्बे तक जा सकते हैं, या घर के पास ही होना चाहिए?",
+    "en": "Can you travel to another village or town for the training, or does it need to be close to home?"
+  },
+  "connectivity": {
+    "id": "connectivity",
+    "hi": "क्या आपके घर में किसी के पास इंटरनेट वाला स्मार्टफोन है?",
+    "en": "Does anyone in your home have a smartphone with internet?"
+  },
+  "preference": {
+    "id": "preference",
+    "hi": "क्या आप किसी के यहाँ नौकरी करना चाहेंगे, या अपना कुछ शुरू करना चाहेंगे?",
+    "en": "Would you like a job with an employer, or would you rather start something of your own?"
+  },
+  "secondary": {
+    "id": "secondary",
+    "hi": "क्या आपके परिवार में किसी के पास स्मार्टफोन है जिस पर मैं जानकारी भेज सकूँ — बेटा, बेटी या कोई रिश्तेदार?",
+    "en": "Is there someone in your family with a smartphone I could also send the details to — a son, daughter or relative?"
+  },
+  "handOver": {
+    "id": "handOver",
+    "hi": "ज़रूर। कृपया लाइन पर रहिए — कोई व्यक्ति अभी आपसे बात करेगा।",
+    "en": "Of course. Please stay on the line — someone will speak with you shortly."
+  },
+  "cannotUnderstand": {
+    "id": "cannotUnderstand",
+    "hi": "मुझे आपकी बात समझने में कठिनाई हो रही है। मैं आपको एक व्यक्ति से जोड़ती हूँ जो मदद कर सकें।",
+    "en": "I am having difficulty understanding you. Let me connect you to a person who can help."
+  },
+  "stillThere": {
+    "id": "stillThere",
+    "hi": "क्या आप अभी लाइन पर हैं?",
+    "en": "Are you still there?"
+  },
+  "courseQuestion": {
+    "id": "courseQuestion",
+    "hi": "यह अच्छा सवाल है और मैं आपको सही जवाब देना चाहती हूँ। मैं आपको इस पाठ्यक्रम के शिक्षक से जोड़ती हूँ।",
+    "en": "That is a good question and I want to give you the right answer. Let me connect you to someone who teaches this course."
+  },
+  "noJobs": {
+    "id": "noJobs",
+    "hi": "आप सही कह रहे हैं कि इस काम के लिए आपके पास काम कम है। मैं इसे रोज़गार देखने वाले व्यक्ति को भेजती हूँ, वे आपको फ़ोन करेंगे।",
+    "en": "You are right that there is little work for that trade near you. Let me pass this to someone who works on placements, and they will call you."
+  },
+  "ownWork": {
+    "id": "ownWork",
+    "hi": "अच्छा। मैं आपको एक व्यक्ति से जोड़ती हूँ जो अपना काम शुरू करने में मदद करते हैं।",
+    "en": "Good. Let me connect you to someone who helps people set up their own work."
+  },
+  "notHuman": {
+    "id": "notHuman",
+    "hi": "मैं सेतु हूँ, एक कंप्यूटर जो प्रशिक्षण खोजने में मदद करता है। अगर आप किसी व्यक्ति से बात करना चाहें, तो मैं अभी जोड़ सकती हूँ।",
+    "en": "I am SETU, a computer that helps you find training. If you would like to speak to a person, I can arrange that right away."
+  }
+}
