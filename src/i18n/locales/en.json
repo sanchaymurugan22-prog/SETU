@@ -132,6 +132,10 @@
       "milestones": {
         "title": "Milestones",
         "summary": "Trainees you trained to completion, with their reports."
+      },
+      "sessions": {
+        "title": "Sessions",
+        "summary": "Every session taken, by date, with the register behind it."
       }
     },
     "admin": {
@@ -558,7 +562,8 @@
       "materialsTitle": "Course materials",
       "kind": {
         "note": "Text",
-        "link": "Link"
+        "link": "Link",
+        "document": "Document"
       },
       "materialTitle": "Title",
       "materialUrl": "Link",
@@ -566,7 +571,24 @@
       "add": "Add",
       "addMaterial": "Add material",
       "addError": "Give the material a title and its content.",
-      "remove": "Remove"
+      "remove": "Remove",
+      "documentType": {
+        "pdf": "PDF",
+        "doc": "DOC",
+        "ppt": "PPT",
+        "sheet": "SHEET",
+        "other": "FILE"
+      },
+      "documentTypeLabel": "File type",
+      "documentUrl": "Document link",
+      "documentUrlPlaceholder": "Google Drive, DigiLocker or any hosted link",
+      "documentHint": "A link is the real path: the file stays where it already lives and survives a reload.",
+      "documentError": "Give the document a title and either a link or an attached file.",
+      "or": "Or, for the demo",
+      "attachFile": "Attach a file",
+      "attachWarning": "Attached files are held in this browser only. Firebase Storage needs the paid plan, so nothing is uploaded and the file is gone on reload. Use a link for anything that must last.",
+      "demoOnly": "Demo only · in this browser, not saved",
+      "openDocument": "Open document"
     },
     "calls": {
       "subTypeLabel": "Case type",
@@ -593,6 +615,36 @@
       "noCertificate": "Not yet issued",
       "seekingLabel": "Seeking work",
       "seekingFoot": "Certified, no placement yet"
+    },
+    "sessions": {
+      "subtitle": "{{count}} sessions held across {{batches}} batches",
+      "listAria": "Session list",
+      "empty": "No sessions held yet.",
+      "foot": "Rebuilt from the attendance marked against each trainee.",
+      "number": "Session {{number}}",
+      "live": "Being marked now",
+      "headers": {
+        "date": "Date and time",
+        "batch": "Batch and course",
+        "present": "Present",
+        "absent": "Absent",
+        "attendance": "Attendance"
+      },
+      "presentCount": "{{count}} present",
+      "absentCount": "{{count}} absent",
+      "registerTitle": "Who was there",
+      "panelAria": "Session on {{date}}",
+      "cards": {
+        "heldLabel": "Sessions held",
+        "heldFoot": "Across {{batches}} batches",
+        "traineesLabel": "Trainees",
+        "traineesFoot": "On your register",
+        "attendanceLabel": "Overall attendance",
+        "attendanceFoot": "{{present}} present of {{marks}} marks",
+        "fallingLabel": "Attendance falling",
+        "fallingFoot": "Below {{threshold}}% and still training",
+        "fallingNone": "Nobody is below the watch level"
+      }
     }
   },
   "certificate": {

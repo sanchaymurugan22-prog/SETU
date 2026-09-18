@@ -17,6 +17,7 @@ import { CourseMaterialsSection } from './consoles/resourcePerson/CourseMaterial
 import { ExpertCompletedSection, ExpertWaitingSection } from './consoles/resourcePerson/ExpertCallSections'
 import { MilestonesSection } from './consoles/resourcePerson/MilestonesSection'
 import { ResourcePersonConsole } from './consoles/resourcePerson/ResourcePersonConsole'
+import { SessionsSection } from './consoles/resourcePerson/SessionsSection'
 import { TraineesSection } from './consoles/resourcePerson/TraineesSection'
 import { ConsoleLayout } from './consoles/ConsoleLayout'
 import { CONSOLES } from './consoles/consoles'
@@ -40,6 +41,7 @@ const SECTION_VIEWS: Record<string, ComponentType> = {
   'executive/completed': CompletedCallsSection,
   'resourcePerson/beneficiaries': TraineesSection,
   'resourcePerson/materials': CourseMaterialsSection,
+  'resourcePerson/sessions': SessionsSection,
   'resourcePerson/waiting': ExpertWaitingSection,
   'resourcePerson/completed': ExpertCompletedSection,
   'resourcePerson/milestones': MilestonesSection,

@@ -11,6 +11,32 @@ import type {
 
 export type AttendanceMark = 'present' | 'absent'
 
+/** One session a trainer has taken, rebuilt from the attendance marks per trainee. */
+export interface SessionRecord {
+  sessionId: string
+  batchId: string
+  course: string
+  /** 1-based position in that batch's run. */
+  number: number
+  dateIso: string
+  startTime: string
+  endTime: string
+  present: number
+  absent: number
+  attendancePercent: number
+  /** True for the session being marked right now. */
+  live: boolean
+  entries: { beneficiaryId: string; name: string; mark: AttendanceMark }[]
+}
+
+/** A trainee whose attendance has slipped below the watch level. */
+export interface AttendanceConcern {
+  trainee: Trainee
+  attended: number
+  total: number
+  percent: number
+}
+
 /** A status change a trainer saved. The description is never optional. */
 export interface StatusChange {
   status: TrainingStatus
@@ -30,9 +56,16 @@ export interface TraineeFlag {
   raisedAt: string
 }
 
+/** Below this share of sessions attended, a trainee is called out on the summary. */
+export const ATTENDANCE_WATCH_PERCENT = 75
+
 export interface TrainerValue {
   trainees: Trainee[]
   batches: Batch[]
+  /** Every session held, newest first. */
+  sessions: SessionRecord[]
+  /** Trainees whose attendance is falling, worst first. */
+  concerns: AttendanceConcern[]
   /** The session whose attendance sheet is open now, or null outside scheduled hours. */
   openSession: SessionWindow | null
   nextSession: { window: SessionWindow; daysAhead: number } | null

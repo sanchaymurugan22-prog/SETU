@@ -1,6 +1,13 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { RESOURCE_PERSON, type CourseMaterial } from '../../data/resourcePerson'
+import {
+  DOCUMENT_TYPES,
+  documentTypeFor,
+  formatFileSize,
+  RESOURCE_PERSON,
+  type CourseMaterial,
+  type DocumentType,
+} from '../../data/resourcePerson'
 import { useTrainer } from './TrainerContext'
 import '../../styles/resource-person.css'
 
@@ -14,6 +21,8 @@ export function CourseMaterialsSection() {
   const [kind, setKind] = useState<CourseMaterial['kind']>('note')
   const [title, setTitle] = useState('')
   const [body, setBody] = useState('')
+  const [documentType, setDocumentType] = useState<DocumentType>('pdf')
+  const [attached, setAttached] = useState<{ name: string; size: number; url: string } | null>(null)
   const [error, setError] = useState<string | null>(null)
 
   const heading = t('sections.resourcePerson.materials.title')
@@ -21,16 +30,53 @@ export function CourseMaterialsSection() {
     document.title = `${heading} · SETU`
   }, [heading])
 
+  const reset = () => {
+    setTitle('')
+    setBody('')
+    setAttached(null)
+    setDocumentType('pdf')
+    setError(null)
+    setDraftFor(null)
+  }
+
+  /**
+   * A demo attachment never leaves the browser: Firebase Storage needs the paid plan, so
+   * the bytes are kept as an object URL for this session and the entry says so.
+   */
+  const attach = (file: File | undefined) => {
+    if (!file) return
+    setAttached({ name: file.name, size: file.size, url: URL.createObjectURL(file) })
+    setDocumentType(documentTypeFor(file.name))
+    if (!title.trim()) setTitle(file.name.replace(/\.[^.]+$/, ''))
+  }
+
   const submit = (batchId: string) => {
+    if (kind === 'document') {
+      if (!title.trim() || (!body.trim() && !attached)) {
+        setError(t('resourcePerson.materials.documentError'))
+        return
+      }
+      addMaterial(batchId, {
+        kind: 'document',
+        title: title.trim(),
+        body: attached ? attached.url : body.trim(),
+        documentType: attached && documentTypeFor(attached.name) !== 'other'
+          ? documentTypeFor(attached.name)
+          : documentType,
+        fileName: attached?.name ?? undefined,
+        fileSize: attached?.size ?? undefined,
+        source: attached ? 'demo-upload' : 'link',
+      })
+      reset()
+      return
+    }
+
     if (!title.trim() || !body.trim()) {
       setError(t('resourcePerson.materials.addError'))
       return
     }
     addMaterial(batchId, { kind, title: title.trim(), body: body.trim() })
-    setTitle('')
-    setBody('')
-    setError(null)
-    setDraftFor(null)
+    reset()
   }
 
   return (
@@ -177,17 +223,41 @@ export function CourseMaterialsSection() {
                 <ul className="rp-material-list">
                   {batch.materials.map((material) => (
                     <li className="rp-material" key={material.id}>
-                      <span className={`rp-material-kind is-${material.kind}`}>
-                        {t(`resourcePerson.materials.kind.${material.kind}`)}
+                      <span
+                        className={
+                          material.kind === 'document'
+                            ? `rp-material-kind is-doc-${material.documentType ?? 'other'}`
+                            : `rp-material-kind is-${material.kind}`
+                        }
+                      >
+                        {material.kind === 'document'
+                          ? t(`resourcePerson.materials.documentType.${material.documentType ?? 'other'}`)
+                          : t(`resourcePerson.materials.kind.${material.kind}`)}
                       </span>
                       <span className="rp-material-text">
                         <span className="rp-material-title">{material.title}</span>
-                        {material.kind === 'link' ? (
+                        {material.kind === 'note' && <span className="rp-material-body">{material.body}</span>}
+                        {material.kind === 'link' && (
                           <a className="rp-material-link" href={material.body} target="_blank" rel="noreferrer">
                             {material.body}
                           </a>
-                        ) : (
-                          <span className="rp-material-body">{material.body}</span>
+                        )}
+                        {material.kind === 'document' && (
+                          <>
+                            <span className="rp-material-file">
+                              {material.fileName ?? material.body}
+                              {formatFileSize(material.fileSize) && (
+                                <span className="rp-material-size"> · {formatFileSize(material.fileSize)}</span>
+                              )}
+                            </span>
+                            {material.source === 'demo-upload' ? (
+                              <span className="rp-material-demo">{t('resourcePerson.materials.demoOnly')}</span>
+                            ) : (
+                              <a className="rp-material-link" href={material.body} target="_blank" rel="noreferrer">
+                                {t('resourcePerson.materials.openDocument')}
+                              </a>
+                            )}
+                          </>
                         )}
                       </span>
                       <button
@@ -204,7 +274,7 @@ export function CourseMaterialsSection() {
                 {draftFor === batch.batchId ? (
                   <div className="rp-material-form">
                     <div className="rp-kind-row">
-                      {(['note', 'link'] as const).map((option) => (
+                      {(['note', 'link', 'document'] as const).map((option) => (
                         <button
                           key={option}
                           type="button"
@@ -219,18 +289,72 @@ export function CourseMaterialsSection() {
                       <span>{t('resourcePerson.materials.materialTitle')}</span>
                       <input type="text" value={title} onChange={(event) => setTitle(event.target.value)} />
                     </label>
-                    <label className="call-field">
-                      <span>
-                        {kind === 'link'
-                          ? t('resourcePerson.materials.materialUrl')
-                          : t('resourcePerson.materials.materialText')}
-                      </span>
-                      {kind === 'link' ? (
-                        <input type="url" value={body} onChange={(event) => setBody(event.target.value)} />
-                      ) : (
-                        <textarea rows={3} value={body} onChange={(event) => setBody(event.target.value)} />
-                      )}
-                    </label>
+                    {kind === 'document' ? (
+                      <div className="rp-document-fields">
+                        <p className="rp-hint">{t('resourcePerson.materials.documentHint')}</p>
+
+                        <label className="call-field">
+                          <span>{t('resourcePerson.materials.documentUrl')}</span>
+                          <input
+                            type="url"
+                            value={body}
+                            placeholder={t('resourcePerson.materials.documentUrlPlaceholder')}
+                            onChange={(event) => {
+                              setBody(event.target.value)
+                              // Only override the trainer's choice when the link actually
+                              // says what it is — a Drive /file/d/ link says nothing.
+                              const guess = documentTypeFor(event.target.value)
+                              if (guess !== 'other') setDocumentType(guess)
+                            }}
+                          />
+                        </label>
+
+                        <label className="call-field">
+                          <span>{t('resourcePerson.materials.documentTypeLabel')}</span>
+                          <select
+                            value={documentType}
+                            onChange={(event) => setDocumentType(event.target.value as DocumentType)}
+                          >
+                            {DOCUMENT_TYPES.map((type) => (
+                              <option key={type} value={type}>
+                                {t(`resourcePerson.materials.documentType.${type}`)}
+                              </option>
+                            ))}
+                          </select>
+                        </label>
+
+                        <div className="rp-attach">
+                          <span className="rp-attach-or">{t('resourcePerson.materials.or')}</span>
+                          <label className="call-field">
+                            <span>{t('resourcePerson.materials.attachFile')}</span>
+                            <input
+                              type="file"
+                              accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.csv,.txt"
+                              onChange={(event) => attach(event.target.files?.[0])}
+                            />
+                          </label>
+                          <p className="rp-attach-warning">{t('resourcePerson.materials.attachWarning')}</p>
+                          {attached && (
+                            <p className="rp-attach-file">
+                              {attached.name} · {formatFileSize(attached.size)}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    ) : (
+                      <label className="call-field">
+                        <span>
+                          {kind === 'link'
+                            ? t('resourcePerson.materials.materialUrl')
+                            : t('resourcePerson.materials.materialText')}
+                        </span>
+                        {kind === 'link' ? (
+                          <input type="url" value={body} onChange={(event) => setBody(event.target.value)} />
+                        ) : (
+                          <textarea rows={3} value={body} onChange={(event) => setBody(event.target.value)} />
+                        )}
+                      </label>
+                    )}
                     {error && (
                       <p className="rp-error" role="alert">
                         {error}
@@ -240,7 +364,7 @@ export function CourseMaterialsSection() {
                       <button type="button" className="btn btn-primary btn-small" onClick={() => submit(batch.batchId)}>
                         {t('resourcePerson.materials.add')}
                       </button>
-                      <button type="button" className="btn btn-outline btn-small" onClick={() => setDraftFor(null)}>
+                      <button type="button" className="btn btn-outline btn-small" onClick={reset}>
                         {t('common.cancel')}
                       </button>
                     </div>

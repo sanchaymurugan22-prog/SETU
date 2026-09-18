@@ -61,6 +61,12 @@ export const CONSOLES: Record<Role, ConsoleDefinition> = {
         summary: 'Schedule and timings (these open attendance sheets), location or online link, and course materials.',
       },
       {
+        path: 'sessions',
+        title: 'Sessions',
+        group: 'Trainer',
+        summary: 'Every session taken, by date, with the register and the attendance behind it.',
+      },
+      {
         path: 'waiting',
         title: 'Waiting Calls',
         group: 'Expert',

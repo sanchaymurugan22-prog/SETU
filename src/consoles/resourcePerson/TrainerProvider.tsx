@@ -4,6 +4,7 @@ import {
   nextSessionAfter,
   openSessionAt,
   RESOURCE_PERSON,
+  sessionDates,
   type Batch,
   type CourseMaterial,
   type FlagReason,
@@ -11,8 +12,11 @@ import {
   type Trainee,
 } from '../../data/resourcePerson'
 import {
+  ATTENDANCE_WATCH_PERCENT,
   TrainerContext,
+  type AttendanceConcern,
   type AttendanceMark,
+  type SessionRecord,
   type StatusChange,
   type TraineeFlag,
 } from './TrainerContext'
@@ -55,10 +59,109 @@ export function TrainerProvider({ children }: { children: ReactNode }) {
     [now, openSession],
   )
 
+  /**
+   * Sessions are derived, never stored: each trainee's attendance array is one mark per
+   * session held, so reading down the same index across a batch reconstructs that
+   * session's register. Anything marked in the open session today is folded in as a live
+   * session, which is why this and the Beneficiaries list can never drift apart.
+   */
+  const sessions = useMemo(() => {
+    const records: SessionRecord[] = []
+
+    for (const batch of batches) {
+      const members = trainees.filter((trainee) => trainee.batchId === batch.batchId)
+      const held = members.reduce((most, trainee) => Math.max(most, trainee.attendance?.sessions.length ?? 0), 0)
+      const dates = sessionDates(batch, held)
+
+      for (let index = 0; index < held; index += 1) {
+        const entries = members
+          .filter((trainee) => (trainee.attendance?.sessions.length ?? 0) > index)
+          .map((trainee) => ({
+            beneficiaryId: trainee.beneficiaryId,
+            name: trainee.name,
+            mark: trainee.attendance!.sessions[index]! as AttendanceMark,
+          }))
+        if (entries.length === 0) continue
+        const present = entries.filter((entry) => entry.mark === 'present').length
+        records.push({
+          sessionId: `${batch.batchId}-${index + 1}`,
+          batchId: batch.batchId,
+          course: batch.course,
+          number: index + 1,
+          dateIso: dates[index] ?? batch.startDate,
+          startTime: batch.schedule.startTime,
+          endTime: batch.schedule.endTime,
+          present,
+          absent: entries.length - present,
+          attendancePercent: Math.round((present / entries.length) * 100),
+          live: false,
+          entries,
+        })
+      }
+    }
+
+    // The session being marked right now, if anything has been marked in it.
+    if (openSession) {
+      const marked = Object.entries(marks).filter(([key]) => key.startsWith(`${openSession.batchId}|`))
+      if (marked.length > 0) {
+        const entries = marked.map(([key, mark]) => {
+          const beneficiaryId = key.split('|').pop()!
+          return {
+            beneficiaryId,
+            name: trainees.find((trainee) => trainee.beneficiaryId === beneficiaryId)?.name ?? beneficiaryId,
+            mark,
+          }
+        })
+        const present = entries.filter((entry) => entry.mark === 'present').length
+        const batchSessions = records.filter((record) => record.batchId === openSession.batchId).length
+        records.push({
+          sessionId: `${openSession.batchId}-live`,
+          batchId: openSession.batchId,
+          course: openSession.course,
+          number: batchSessions + 1,
+          dateIso: now.toISOString().slice(0, 10),
+          startTime: openSession.startTime,
+          endTime: openSession.endTime,
+          present,
+          absent: entries.length - present,
+          attendancePercent: Math.round((present / entries.length) * 100),
+          live: true,
+          entries,
+        })
+      }
+    }
+
+    return records.sort((a, b) => b.dateIso.localeCompare(a.dateIso) || b.number - a.number)
+  }, [batches, marks, now, openSession, trainees])
+
+  const concerns = useMemo(() => {
+    const list: AttendanceConcern[] = []
+    for (const trainee of trainees) {
+      const base = trainee.attendance
+      if (!base || base.sessions.length === 0) continue
+      let attended = base.attended
+      // Against the sessions actually held, not the course length: missing sessions that
+      // have not happened yet is not falling behind.
+      let total = base.sessions.length
+      for (const [key, mark] of Object.entries(marks)) {
+        if (!key.endsWith(`|${trainee.beneficiaryId}`)) continue
+        total += 1
+        if (mark === 'present') attended += 1
+      }
+      const percent = Math.round((attended / total) * 100)
+      // Someone who has finished or left is not "falling behind" — only those still coming.
+      const stillTraining = trainee.trainingStatus === 'attending' || trainee.trainingStatus === 'irregular'
+      if (percent < ATTENDANCE_WATCH_PERCENT && stillTraining) list.push({ trainee, attended, total, percent })
+    }
+    return list.sort((a, b) => a.percent - b.percent)
+  }, [marks, trainees])
+
   const value = useMemo(
     () => ({
       trainees,
       batches,
+      sessions,
+      concerns,
       openSession,
       nextSession,
       now,
@@ -147,7 +250,7 @@ export function TrainerProvider({ children }: { children: ReactNode }) {
           ),
         ),
     }),
-    [batches, flags, keyFor, marks, nextSession, now, openSession, trainees],
+    [batches, concerns, flags, keyFor, marks, nextSession, now, openSession, sessions, trainees],
   )
 
   return <TrainerContext.Provider value={value}>{children}</TrainerContext.Provider>

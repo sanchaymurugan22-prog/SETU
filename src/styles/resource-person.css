@@ -577,3 +577,168 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* ── Sessions ── */
+
+.rp-session-head,
+.rp-session-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.3fr) 0.7fr 0.7fr minmax(0, 1.1fr);
+  gap: 12px;
+  align-items: center;
+}
+
+.rp-session-head {
+  padding: 10px 16px;
+  background: var(--grey-200);
+  border-bottom: 1px solid var(--grey-300);
+  font-family: var(--font-heading);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--grey-700);
+}
+
+.rp-session-row {
+  width: 100%;
+  padding: 12px 16px;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid var(--grey-200);
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.rp-session-row:hover {
+  background: var(--paper);
+}
+
+.rp-session-row.is-selected {
+  background: var(--cyan-50);
+}
+
+.rp-live-chip {
+  margin-left: 6px;
+}
+
+.rp-register {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.rp-register-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 10px;
+  background: var(--paper);
+}
+
+.rp-register-name {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  font-size: 13px;
+}
+
+.rp-register-mark {
+  margin-left: auto;
+  font-family: var(--font-heading);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+}
+
+.rp-register-mark.is-present {
+  background: var(--cyan-100);
+  color: var(--teal);
+}
+
+.rp-register-mark.is-absent {
+  background: var(--pink-50);
+  color: var(--magenta-ink);
+}
+
+/* ── Document materials ── */
+
+.rp-material-kind.is-doc-pdf {
+  background: var(--magenta);
+}
+
+.rp-material-kind.is-doc-doc {
+  background: var(--setu-blue-800);
+}
+
+.rp-material-kind.is-doc-ppt {
+  background: #b25a00;
+}
+
+.rp-material-kind.is-doc-sheet {
+  background: var(--teal);
+}
+
+.rp-material-kind.is-doc-other {
+  background: var(--grey-700);
+}
+
+.rp-material-file {
+  font-size: 12px;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+.rp-material-size {
+  color: var(--grey-700);
+}
+
+.rp-material-demo {
+  font-size: 11px;
+  font-style: italic;
+  color: var(--magenta-ink);
+}
+
+.rp-document-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.rp-attach {
+  padding: 10px 12px;
+  background: var(--white);
+  border: 1px dashed var(--grey-500);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.rp-attach-or {
+  font-family: var(--font-heading);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--grey-700);
+}
+
+.rp-attach-warning {
+  margin: 0;
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: var(--magenta-ink);
+}
+
+.rp-attach-file {
+  margin: 0;
+  font-size: 12px;
+  color: var(--teal);
+}

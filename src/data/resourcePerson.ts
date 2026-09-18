@@ -27,12 +27,50 @@ export interface SessionSchedule {
   onlineLink: string | null
 }
 
+/** Documents are labelled by type so a PDF reads as a PDF in the list. */
+export type DocumentType = 'pdf' | 'doc' | 'ppt' | 'sheet' | 'other'
+
+export const DOCUMENT_TYPES: DocumentType[] = ['pdf', 'doc', 'ppt', 'sheet', 'other']
+
 export interface CourseMaterial {
   id: string
   title: string
-  kind: 'link' | 'note'
-  /** URL for a link, or the text itself for a note. */
+  kind: 'link' | 'note' | 'document'
+  /** URL for a link or document, or the text itself for a note. */
   body: string
+  /** Document only. */
+  documentType?: DocumentType
+  fileName?: string
+  /** Bytes, when known. */
+  fileSize?: number
+  /**
+   * Where a document lives.
+   *
+   * 'link' is the real path: Drive, DigiLocker or any hosted URL, which survives a
+   * reload and costs nothing. 'demo-upload' is a file the trainer attached in the
+   * browser — Firebase Storage needs the Blaze plan and this project is on Spark, so
+   * there is nowhere to put the bytes. Those are held in memory for the demo only, are
+   * lost on reload, and are labelled as such wherever they appear.
+   */
+  source?: 'link' | 'demo-upload'
+}
+
+/** Guesses the document type from a file name or URL, so the trainer rarely has to pick. */
+export function documentTypeFor(nameOrUrl: string): DocumentType {
+  const lower = nameOrUrl.toLowerCase()
+  if (lower.includes('.pdf')) return 'pdf'
+  if (lower.includes('.doc') || lower.includes('document/d/')) return 'doc'
+  if (lower.includes('.ppt') || lower.includes('presentation/d/')) return 'ppt'
+  if (lower.includes('.xls') || lower.includes('.csv') || lower.includes('spreadsheets/d/')) return 'sheet'
+  return 'other'
+}
+
+/** Human file size, or null when the size is unknown (a link to someone else's file). */
+export function formatFileSize(bytes: number | undefined): string | null {
+  if (bytes === undefined) return null
+  if (bytes < 1024) return `${bytes} B`
+  if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)} KB`
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
 }
 
 export interface Batch {
@@ -120,6 +158,16 @@ export const RESOURCE_PERSON: ResourcePersonProfile = {
           title: 'NSQF Level 3 — Self-Employed Tailor: qualification pack',
           body: 'https://www.nsdcindia.org/',
         },
+        {
+          id: 'mat-l1-handbook',
+          kind: 'document',
+          title: 'Tailoring L1 handbook (Hindi)',
+          body: 'https://drive.google.com/file/d/1setu-tailoring-l1-handbook/view',
+          documentType: 'pdf',
+          fileName: 'tailoring-l1-handbook-hi.pdf',
+          fileSize: 2_411_724,
+          source: 'link',
+        },
       ],
     },
     {
@@ -150,6 +198,16 @@ export const RESOURCE_PERSON: ResourcePersonProfile = {
           kind: 'note',
           title: 'Pricing piece work',
           body: 'Cost of cloth, thread and time. What to charge the SHG cluster per piece so the work is worth taking.',
+        },
+        {
+          id: 'mat-l2-assessment',
+          kind: 'document',
+          title: 'Assessment pattern and marking',
+          body: 'https://drive.google.com/file/d/1setu-tailoring-l2-assessment/view',
+          documentType: 'ppt',
+          fileName: 'tailoring-l2-assessment.pptx',
+          fileSize: 5_882_112,
+          source: 'link',
         },
       ],
     },
@@ -289,6 +347,23 @@ export const JOB_OPTIONS = [
   'Gumla boutique · assistant tailor',
   'Self-employment · home stitching with a sewing-machine grant',
 ]
+
+/**
+ * The dates of the first `count` sessions a batch holds, walking forward from its start
+ * date across the days it meets. Sessions are not stored anywhere: the schedule and the
+ * attendance already recorded per trainee are enough to reconstruct them, which is what
+ * keeps the Sessions section and the Beneficiaries section from ever disagreeing.
+ */
+export function sessionDates(batch: Batch, count: number): string[] {
+  const dates: string[] = []
+  if (batch.schedule.days.length === 0) return dates
+  const cursor = new Date(`${batch.startDate}T00:00:00`)
+  for (let day = 0; day < 400 && dates.length < count; day += 1) {
+    if (batch.schedule.days.includes(cursor.getDay())) dates.push(cursor.toISOString().slice(0, 10))
+    cursor.setDate(cursor.getDate() + 1)
+  }
+  return dates
+}
 
 /** A session window for a given day, derived from the batch schedule. */
 export interface SessionWindow {

@@ -132,6 +132,10 @@
       "milestones": {
         "title": "સિદ્ધિઓ",
         "summary": "જેમને તમે પૂર્ણતા સુધી તાલીમ આપી, તેમના અહેવાલ સાથે."
+      },
+      "sessions": {
+        "title": "સત્રો",
+        "summary": "તારીખ પ્રમાણે લીધેલાં બધાં સત્રો, હાજરીપત્રક સાથે."
       }
     },
     "admin": {
@@ -558,7 +562,8 @@
       "materialsTitle": "અભ્યાસક્રમ સામગ્રી",
       "kind": {
         "note": "લખાણ",
-        "link": "લિંક"
+        "link": "લિંક",
+        "document": "દસ્તાવેજ"
       },
       "materialTitle": "શીર્ષક",
       "materialUrl": "લિંક",
@@ -566,7 +571,24 @@
       "add": "ઉમેરો",
       "addMaterial": "સામગ્રી ઉમેરો",
       "addError": "સામગ્રીનું શીર્ષક અને વિષયવસ્તુ બંને આપો.",
-      "remove": "કાઢી નાખો"
+      "remove": "કાઢી નાખો",
+      "documentType": {
+        "pdf": "પીડીએફ",
+        "doc": "ડોક",
+        "ppt": "પીપીટી",
+        "sheet": "શીટ",
+        "other": "ફાઈલ"
+      },
+      "documentTypeLabel": "ફાઈલનો પ્રકાર",
+      "documentUrl": "દસ્તાવેજ લિંક",
+      "documentUrlPlaceholder": "ગૂગલ ડ્રાઈવ, ડિજિલૉકર કે કોઈ પણ હોસ્ટ કરેલી લિંક",
+      "documentHint": "લિંક જ સાચો રસ્તો છે: ફાઈલ જ્યાં છે ત્યાં જ રહે છે અને રીલોડ પછી પણ ટકે છે.",
+      "documentError": "દસ્તાવેજનું શીર્ષક અને લિંક કે જોડેલી ફાઈલ આપો.",
+      "or": "અથવા, ફક્ત ડેમો માટે",
+      "attachFile": "ફાઈલ જોડો",
+      "attachWarning": "જોડેલી ફાઈલો ફક્ત આ બ્રાઉઝરમાં રહે છે. ફાયરબેઝ સ્ટોરેજ માટે પેઇડ પ્લાન જોઈએ, તેથી કશું અપલોડ થતું નથી અને રીલોડ કરતાં ફાઈલ જતી રહે છે. ટકવું જોઈએ તેના માટે લિંક વાપરો.",
+      "demoOnly": "ફક્ત ડેમો · આ બ્રાઉઝરમાં, સાચવેલ નથી",
+      "openDocument": "દસ્તાવેજ ખોલો"
     },
     "calls": {
       "subTypeLabel": "કેસનો પ્રકાર",
@@ -593,6 +615,36 @@
       "noCertificate": "હજી અપાયું નથી",
       "seekingLabel": "કામ શોધનારા",
       "seekingFoot": "પ્રમાણિત, હજી નોકરી નથી"
+    },
+    "sessions": {
+      "subtitle": "{{batches}} બેચમાં {{count}} સત્રો લેવાયાં",
+      "listAria": "સત્રોની યાદી",
+      "empty": "હજી કોઈ સત્ર થયું નથી.",
+      "foot": "દરેક તાલીમાર્થીની નોંધાયેલી હાજરી પરથી બનાવેલું.",
+      "number": "સત્ર {{number}}",
+      "live": "અત્યારે નોંધાઈ રહ્યું છે",
+      "headers": {
+        "date": "તારીખ અને સમય",
+        "batch": "બેચ અને અભ્યાસક્રમ",
+        "present": "હાજર",
+        "absent": "ગેરહાજર",
+        "attendance": "હાજરી"
+      },
+      "presentCount": "{{count}} હાજર",
+      "absentCount": "{{count}} ગેરહાજર",
+      "registerTitle": "કોણ આવ્યું",
+      "panelAria": "{{date}}નું સત્ર",
+      "cards": {
+        "heldLabel": "લીધેલાં સત્રો",
+        "heldFoot": "{{batches}} બેચમાં",
+        "traineesLabel": "તાલીમાર્થીઓ",
+        "traineesFoot": "તમારી યાદીમાં",
+        "attendanceLabel": "કુલ હાજરી",
+        "attendanceFoot": "{{marks}}માંથી {{present}} હાજર",
+        "fallingLabel": "ઘટતી હાજરી",
+        "fallingFoot": "{{threshold}}%થી નીચે અને હજી તાલીમમાં",
+        "fallingNone": "કોઈ દેખરેખ સ્તરથી નીચે નથી"
+      }
     }
   },
   "certificate": {
