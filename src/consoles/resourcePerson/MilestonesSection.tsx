@@ -5,11 +5,14 @@ import { RESOURCE_PERSON, type Trainee } from '../../data/resourcePerson'
 import { CertificateSheet } from './CertificateSheet'
 import { formatLastContact } from '../../i18n/format'
 import { useTrainer } from './TrainerContext'
+import { useDataSource } from '../../data/useDataSource'
+import { SourceBadge } from '../admin/SourceBadge'
 import '../../styles/resource-person.css'
 
 /** Trainees this person took all the way to completion, with the record behind each one. */
 export function MilestonesSection() {
   const { t } = useTranslation()
+  const source = useDataSource('beneficiaries')
   const { trainees, batches, attendanceOf } = useTrainer()
   const [openId, setOpenId] = useState<string | null>(null)
   const [certificateFor, setCertificateFor] = useState<Trainee | null>(null)
@@ -42,6 +45,7 @@ export function MilestonesSection() {
             {RESOURCE_PERSON.name} · {batches[0]?.centre}
           </span>
         </div>
+          <SourceBadge state={source} count={finished.length} />
       </header>
 
       <div className="section-body rp-body">

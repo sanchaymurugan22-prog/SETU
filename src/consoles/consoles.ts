@@ -39,6 +39,12 @@ export const CONSOLES: Record<Role, ConsoleDefinition> = {
         group: 'Sections',
         summary: 'AI reports from calls you handled. Beneficiary identity stays hidden.',
       },
+      {
+        path: 'ai-demo',
+        title: 'AI Demo Call',
+        group: 'Demo',
+        summary: "The beneficiary's own call with SETU, for demonstration. In service they reach it by phone.",
+      },
     ],
   },
   resourcePerson: {

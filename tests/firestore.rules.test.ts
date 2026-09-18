@@ -78,12 +78,25 @@ beforeEach(async () => {
       ['calls/queued-2', { callType: 'executive', status: 'waiting', handledBy: null, beneficiaryId: 'ben-2', queue: { reasonTag: 'course-question' } }],
       ['calls/done-by-exec2', { callType: 'executive', status: 'completed', handledBy: EXEC2, beneficiaryId: 'ben-2', aiReport: { summary: 'Asked about fees.' } }],
       ['calls/ai-1', { callType: 'ai', status: 'completed', handledBy: null, beneficiaryId: 'ben-1' }],
+      // recordType tells the admin's overview rows apart from the queue entries and the
+      // reports the consoles read; all three live in /calls (spec 8.3).
+      ['calls/q-exec-1', { recordType: 'queued', callType: 'executive', status: 'waiting', handledBy: null, beneficiaryId: 'ben-1' }],
+      ['calls/c-exec-1', { recordType: 'completed', callType: 'executive', status: 'completed', handledBy: EXEC, beneficiaryId: 'ben-1' }],
+      ['calls/q-rp-1', { recordType: 'queued', callType: 'resourcePerson', status: 'waiting', handledBy: null, assignedTo: RP, beneficiaryId: 'ben-1' }],
+      ['calls/c-rp-1', { recordType: 'completed', callType: 'resourcePerson', status: 'completed', handledBy: RP, assignedTo: RP, beneficiaryId: 'ben-1' }],
+      ['calls/sys-1', { recordType: 'system', callType: 'ai', status: 'completed', handledBy: null, beneficiaryId: 'ben-1' }],
       ['calls/rp-case-1', { callType: 'resourcePerson', subType: 'course-related', status: 'waiting', handledBy: null, assignedTo: RP, beneficiaryId: 'ben-1' }],
 
       ['courses/tailoring-l1', { courseName: 'Tailoring L1' }],
       ['centres/centre-1', { courseId: 'tailoring-l1', assignedResourcePerson: RP, capacity: 30 }],
       ['followUps/fu-1', { beneficiaryId: 'ben-1', purpose: 'did-you-enroll' }],
       ['gapData/gap-1', { demandCount: 60, gapType: 'no-centre' }],
+
+      ['attendance/att-1', { beneficiaryId: 'ben-1', centreId: 'centre-1', markedBy: RP, mark: 'present', sessionNumber: 1 }],
+      ['attendance/att-2', { beneficiaryId: 'ben-2', centreId: 'centre-2', markedBy: RP2, mark: 'absent', sessionNumber: 1 }],
+
+      ['adminFlags/flag-rp', { beneficiaryId: 'ben-1', raisedBy: RP, status: 'open', reason: 'repeated-absence' }],
+      ['adminFlags/flag-rp2', { beneficiaryId: 'ben-2', raisedBy: RP2, status: 'open', reason: 'travel-cost' }],
     ]
     await Promise.all(writes.map(([path, data]) => setDoc(doc(db, path), data)))
   })
@@ -306,5 +319,172 @@ describe('admin-only data', () => {
 
   it('lets admins read any beneficiary', async () => {
     await assertSucceeds(getDoc(doc(as(ADMIN), 'beneficiaries', 'ben-2')))
+  })
+
+  it('keeps gap data from signed-out visitors, and lets only an admin seed it', async () => {
+    // The Gap Map reads this collection, so who can read it is the privacy boundary.
+    const signedOut = env.unauthenticatedContext().firestore() as unknown as Firestore
+    await assertFails(getDoc(doc(signedOut, 'gapData', 'gap-1')))
+
+    // Seeding writes as an admin through the client SDK — the rules are what make that safe.
+    await assertSucceeds(
+      setDoc(doc(as(ADMIN), 'gapData', 'gap-seeded'), { block: 'Ghaghra', demandCount: 60, gapType: 'no-centre' }),
+    )
+    for (const uid of [EXEC, RP]) {
+      await assertFails(setDoc(doc(as(uid), 'gapData', 'gap-by-staff'), { block: 'Ghaghra' }))
+    }
+  })
+
+  it('lets only an admin seed the beneficiaries collection', async () => {
+    await assertSucceeds(
+      setDoc(doc(as(ADMIN), 'beneficiaries', 'ben-seeded'), {
+        name: 'Seeded Person',
+        trainingStatus: 'new',
+        employmentStatus: 'in-training',
+        activeHandler: null,
+        activeCallId: null,
+      }),
+    )
+    await assertFails(setDoc(doc(as(EXEC), 'beneficiaries', 'ben-by-exec'), { name: 'Not allowed' }))
+  })
+})
+
+/**
+ * These exercise the queries the consoles actually run, not just single-document reads.
+ * A rule can allow a document and still refuse the query that would reach it, so the
+ * filters here are the same ones in firestoreData.ts.
+ */
+describe('the queries each console runs', () => {
+  it('lets an executive read the waiting queue and their own calls, but not AI calls', async () => {
+    const db = as(EXEC)
+    await assertSucceeds(
+      getDocs(query(collection(db, 'calls'), where('callType', '==', 'executive'), where('status', '==', 'waiting'))),
+    )
+    await assertSucceeds(
+      getDocs(query(collection(db, 'calls'), where('callType', '==', 'executive'), where('handledBy', '==', EXEC))),
+    )
+    // Spec 7.1: AI calls are the admin's to see.
+    await assertFails(getDoc(doc(db, 'calls', 'ai-1')))
+    await assertFails(getDocs(query(collection(db, 'calls'), where('callType', '==', 'ai'))))
+    // And another executive's completed call stays theirs.
+    await assertFails(getDoc(doc(db, 'calls', 'done-by-exec2')))
+  })
+
+  it('lets a resource person read only the cases assigned to them', async () => {
+    const db = as(RP)
+    await assertSucceeds(
+      getDocs(
+        query(collection(db, 'calls'), where('callType', '==', 'resourcePerson'), where('assignedTo', '==', RP)),
+      ),
+    )
+    await assertFails(
+      getDocs(
+        query(collection(db, 'calls'), where('callType', '==', 'resourcePerson'), where('assignedTo', '==', RP2)),
+      ),
+    )
+  })
+
+  it('lets a resource person read their own trainees, attendance and flags — and nobody else\'s', async () => {
+    const db = as(RP)
+    await assertSucceeds(
+      getDocs(query(collection(db, 'beneficiaries'), where('assignedResourcePerson', '==', RP))),
+    )
+    await assertSucceeds(getDocs(query(collection(db, 'attendance'), where('markedBy', '==', RP))))
+    await assertSucceeds(getDocs(query(collection(db, 'adminFlags'), where('raisedBy', '==', RP))))
+
+    await assertFails(getDoc(doc(db, 'attendance', 'att-2')))
+    await assertFails(getDoc(doc(db, 'adminFlags', 'flag-rp2')))
+    await assertFails(getDocs(query(collection(db, 'attendance'), where('markedBy', '==', RP2))))
+  })
+
+  it('serves the Call Console its queue and its own reports, and refuses an unbounded queue read', async () => {
+    const db = as(EXEC)
+    // Exactly what loadExecutiveData() sends.
+    await assertSucceeds(
+      getDocs(
+        query(
+          collection(db, 'calls'),
+          where('recordType', '==', 'queued'),
+          where('callType', '==', 'executive'),
+          where('status', '==', 'waiting'),
+        ),
+      ),
+    )
+    await assertSucceeds(
+      getDocs(
+        query(
+          collection(db, 'calls'),
+          where('recordType', '==', 'completed'),
+          where('callType', '==', 'executive'),
+          where('handledBy', '==', EXEC),
+        ),
+      ),
+    )
+    // A list is checked against the query, not the documents it would return: drop the
+    // status filter and the rule can no longer tell this is the waiting queue.
+    await assertFails(
+      getDocs(
+        query(collection(db, 'calls'), where('recordType', '==', 'queued'), where('callType', '==', 'executive')),
+      ),
+    )
+    // The admin's overview rows are not the executive's to sweep up.
+    await assertFails(getDocs(query(collection(db, 'calls'), where('recordType', '==', 'system'))))
+  })
+
+  it('serves the expert console only the cases addressed to that resource person', async () => {
+    const db = as(RP)
+    for (const recordType of ['queued', 'completed']) {
+      await assertSucceeds(
+        getDocs(
+          query(
+            collection(db, 'calls'),
+            where('recordType', '==', recordType),
+            where('callType', '==', 'resourcePerson'),
+            where('assignedTo', '==', RP),
+          ),
+        ),
+      )
+      await assertFails(
+        getDocs(
+          query(
+            collection(db, 'calls'),
+            where('recordType', '==', recordType),
+            where('callType', '==', 'resourcePerson'),
+            where('assignedTo', '==', RP2),
+          ),
+        ),
+      )
+    }
+  })
+
+  it('lets any staff member read the course and centre reference data', async () => {
+    for (const uid of [EXEC, RP]) {
+      await assertSucceeds(getDocs(query(collection(as(uid), 'courses'))))
+      await assertSucceeds(getDocs(query(collection(as(uid), 'centres'))))
+    }
+  })
+
+  it('keeps follow-ups and every unfiltered collection scan from staff', async () => {
+    const db = as(EXEC)
+    await assertFails(getDocs(query(collection(db, 'followUps'))))
+    await assertFails(getDocs(query(collection(db, 'beneficiaries'))))
+    await assertFails(getDocs(query(collection(db, 'gapData'))))
+    await assertFails(getDocs(query(collection(db, 'attendance'))))
+  })
+
+  it('lets the admin read every collection', async () => {
+    const db = as(ADMIN)
+    for (const path of [
+      'beneficiaries',
+      'calls',
+      'followUps',
+      'courses',
+      'centres',
+      'attendance',
+      'adminFlags',
+      'gapData',
+    ]) {
+      await assertSucceeds(getDocs(query(collection(db, path))))
+    }
   })
 })

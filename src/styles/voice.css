@@ -487,3 +487,39 @@
   font-size: 12.5px;
   font-weight: 700;
 }
+
+/* ── Embedded in the Call Console ── */
+
+.voice-section-header,
+.voice-section-body {
+  background: var(--setu-blue);
+  color: var(--paper);
+}
+
+.voice-section-header h1 {
+  color: var(--white);
+}
+
+.voice-section-header .call-subtitle {
+  color: var(--cyan-200);
+}
+
+.voice-section-body {
+  padding: 0 22px 22px;
+}
+
+/* The embedded copy has no page chrome, so the grid starts flush with the header. */
+.voice-section-body .voice-main {
+  padding: 0;
+}
+
+.voice-note {
+  margin: 0;
+  padding: 10px 14px;
+  background: rgb(153 224 255 / 14%);
+  border-left: 3px solid var(--cyan-400);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--paper);
+  max-width: 88ch;
+}

@@ -11,6 +11,9 @@ import {
 } from '../../data/jharkhandCalls'
 import { isDialectGap, languageNameFor } from '../../lib/languageDetection'
 import { ActiveCallPanel } from './ActiveCallPanel'
+import { useDataSource } from '../../data/useDataSource'
+import type { SlotName } from '../../data/source'
+import { SourceBadge } from '../admin/SourceBadge'
 import { useCallSession } from './CallSessionContext'
 
 type SortMode = 'wait' | 'position'
@@ -19,11 +22,15 @@ type SortMode = 'wait' | 'position'
 export function WaitingCallsSection({
   titleKey = 'sections.executive.waiting.title',
   subtitleKey = 'callConsole.queue.subtitle',
+  slot = 'queue',
 }: {
   titleKey?: string
   subtitleKey?: string
+  /** Which Firestore query backs this queue: the executive's or the resource person's. */
+  slot?: SlotName
 } = {}) {
   const { t } = useTranslation()
+  const source = useDataSource(slot)
   const { queue, active, accept, available, setAvailable, waitedSeconds } = useCallSession()
   const [reason, setReason] = useState<ReasonTag | 'all'>('all')
   const [subType, setSubType] = useState<CallSubType | 'all'>('all')
@@ -83,6 +90,7 @@ export function WaitingCallsSection({
           </p>
         </div>
         <div className="call-queue-controls">
+          <SourceBadge state={source} count={queue.length} />
           <span className="chip is-cyan">{t('callConsole.queue.identityHidden')}</span>
           <button
             type="button"

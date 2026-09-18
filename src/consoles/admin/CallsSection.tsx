@@ -10,6 +10,8 @@ import {
 } from '../../data/adminConsole'
 import { CALL_SUB_TYPES, formatDuration, type CallSubType } from '../../data/jharkhandCalls'
 import { isDialectGap, languageNameFor } from '../../lib/languageDetection'
+import { useDataSource } from '../../data/useDataSource'
+import { SourceBadge } from './SourceBadge'
 import '../../styles/admin.css'
 
 type Period = 'all' | 'week' | 'month'
@@ -23,6 +25,7 @@ const PERIOD_DAYS: Record<Period, number> = { all: 3650, week: 7, month: 31 }
  */
 export function CallsSection() {
   const { t } = useTranslation()
+  const source = useDataSource('calls')
   const all = loadSystemCalls()
   const [part, setPart] = useState<CallHandler>('executive')
   const [period, setPeriod] = useState<Period>('all')
@@ -69,6 +72,7 @@ export function CallsSection() {
           <span className="call-scope-label">{t('admin.calls.scopeLabel')}</span>
           <span className="call-scope-value">{t('admin.calls.scopeValue')}</span>
         </div>
+        <SourceBadge state={source} count={all.length} />
       </header>
 
       <div className="section-body admin-body">

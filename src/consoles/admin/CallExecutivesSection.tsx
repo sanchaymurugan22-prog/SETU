@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { CALL_EXECUTIVES, type CallExecutive } from '../../data/adminConsole'
 import { districts } from '../../data/jharkhandBeneficiaries'
 import { formatDuration } from '../../data/jharkhandCalls'
+import { SeededDirectoryNote } from './SeededDirectoryNote'
 import '../../styles/admin.css'
 
 /** All call executives: activity, new accounts, and deactivation (SETU-SPEC 6.2). */
@@ -81,6 +82,8 @@ export function CallExecutivesSection() {
       </header>
 
       <div className="section-body admin-body">
+        <SeededDirectoryNote />
+
         {notice && (
           <div className="gap-notice" role="status">
             <span className="gap-notice-action">{t('admin.staff.createdTitle')}</span>

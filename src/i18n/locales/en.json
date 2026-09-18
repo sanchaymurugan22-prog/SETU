@@ -110,6 +110,10 @@
       "completed": {
         "title": "Completed Calls",
         "summary": "AI reports from calls you handled. Beneficiary identity stays hidden."
+      },
+      "ai-demo": {
+        "title": "AI Demo Call",
+        "summary": "The beneficiary's own call with SETU, for demonstration."
       }
     },
     "resourcePerson": {
@@ -693,6 +697,8 @@
       },
       "searchLabel": "Search staff",
       "searchPlaceholder": "Search by name, email or district",
+      "seededLabel": "Demo data",
+      "seededNote": "This staff directory is seeded for the demonstration: the postings and activity figures are sample records. The real sign-in accounts live in the users collection, which the seeder never writes to.",
       "showInactive": "Include deactivated",
       "active": "Active",
       "inactive": "Deactivated",
@@ -961,6 +967,15 @@
       "classValue": "Class {{years}}",
       "recommendation": "Recommendation"
     },
-    "rehearsalContested": "Rehearsal mode: detection is forced to contested (Hindi 0.92 against Maithili 0.98, the values the two models returned for Magahi speech in testing). Remove ?rehearse=contested for the live path."
+    "rehearsalContested": "Rehearsal mode: detection is forced to contested (Hindi 0.92 against Maithili 0.98, the values the two models returned for Magahi speech in testing). Remove ?rehearse=contested for the live path.",
+    "demoSubtitle": "The call as a beneficiary experiences it, run here so it can be shown from inside the consoles.",
+    "demoNote": "This demonstrates the beneficiary’s call experience. In production a beneficiary reaches SETU by phone on the toll-free number and never sees this interface — it exists so the call can be shown on a screen."
+  },
+  "source": {
+    "sample": "Sample data · {{count}}",
+    "loading": "Loading from Firestore…",
+    "firestore": "Firestore · {{count}}",
+    "error": "Sample data · {{count}}",
+    "fellBack": "Firestore unavailable"
   }
 }

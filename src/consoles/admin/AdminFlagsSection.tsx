@@ -7,6 +7,8 @@ import {
   type AdminFlagRecord,
   type FlagStatus,
 } from '../../data/adminConsole'
+import { useDataSource } from '../../data/useDataSource'
+import { SourceBadge } from './SourceBadge'
 import '../../styles/admin.css'
 
 const STATUS_TONE: Record<FlagStatus, string> = { open: 'bright', assigned: 'cyan', resolved: 'teal' }
@@ -14,6 +16,7 @@ const STATUS_TONE: Record<FlagStatus, string> = { open: 'bright', assigned: 'cya
 /** Cases a resource person escalated. Assignment control lives here (SETU-SPEC 6.7). */
 export function AdminFlagsSection() {
   const { t } = useTranslation()
+  const source = useDataSource('adminFlags')
   const [flags, setFlags] = useState<AdminFlagRecord[]>(loadAdminFlags)
   const [status, setStatus] = useState<FlagStatus | 'all'>('all')
   const [assigning, setAssigning] = useState<AdminFlagRecord | null>(null)
@@ -74,6 +77,7 @@ export function AdminFlagsSection() {
           <span className="call-scope-label">{t('admin.flags.sourceLabel')}</span>
           <span className="call-scope-value">{t('admin.flags.sourceValue')}</span>
         </div>
+        <SourceBadge state={source} count={flags.length} />
       </header>
 
       <div className="section-body admin-body">

@@ -15,6 +15,8 @@ import {
 import { formatLastContact } from '../../i18n/format'
 import { TraineePanel } from './TraineePanel'
 import { useTrainer } from './TrainerContext'
+import { useDataSource } from '../../data/useDataSource'
+import { SourceBadge } from '../admin/SourceBadge'
 import '../../styles/resource-person.css'
 
 const DAY_KEYS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
@@ -22,6 +24,7 @@ const DAY_KEYS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
 /** The trainer's own trainees: attendance when a session is open, status stages, flags. */
 export function TraineesSection() {
   const { t } = useTranslation()
+  const source = useDataSource('beneficiaries')
   const { trainees, batches, openSession, nextSession, markFor, mark, attendanceOf, flagTrainee, flags } = useTrainer()
   const [search, setSearch] = useState('')
   const [batchId, setBatchId] = useState('all')
@@ -79,6 +82,7 @@ export function TraineesSection() {
             {RESOURCE_PERSON.name} · {batches[0]?.centre}
           </span>
         </div>
+          <SourceBadge state={source} count={trainees.length} />
       </header>
 
       <div className="section-body rp-body">

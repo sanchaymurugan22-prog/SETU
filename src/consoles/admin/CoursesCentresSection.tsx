@@ -8,6 +8,8 @@ import {
   type Centre,
 } from '../../data/adminConsole'
 import { districts } from '../../data/jharkhandBeneficiaries'
+import { useDataSource } from '../../data/useDataSource'
+import { SourceBadge } from './SourceBadge'
 import '../../styles/admin.css'
 
 type Tab = 'courses' | 'centres' | 'allotment'
@@ -15,6 +17,7 @@ type Tab = 'courses' | 'centres' | 'allotment'
 /** Courses, centres, seat counts and the auto-allotment queue (SETU-SPEC 6.6). */
 export function CoursesCentresSection() {
   const { t } = useTranslation()
+  const source = useDataSource('centres')
   const courseRecords = loadCourses()
   const [centres, setCentres] = useState<Centre[]>(loadCentres)
   const [tab, setTab] = useState<Tab>('courses')
@@ -107,6 +110,7 @@ export function CoursesCentresSection() {
             })}
           </p>
         </div>
+        <SourceBadge state={source} count={centres.length} />
         <div className="admin-header-actions">
           <button type="button" className="btn btn-outline btn-small" onClick={() => setAdding('course')}>
             {t('admin.coursesCentres.addCourse')}

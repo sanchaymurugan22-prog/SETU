@@ -7,6 +7,7 @@ export function ExpertWaitingSection() {
     <WaitingCallsSection
       titleKey="sections.resourcePerson.waiting.title"
       subtitleKey="resourcePerson.calls.waitingSubtitle"
+      slot="rpQueue"
     />
   )
 }
@@ -16,6 +17,7 @@ export function ExpertCompletedSection() {
     <CompletedCallsSection
       titleKey="sections.resourcePerson.completed.title"
       scopeValueKey="resourcePerson.calls.scopeValue"
+      slot="rpCompleted"
     />
   )
 }

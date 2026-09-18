@@ -9,6 +9,8 @@ import {
   type DocumentType,
 } from '../../data/resourcePerson'
 import { useTrainer } from './TrainerContext'
+import { useDataSource } from '../../data/useDataSource'
+import { SourceBadge } from '../admin/SourceBadge'
 import '../../styles/resource-person.css'
 
 const DAY_KEYS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
@@ -16,6 +18,7 @@ const DAY_KEYS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
 /** Schedule and timings — which decide when attendance opens — plus location and materials. */
 export function CourseMaterialsSection() {
   const { t } = useTranslation()
+  const source = useDataSource('courses')
   const { batches, openSession, nextSession, updateSchedule, addMaterial, removeMaterial } = useTrainer()
   const [draftFor, setDraftFor] = useState<string | null>(null)
   const [kind, setKind] = useState<CourseMaterial['kind']>('note')
@@ -92,6 +95,7 @@ export function CourseMaterialsSection() {
             {RESOURCE_PERSON.name} · {batches[0]?.centre}
           </span>
         </div>
+          <SourceBadge state={source} count={batches.length} />
       </header>
 
       <div className="section-body rp-body">

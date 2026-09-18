@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore, type ReactNode } from 'react'
 import {
   beneficiaryForCall,
   loadCompleted,
@@ -8,6 +8,8 @@ import {
   type TransferReason,
 } from '../../data/jharkhandCalls'
 import type { Beneficiary } from '../../data/jharkhandBeneficiaries'
+import { liveVersion, subscribeLiveCalls } from '../../data/liveCalls'
+import { sourceVersion, subscribeSource } from '../../data/source'
 import { bhashiniConfigFromEnv } from '../../lib/env'
 import { createCallDetector } from '../../lib/languageDetection'
 import {
@@ -72,8 +74,10 @@ export function CallSessionProvider({
   refPrefix = 'CR',
   allowTransfer = true,
 }: CallSessionProviderProps) {
-  const [queue, setQueue] = useState<QueuedCall[]>(queueSource)
-  const [completed, setCompleted] = useState<CompletedCall[]>(completedSource)
+  // Accepted calls leave the queue and sent reports join the completed list, but both
+  // lists themselves are derived rather than snapshotted — see the memos below.
+  const [accepted, setAccepted] = useState<string[]>([])
+  const [sentReports, setSentReports] = useState<CompletedCall[]>([])
   const [state, setState] = useState<CallState | null>(null)
   const [report, setReport] = useState<{ state: CallState; elapsedSeconds: number } | null>(null)
   const [draft, setDraft] = useState<ReportDraft | null>(null)
@@ -89,6 +93,28 @@ export function CallSessionProvider({
   )
   const [now, setNow] = useState(() => Date.now())
   const sentCount = useRef(0)
+
+  /**
+   * Two things move under this provider while it is mounted: a call placed in the AI Demo
+   * Call section joins the live store, and the Firestore slot replaces the sample once the
+   * query answers. Subscribing to both and deriving the lists — rather than snapshotting
+   * them at mount — is what makes the demo work in either order, and what stops the queue
+   * showing sample rows beside live ones after the slot fills.
+   */
+  const live = useSyncExternalStore(subscribeLiveCalls, liveVersion, liveVersion)
+  const version = useSyncExternalStore(subscribeSource, sourceVersion, sourceVersion)
+
+  const queue = useMemo(
+    () => queueSource().filter((call) => !accepted.includes(call.callId)),
+    // queueSource reads the module-level slot, which the linter cannot see changing.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [queueSource, accepted, live, version],
+  )
+  const completed = useMemo(
+    () => [...sentReports, ...completedSource()],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [completedSource, sentReports, live, version],
+  )
 
   // One clock drives both the queue wait times and the call timer.
   useEffect(() => {
@@ -135,7 +161,7 @@ export function CallSessionProvider({
         const call = queue.find((entry) => entry.callId === callId)
         if (!call) return
         const beneficiary = beneficiaryForCall(call.beneficiaryId)
-        setQueue((entries) => entries.filter((entry) => entry.callId !== callId))
+        setAccepted((ids) => [...ids, callId])
 
         // The caller has already answered the bilingual greeting by the time an executive
         // picks up, so detection runs on accept. With telephony wired in, sample.audio is
@@ -208,7 +234,7 @@ export function CallSessionProvider({
           outcome: draft.outcome,
         }
         // Identity is not carried into the completed list: report content only.
-        setCompleted((entries) => [sent, ...entries])
+        setSentReports((entries) => [sent, ...entries])
         setReport(null)
         setDraft(null)
       },

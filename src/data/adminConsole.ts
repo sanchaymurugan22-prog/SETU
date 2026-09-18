@@ -14,9 +14,13 @@ import { detected } from './languageDetections'
 import { loadBeneficiaries, type Beneficiary } from './jharkhandBeneficiaries'
 import { loadBlockGaps } from './jharkhandGaps'
 import { RESOURCE_PERSONS } from './jharkhandCalls'
+import { readSlot, registerSample } from './source'
 import type { LanguageDetection } from '../lib/languageDetection'
 
-const people = loadBeneficiaries()
+/** Read on every call, so the admin sections follow the Firestore load. */
+function people(): Beneficiary[] {
+  return loadBeneficiaries()
+}
 
 /** Same deterministic PRNG the other seed modules use. */
 function mulberry32(seed: number): () => number {
@@ -160,7 +164,7 @@ export const RESOURCE_PERSON_RECORDS: ResourcePersonRecord[] = RESOURCE_PERSONS.
   const posting = RP_CENTRES[person.block]!
   // Their trainees are the ones at their own centre, or in their block on their courses
   // where the seeded beneficiary record names a different centre in the same place.
-  const trainees = people.filter(
+  const trainees = people().filter(
     (entry) =>
       entry.centre === posting.centre ||
       (entry.block === person.block && entry.centre !== null && posting.courses.includes(entry.course)),
@@ -262,7 +266,7 @@ function buildSystemCalls(): SystemCall[] {
   const calls: SystemCall[] = []
   const source = mulberry32(20_260_918)
 
-  people.forEach((person, index) => {
+  people().forEach((person, index) => {
     // Every beneficiary has been called by the AI at least once; some several times.
     const aiCalls = 1 + Math.floor(source() * 3)
     for (let call = 0; call < aiCalls; call += 1) {
@@ -342,7 +346,15 @@ function buildSystemCalls(): SystemCall[] {
 
 const SYSTEM_CALLS = buildSystemCalls()
 
+registerSample('calls', SYSTEM_CALLS)
+
+/** Every call in the system. Served from Firestore once `calls` has loaded. */
 export function loadSystemCalls(): SystemCall[] {
+  return readSlot<SystemCall>('calls')
+}
+
+/** The seeded sample, for the Firestore seeder and as the fallback. */
+export function sampleSystemCalls(): SystemCall[] {
   return SYSTEM_CALLS
 }
 
@@ -431,7 +443,7 @@ const FOLLOW_UP_DETAIL: Record<FollowUpPurpose, string> = {
 
 function buildFollowUps(): FollowUpRecord[] {
   const source = mulberry32(20_260_919)
-  return people
+  return people()
     // The engine calls everyone it has something to ask — which is everyone past intake.
     .filter((person) => person.trainingStatus !== 'new' || person.lastContactDays < 30)
     .map((person, index) => {
@@ -467,7 +479,13 @@ function buildFollowUps(): FollowUpRecord[] {
 
 const FOLLOW_UPS = buildFollowUps()
 
+registerSample('followUps', FOLLOW_UPS)
+
 export function loadFollowUps(): FollowUpRecord[] {
+  return readSlot<FollowUpRecord>('followUps')
+}
+
+export function sampleFollowUps(): FollowUpRecord[] {
   return FOLLOW_UPS
 }
 
@@ -503,7 +521,7 @@ export interface CourseRecord {
 function buildCentres(): Centre[] {
   const source = mulberry32(20_260_920)
   const byCentre = new Map<string, Beneficiary[]>()
-  for (const person of people) {
+  for (const person of people()) {
     if (!person.centre) continue
     byCentre.set(person.centre, [...(byCentre.get(person.centre) ?? []), person])
   }
@@ -512,7 +530,7 @@ function buildCentres(): Centre[] {
   // a block with a resource person would still show up as unserved.
   for (const posting of Object.values(RP_CENTRES)) {
     if (byCentre.has(posting.centre)) continue
-    const local = people.filter(
+    const local = people().filter(
       (person) => person.block === Object.keys(RP_CENTRES).find((block) => RP_CENTRES[block] === posting),
     )
     byCentre.set(posting.centre, local)
@@ -528,7 +546,7 @@ function buildCentres(): Centre[] {
     const block = first?.block ?? postingBlock ?? '—'
     const district = first?.district ?? posting?.district ?? '—'
     // Waiting is demand in the same block that has no seat yet.
-    const waiting = people.filter(
+    const waiting = people().filter(
       (person) => person.block === block && person.centre === null && courses.includes(person.course),
     ).length
     return {
@@ -549,7 +567,13 @@ function buildCentres(): Centre[] {
 
 const CENTRES = buildCentres()
 
+registerSample('centres', CENTRES)
+
 export function loadCentres(): Centre[] {
+  return readSlot<Centre>('centres')
+}
+
+export function sampleCentres(): Centre[] {
   return CENTRES
 }
 
@@ -568,9 +592,9 @@ const NSQF_BY_COURSE: Record<string, string> = {
 
 export function loadCourses(): CourseRecord[] {
   const gaps = loadBlockGaps()
-  const names = [...new Set(people.map((person) => person.course))].sort()
+  const names = [...new Set(people().map((person) => person.course))].sort()
   return names.map((course) => {
-    const learners = people.filter((person) => person.course === course)
+    const learners = people().filter((person) => person.course === course)
     const centres = CENTRES.filter((centre) => centre.courses.includes(course))
     return {
       course,
@@ -666,7 +690,7 @@ function buildFlags(): AdminFlagRecord[] {
   // Flags come from the people a resource person would actually escalate — and from a
   // spread of situations, not four of the same kind, because the unplaced dominate the
   // flagged population and would otherwise fill the whole board.
-  const enrolled = people.filter((person) => person.centre !== null)
+  const enrolled = people().filter((person) => person.centre !== null)
   const take = (predicate: (person: Beneficiary) => boolean, count: number) =>
     enrolled.filter(predicate).slice(0, count)
 
@@ -714,6 +738,12 @@ function buildFlags(): AdminFlagRecord[] {
 
 const FLAGS = buildFlags()
 
+registerSample('adminFlags', FLAGS)
+
 export function loadAdminFlags(): AdminFlagRecord[] {
+  return readSlot<AdminFlagRecord>('adminFlags')
+}
+
+export function sampleAdminFlags(): AdminFlagRecord[] {
   return FLAGS
 }

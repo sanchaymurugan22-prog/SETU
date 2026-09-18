@@ -8,11 +8,14 @@ import {
   type FollowUpPurpose,
 } from '../../data/adminConsole'
 import { formatLastContact } from '../../i18n/format'
+import { useDataSource } from '../../data/useDataSource'
+import { SourceBadge } from './SourceBadge'
 import '../../styles/admin.css'
 
 /** Everything the automated follow-up engine has done, per beneficiary (SETU-SPEC 6.5). */
 export function FollowUpsSection() {
   const { t } = useTranslation()
+  const source = useDataSource('followUps')
   const all = loadFollowUps()
   const [search, setSearch] = useState('')
   const [purpose, setPurpose] = useState<FollowUpPurpose | 'all'>('all')
@@ -54,6 +57,7 @@ export function FollowUpsSection() {
           <span className="call-scope-label">{t('admin.followUps.engineLabel')}</span>
           <span className="call-scope-value">{t('admin.followUps.engineValue')}</span>
         </div>
+        <SourceBadge state={source} count={all.length} />
       </header>
 
       <div className="section-body admin-body">

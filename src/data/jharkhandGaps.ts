@@ -14,6 +14,7 @@
 export type GapType = 'no-centre' | 'no-local-jobs'
 
 import { liveDemand } from './liveCalls'
+import { readSlot, registerSample } from './source'
 
 export interface BlockGap {
   gapId: string
@@ -576,8 +577,19 @@ const STATEWIDE: Record<WindowDays, StatewideTotals> = {
 
 export const PLACEMENT_TARGET = 55
 
-/** Swap this for a Firestore query on `gapData` when the collection is populated. */
+// The sample is the fallback from the first render; a Firestore load replaces it.
+registerSample('gaps', BLOCK_GAPS)
+
+/**
+ * Every block gap. Served from Firestore once `gapData` has loaded, and from the seeded
+ * sample until then — or for good, if the query fails.
+ */
 export function loadBlockGaps(): BlockGap[] {
+  return readSlot<BlockGap>('gaps')
+}
+
+/** The seeded sample, for the Firestore seeding script and as the last-resort fallback. */
+export function sampleBlockGaps(): BlockGap[] {
   return BLOCK_GAPS
 }
 

@@ -9,6 +9,7 @@ import { CallsSection } from './consoles/admin/CallsSection'
 import { CoursesCentresSection } from './consoles/admin/CoursesCentresSection'
 import { FollowUpsSection } from './consoles/admin/FollowUpsSection'
 import { ResourcePersonsSection } from './consoles/admin/ResourcePersonsSection'
+import { AiDemoCallSection } from './consoles/executive/AiDemoCallSection'
 import { CallConsole } from './consoles/executive/CallConsole'
 import { CompletedCallsSection } from './consoles/executive/CompletedCallsSection'
 import { WaitingCallsSection } from './consoles/executive/WaitingCallsSection'
@@ -40,6 +41,7 @@ const SECTION_VIEWS: Record<string, ComponentType> = {
   'admin/gap-map': GapMapSection,
   'executive/waiting': WaitingCallsSection,
   'executive/completed': CompletedCallsSection,
+  'executive/ai-demo': AiDemoCallSection,
   'resourcePerson/beneficiaries': TraineesSection,
   'resourcePerson/materials': CourseMaterialsSection,
   'resourcePerson/sessions': SessionsSection,

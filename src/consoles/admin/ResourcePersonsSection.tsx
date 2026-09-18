@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { loadCentres, RESOURCE_PERSON_RECORDS, type ResourcePersonRecord } from '../../data/adminConsole'
 import { courses, districts } from '../../data/jharkhandBeneficiaries'
+import { SeededDirectoryNote } from './SeededDirectoryNote'
 import '../../styles/admin.css'
 
 /** All resource persons, their postings, and the courses they are assigned (SETU-SPEC 6.3). */
@@ -107,6 +108,8 @@ export function ResourcePersonsSection() {
       </header>
 
       <div className="section-body admin-body">
+        <SeededDirectoryNote />
+
         {notice && (
           <div className="gap-notice" role="status">
             <span className="gap-notice-action">{t('admin.staff.createdTitle')}</span>

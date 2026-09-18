@@ -8,6 +8,9 @@ import {
   type OutcomeKey,
 } from '../../data/jharkhandCalls'
 import { isDialectGap, languageNameFor } from '../../lib/languageDetection'
+import { useDataSource } from '../../data/useDataSource'
+import type { SlotName } from '../../data/source'
+import { SourceBadge } from '../admin/SourceBadge'
 import { useCallSession } from './CallSessionContext'
 
 type Period = 'all' | 'today' | 'week' | 'month'
@@ -21,11 +24,15 @@ const PERIOD_DAYS: Record<Period, number> = { all: 3650, today: 0, week: 7, mont
 export function CompletedCallsSection({
   titleKey = 'sections.executive.completed.title',
   scopeValueKey = 'callConsole.completed.scopeValue',
+  slot = 'completed',
 }: {
   titleKey?: string
   scopeValueKey?: string
+  /** Which Firestore query backs this list: the executive's or the resource person's. */
+  slot?: SlotName
 } = {}) {
   const { t } = useTranslation()
+  const source = useDataSource(slot)
   const { completed } = useCallSession()
   const [search, setSearch] = useState('')
   const [period, setPeriod] = useState<Period>('all')
@@ -68,6 +75,7 @@ export function CompletedCallsSection({
           <p className="call-subtitle">{t('callConsole.completed.subtitle', { count: completed.length })}</p>
         </div>
         <div className="call-completed-chips">
+          <SourceBadge state={source} count={completed.length} />
           <span className="chip is-cyan">{t('callConsole.completed.identityNote')}</span>
           <span className="call-scope">
             <span className="call-scope-label">{t('callConsole.completed.scopeLabel')}</span>

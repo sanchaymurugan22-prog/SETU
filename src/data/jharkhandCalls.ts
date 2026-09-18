@@ -13,6 +13,7 @@
 import { loadBeneficiaries, type Beneficiary } from './jharkhandBeneficiaries'
 import { detected } from './languageDetections'
 import { liveCompleted, liveDetections, liveQueued } from './liveCalls'
+import { readSlot, registerSample } from './source'
 import type { LanguageDetection } from '../lib/languageDetection'
 
 export type ReasonTag =
@@ -510,15 +511,26 @@ const COMPLETED: CompletedCall[] = [
   },
 ]
 
-/** Swap for a Firestore query on calls where status == 'waiting' and callType == 'executive'. */
+registerSample('queue', QUEUE)
+registerSample('completed', COMPLETED)
+
+/** calls where recordType == 'queued' and callType == 'executive'. */
 export function loadQueue(): QueuedCall[] {
-  // A call the voice line escalated joins the queue ahead of the seeded ones.
-  return [...liveQueued(), ...QUEUE]
+  // A call the voice line escalated joins the queue ahead of the stored ones.
+  return [...liveQueued(), ...readSlot<QueuedCall>('queue')]
 }
 
-/** Swap for a query on calls where handledBy == this executive and status == 'completed'. */
+/** calls where recordType == 'completed', callType == 'executive' and handledBy == me. */
 export function loadCompleted(): CompletedCall[] {
-  return [...liveCompleted(), ...COMPLETED]
+  return [...liveCompleted(), ...readSlot<CompletedCall>('completed')]
+}
+
+export function sampleQueue(): QueuedCall[] {
+  return QUEUE
+}
+
+export function sampleCompleted(): CompletedCall[] {
+  return COMPLETED
 }
 
 /** Beneficiaries created by the voice line this session, keyed by id. */
@@ -686,19 +698,37 @@ const RP_COMPLETED: CompletedCall[] = [
   },
 ]
 
+registerSample('rpQueue', RP_QUEUE)
+registerSample('rpCompleted', RP_COMPLETED)
+
 /** Cases transferred to this resource person by the Call Console. */
 export function loadResourcePersonQueue(): QueuedCall[] {
-  return RP_QUEUE
+  return readSlot<QueuedCall>('rpQueue')
 }
 
 /** This resource person's own completed expert calls. */
 export function loadResourcePersonCompleted(): CompletedCall[] {
+  return readSlot<CompletedCall>('rpCompleted')
+}
+
+export function sampleResourcePersonQueue(): QueuedCall[] {
+  return RP_QUEUE
+}
+
+export function sampleResourcePersonCompleted(): CompletedCall[] {
   return RP_COMPLETED
 }
 
 /** Detection records from every call this console knows about, for the dialect-gap figures. */
 export function callDetections(): LanguageDetection[] {
-  return [...liveDetections(), ...[...QUEUE, ...COMPLETED, ...RP_QUEUE, ...RP_COMPLETED].map((call) => call.detection)]
+  // Whatever the slots hold — Firestore once it has answered, the sample until then.
+  const stored = [
+    ...readSlot<QueuedCall>('queue'),
+    ...readSlot<CompletedCall>('completed'),
+    ...readSlot<QueuedCall>('rpQueue'),
+    ...readSlot<CompletedCall>('rpCompleted'),
+  ]
+  return [...liveDetections(), ...stored.map((call) => call.detection)]
 }
 
 /** Calls waiting longer than this are shown as over target. */

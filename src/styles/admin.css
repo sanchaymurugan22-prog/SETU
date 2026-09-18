@@ -470,3 +470,94 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* ── Where the data came from ── */
+
+.source-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 10px;
+  background: var(--grey-200);
+  font-family: var(--font-heading);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--grey-700);
+  white-space: nowrap;
+}
+
+.source-badge-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--grey-500);
+  flex: none;
+}
+
+.source-badge.is-firestore {
+  background: var(--cyan-100);
+  color: var(--teal);
+}
+
+.source-badge.is-firestore .source-badge-dot {
+  background: var(--teal);
+}
+
+.source-badge.is-loading .source-badge-dot {
+  background: var(--signal-cyan);
+  animation: voice-pulse 1s infinite;
+}
+
+.source-badge.is-error {
+  background: #fdf3cf;
+  color: #7a5c00;
+}
+
+.source-badge.is-error .source-badge-dot {
+  background: var(--amber);
+}
+
+.source-badge-note {
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+@keyframes voice-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.45; transform: scale(1.3); }
+}
+
+/* ── The staff directory is seeded, and says so ── */
+
+.admin-seeded-note {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0 0 18px;
+  padding: 10px 14px;
+  background: var(--grey-100);
+  border-left: 3px solid var(--grey-400);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--grey-700);
+}
+
+.admin-seeded-note-label {
+  flex: none;
+  font-family: var(--font-heading);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--grey-600);
+}
+
+@media (max-width: 640px) {
+  .admin-seeded-note {
+    flex-direction: column;
+    gap: 4px;
+  }
+}

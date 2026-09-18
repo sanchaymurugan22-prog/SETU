@@ -15,7 +15,9 @@ import {
   type TrainingStatus,
 } from '../../data/jharkhandBeneficiaries'
 import { formatLastContact } from '../../i18n/format'
+import { useDataSource } from '../../data/useDataSource'
 import { BeneficiaryJourney } from './BeneficiaryJourney'
+import { SourceBadge } from './SourceBadge'
 import '../../styles/beneficiaries.css'
 
 const PAGE_SIZE = 12
@@ -36,7 +38,11 @@ function matchesSearch(person: Beneficiary, term: string): boolean {
 
 export function BeneficiariesSection() {
   const { t } = useTranslation()
-  const all = loadBeneficiaries()
+  const source = useDataSource('beneficiaries')
+  // Same reason as the Gap Map: the slot is module state, so the load has to be named as
+  // a dependency or this list keeps showing the sample it read on the first render.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const all = useMemo(() => loadBeneficiaries(), [source.loadedAt])
 
   const [search, setSearch] = useState('')
   const [district, setDistrict] = useState('all')
@@ -112,6 +118,7 @@ export function BeneficiariesSection() {
         <div className="ben-jurisdiction">
           <span className="ben-jurisdiction-label">{t('gapMap.jurisdictionLabel')}</span>
           <span className="ben-jurisdiction-value">{t('gapMap.jurisdictionValue')}</span>
+          <SourceBadge state={source} count={all.length} />
         </div>
       </header>
 

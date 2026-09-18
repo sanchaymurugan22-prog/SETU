@@ -9,6 +9,7 @@
  * assignedResourcePerson (SETU-SPEC.md 8.1, 8.5, 8.7).
  */
 
+import { readSlot, registerSample } from './source'
 import {
   loadBeneficiaries,
   TRAINER_CENTRE,
@@ -427,4 +428,63 @@ export function nextSessionAfter(
     }
   }
   return null
+}
+
+/* ─────────────────────────── Attendance records ─────────────────────────── */
+
+/**
+ * One row per trainee per session held — the flat shape the `attendance` collection
+ * stores (SETU-SPEC.md 8.5). The consoles rebuild sessions from these, which is why the
+ * Sessions section and the Beneficiaries list can never disagree.
+ */
+export interface AttendanceRecord {
+  attendanceId: string
+  beneficiaryId: string
+  centreId: string
+  batchId: string
+  course: string
+  /** ISO date of the session. */
+  sessionDate: string
+  sessionNumber: number
+  mark: 'present' | 'absent'
+  /** The resource person who marked it — the field the security rules check. */
+  markedBy: string
+}
+
+function buildAttendance(): AttendanceRecord[] {
+  const records: AttendanceRecord[] = []
+  for (const batch of RESOURCE_PERSON.batches) {
+    const members = loadTrainees().filter((trainee) => trainee.batchId === batch.batchId)
+    const held = members.reduce((most, trainee) => Math.max(most, trainee.attendance?.sessions.length ?? 0), 0)
+    const dates = sessionDates(batch, held)
+
+    for (const trainee of members) {
+      trainee.attendance?.sessions.forEach((mark, index) => {
+        records.push({
+          attendanceId: `${batch.batchId}-${index + 1}-${trainee.beneficiaryId}`,
+          beneficiaryId: trainee.beneficiaryId,
+          centreId: batch.centre,
+          batchId: batch.batchId,
+          course: batch.course,
+          sessionDate: dates[index] ?? batch.startDate,
+          sessionNumber: index + 1,
+          mark,
+          markedBy: RESOURCE_PERSON.userId,
+        })
+      })
+    }
+  }
+  return records
+}
+
+const ATTENDANCE = buildAttendance()
+
+registerSample('attendance', ATTENDANCE)
+
+export function loadAttendance(): AttendanceRecord[] {
+  return readSlot<AttendanceRecord>('attendance')
+}
+
+export function sampleAttendance(): AttendanceRecord[] {
+  return ATTENDANCE
 }

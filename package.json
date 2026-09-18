@@ -13,7 +13,10 @@
     "deploy:rules": "firebase deploy --only firestore:rules,firestore:indexes",
     "i18n:check": "node scripts/check-i18n.mjs",
     "test:bhashini": "node --env-file=.env node_modules/vitest/vitest.mjs run tests/bhashini.live.test.ts",
-    "voice:build": "node --env-file=.env scripts/pregenerate-voice.mjs"
+    "voice:build": "node --env-file=.env scripts/pregenerate-voice.mjs",
+    "seed:firestore": "tsx --env-file=.env scripts/seed-firestore.ts",
+    "seed:firestore:emulator": "SEED_USE_EMULATORS=true SEED_ADMIN_EMAIL=admin@setu.test SEED_ADMIN_PASSWORD=setu-demo-123 tsx --env-file=.env.emulator scripts/seed-firestore.ts",
+    "deploy:indexes": "firebase deploy --only firestore:indexes"
   },
   "dependencies": {
     "firebase": "^12.19.0",
@@ -34,6 +37,7 @@
     "@vitejs/plugin-react": "^6.1.1",
     "firebase-tools": "^15.30.1",
     "oxlint": "^1.81.0",
+    "tsx": "^4.23.13",
     "typescript": "~6.0.2",
     "vite": "^8.3.0",
     "vitest": "^5.0.1"

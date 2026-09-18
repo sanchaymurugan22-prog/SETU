@@ -9,6 +9,7 @@
 
 import { loadCentres } from './adminConsole'
 import { loadBlockGaps } from './jharkhandGaps'
+import { readSlot, registerSample } from './source'
 
 export interface CourseRecord {
   course: string
@@ -184,8 +185,19 @@ export const COURSE_RECORDS: CourseRecord[] = [
   },
 ]
 
+registerSample('courses', COURSE_RECORDS)
+
+/** Every course SETU can talk about. Served from Firestore once `courses` has loaded. */
+export function loadCourseRecords(): CourseRecord[] {
+  return readSlot<CourseRecord>('courses')
+}
+
+export function sampleCourseRecords(): CourseRecord[] {
+  return COURSE_RECORDS
+}
+
 export function courseRecord(course: string): CourseRecord | null {
-  return COURSE_RECORDS.find((record) => record.course === course) ?? null
+  return loadCourseRecords().find((record) => record.course === course) ?? null
 }
 
 /* ─────────────────────────── The matching rules ─────────────────────────── */

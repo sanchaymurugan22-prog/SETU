@@ -12,6 +12,7 @@
  */
 
 import { loadBlockGaps, type BlockGap } from './jharkhandGaps'
+import { readSlot, registerSample } from './source'
 
 /**
  * Where someone is in their training. There is no separate "completed" stage: finishing
@@ -639,8 +640,18 @@ function build(): Beneficiary[] {
 
 const BENEFICIARIES = build()
 
-/** Swap this for a Firestore query on `beneficiaries` when the collection is populated. */
+registerSample('beneficiaries', BENEFICIARIES)
+
+/**
+ * Every beneficiary. Served from Firestore once the collection has loaded, and from the
+ * seeded sample until then — or for good, if the query fails.
+ */
 export function loadBeneficiaries(): Beneficiary[] {
+  return readSlot<Beneficiary>('beneficiaries')
+}
+
+/** The seeded sample, for the Firestore seeding script and as the last-resort fallback. */
+export function sampleBeneficiaries(): Beneficiary[] {
   return BENEFICIARIES
 }
 
@@ -649,17 +660,19 @@ export function isFlaggedOrStalled(person: Beneficiary): boolean {
 }
 
 export function districts(): string[] {
-  return [...new Set(BENEFICIARIES.map((person) => person.district))].sort()
+  return [...new Set(loadBeneficiaries().map((person) => person.district))].sort()
 }
 
 export function blocks(district: string): string[] {
   return [
     ...new Set(
-      BENEFICIARIES.filter((person) => district === 'all' || person.district === district).map((person) => person.block),
+      loadBeneficiaries()
+        .filter((person) => district === 'all' || person.district === district)
+        .map((person) => person.block),
     ),
   ].sort()
 }
 
 export function courses(): string[] {
-  return [...new Set(BENEFICIARIES.map((person) => person.course))].sort()
+  return [...new Set(loadBeneficiaries().map((person) => person.course))].sort()
 }

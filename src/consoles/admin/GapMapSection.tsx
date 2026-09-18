@@ -13,7 +13,9 @@ import {
   type BlockGap,
   type WindowDays,
 } from '../../data/jharkhandGaps'
+import { useDataSource } from '../../data/useDataSource'
 import { GapMap, type FocusRequest, type GapAction } from './GapMap'
+import { SourceBadge } from './SourceBadge'
 import '../../styles/gap-map.css'
 
 const SEVERITY_BADGE: Record<BlockGap['severity'], string> = { high: 'P1', medium: 'P2', low: 'P3' }
@@ -34,7 +36,12 @@ export function GapMapSection() {
     document.title = `${title} · SETU`
   }, [title])
 
-  const gaps = useMemo(() => gapsInWindow(windowDays), [windowDays])
+  const source = useDataSource('gaps')
+  // gapsInWindow() reads a module-level slot the linter cannot see, so loadedAt is listed
+  // deliberately: it is what tells this memo that Firestore data has replaced the sample.
+  // Without it the badge would say Firestore while the map still drew the seeded numbers.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const gaps = useMemo(() => gapsInWindow(windowDays), [windowDays, source.loadedAt])
   const totals = statewideTotals(windowDays)
   const demandByCourse = useMemo(() => courseDemand(gaps), [gaps])
 
@@ -72,6 +79,7 @@ export function GapMapSection() {
             <span className="gap-jurisdiction-label">{t('gapMap.jurisdictionLabel')}</span>
             <span className="gap-jurisdiction-value">{t('gapMap.jurisdictionValue')}</span>
           </div>
+          <SourceBadge state={source} count={gaps.length} />
           <label className="gap-window">
             <span className="visually-hidden">{t('gapMap.windowLabel')}</span>
             <select value={windowDays} onChange={(event) => setWindowDays(Number(event.target.value) as WindowDays)}>

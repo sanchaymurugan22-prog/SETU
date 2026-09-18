@@ -1,6 +1,6 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Navigate, useLocation, Link } from 'react-router-dom'
+import { Navigate, useLocation } from 'react-router-dom'
 import { FirebaseError } from 'firebase/app'
 import {
   browserLocalPersistence,
@@ -121,10 +121,6 @@ export function LoginPage() {
           <p>{t('login.panelBody')}</p>
           <p className="login-pitch-secondary">{t('login.panelBodySecondary')}</p>
         </div>
-
-        <Link className="login-demo-link voice-demo-link" to="/call">
-          {t('voice.title')} →
-        </Link>
 
         <div className="login-ministry">
           <div className="emblem-placeholder" aria-hidden="true">

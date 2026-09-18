@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ATTENDANCE_WATCH_PERCENT, useTrainer } from './TrainerContext'
+import { useDataSource } from '../../data/useDataSource'
+import { SourceBadge } from '../admin/SourceBadge'
 import '../../styles/resource-person.css'
 
 /** Long date in the interface language. */
@@ -21,6 +23,7 @@ function formatDate(iso: string, language: string): string {
  */
 export function SessionsSection() {
   const { t, i18n } = useTranslation()
+  const source = useDataSource('attendance')
   const { sessions, concerns, trainees, batches } = useTrainer()
   const [batchId, setBatchId] = useState('all')
   const [openId, setOpenId] = useState<string | null>(null)
@@ -56,6 +59,7 @@ export function SessionsSection() {
           <span className="call-scope-label">{t('resourcePerson.centreLabel')}</span>
           <span className="call-scope-value">{batches[0]?.centre}</span>
         </div>
+          <SourceBadge state={source} count={sessions.length} />
       </header>
 
       <div className="section-body rp-body">
