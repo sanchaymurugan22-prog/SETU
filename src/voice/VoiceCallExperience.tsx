@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { languageNameFor } from '../lib/languageDetection'
+import { SAMPLE_DETECTION, sampleCallState } from './sampleCall'
 import { STAGE_ORDER, type StageId } from './script'
 import { useVoiceCall } from './useVoiceCall'
 import '../styles/voice.css'
@@ -11,6 +12,12 @@ const VISIBLE_STAGES: StageId[] = STAGE_ORDER.filter((stage) => stage !== 'done'
 export interface VoiceCallExperienceProps {
   /** Forces a contested detection so Case F can be rehearsed. */
   rehearseContested?: boolean
+  /**
+   * Show a worked example before the first call, so the section explains itself without
+   * anyone having to place a call first. Off by default: the standalone /call page is a
+   * beneficiary ringing in, and they should meet an empty line, not somebody else's call.
+   */
+  showExample?: boolean
   /** Rendered above the transcript: what this is and who it is for. */
   note?: string
   /** The call timer, when the host has nowhere else to show it. */
@@ -22,11 +29,28 @@ export interface VoiceCallExperienceProps {
  * captured. Used both by the standalone /call page and by the Call Console section, so
  * there is one implementation of the demo rather than two that can drift.
  */
-export function VoiceCallExperience({ rehearseContested = false, note, onElapsed }: VoiceCallExperienceProps) {
+export function VoiceCallExperience({
+  rehearseContested = false,
+  showExample = false,
+  note,
+  onElapsed,
+}: VoiceCallExperienceProps) {
   const { t } = useTranslation()
   const call = useVoiceCall({ rehearseContested })
   const [typed, setTyped] = useState('')
   const [started, setStarted] = useState(false)
+
+  /**
+   * Until Start is pressed, every panel reads from the worked example instead of the
+   * empty live state. One switch rather than a second set of markup, so the example
+   * cannot drift away from how a real call is displayed — it is rendered by exactly the
+   * same code. The rehearsal path keeps its empty opening, because the whole point there
+   * is to watch the detection contest happen live.
+   */
+  const example = showExample && !rehearseContested && !started
+  const sample = useMemo(() => sampleCallState(), [])
+  const state = example ? sample : call.state
+  const detection = example ? SAMPLE_DETECTION : call.detection
 
   useEffect(() => {
     if (!started || call.phase === 'ended') return
@@ -38,7 +62,7 @@ export function VoiceCallExperience({ rehearseContested = false, note, onElapsed
     onElapsed?.(started ? call.elapsed : 0)
   }, [call.elapsed, onElapsed, started])
 
-  const stageIndex = VISIBLE_STAGES.indexOf(call.state.stage)
+  const stageIndex = VISIBLE_STAGES.indexOf(state.stage)
 
   const send = async () => {
     const text = typed
@@ -54,6 +78,13 @@ export function VoiceCallExperience({ rehearseContested = false, note, onElapsed
       {rehearseContested && (
           <div className="voice-rehearsal" role="status">
             {t('voice.rehearsalContested')}
+          </div>
+        )}
+
+        {example && (
+          <div className="voice-example" role="status">
+            <span className="voice-example-label">{t('voice.exampleLabel')}</span>
+            <span>{t('voice.exampleBody')}</span>
           </div>
         )}
 
@@ -77,10 +108,10 @@ export function VoiceCallExperience({ rehearseContested = false, note, onElapsed
         )}
 
         <div className="voice-transcript">
-          {call.state.turns.length === 0 ? (
+          {state.turns.length === 0 ? (
             <p className="voice-empty">{t('voice.empty')}</p>
           ) : (
-            call.state.turns.map((turn, index) => (
+            state.turns.map((turn, index) => (
               <div className={`voice-turn is-${turn.speaker}`} key={`${turn.stage}-${index}`}>
                 <span className="voice-turn-who">
                   {turn.speaker === 'setu' ? t('voice.setu') : t('voice.caller')}
@@ -160,29 +191,29 @@ export function VoiceCallExperience({ rehearseContested = false, note, onElapsed
       <aside className="voice-side">
         <section className="voice-panel">
           <span className="voice-panel-title">{t('detection.panelTitle')}</span>
-          {call.detection ? (
+          {detection ? (
             <>
               <div className="voice-detected">
-                <span className="voice-detected-name">{call.detection.languageName}</span>
-                <span className={`voice-agreement is-${call.detection.agreement}`}>
-                  {t(`detection.agreement.${call.detection.agreement}`)}
+                <span className="voice-detected-name">{detection.languageName}</span>
+                <span className={`voice-agreement is-${detection.agreement}`}>
+                  {t(`detection.agreement.${detection.agreement}`)}
                 </span>
               </div>
               <div className="voice-models">
                 <div className="voice-model">
                   <span>{t('detection.primaryModel')}</span>
                   <span className="voice-model-answer">
-                    {languageNameFor(call.detection.primary.langCode)}
-                    <span className="voice-model-score">{call.detection.primary.langScore.toFixed(2)}</span>
+                    {languageNameFor(detection.primary.langCode)}
+                    <span className="voice-model-score">{detection.primary.langScore.toFixed(2)}</span>
                   </span>
                 </div>
                 <div className="voice-model">
                   <span>{t('detection.secondaryModel')}</span>
                   <span className="voice-model-answer">
-                    {call.detection.secondary ? (
+                    {detection.secondary ? (
                       <>
-                        {languageNameFor(call.detection.secondary.langCode)}
-                        <span className="voice-model-score">{call.detection.secondary.langScore.toFixed(2)}</span>
+                        {languageNameFor(detection.secondary.langCode)}
+                        <span className="voice-model-score">{detection.secondary.langScore.toFixed(2)}</span>
                       </>
                     ) : (
                       t('detection.noAnswer')
@@ -190,7 +221,7 @@ export function VoiceCallExperience({ rehearseContested = false, note, onElapsed
                   </span>
                 </div>
               </div>
-              {call.state.dialectGap && <span className="voice-chip is-alert">{t('detection.dialectGap')}</span>}
+              {state.dialectGap && <span className="voice-chip is-alert">{t('detection.dialectGap')}</span>}
             </>
           ) : (
             <p className="voice-panel-empty">{t('voice.detectionPending')}</p>
@@ -219,37 +250,37 @@ export function VoiceCallExperience({ rehearseContested = false, note, onElapsed
           <dl className="voice-captured">
             <div>
               <dt>{t('voice.captured.name')}</dt>
-              <dd>{call.state.profile.name ?? '—'}</dd>
+              <dd>{state.profile.name ?? '—'}</dd>
             </div>
             <div>
               <dt>{t('voice.captured.location')}</dt>
               <dd>
-                {[call.state.profile.village, call.state.profile.block, call.state.profile.district]
+                {[state.profile.village, state.profile.block, state.profile.district]
                   .filter(Boolean)
                   .join(' · ') || '—'}
               </dd>
             </div>
             <div>
               <dt>{t('voice.captured.work')}</dt>
-              <dd>{call.state.profile.currentWork ?? '—'}</dd>
+              <dd>{state.profile.currentWork ?? '—'}</dd>
             </div>
             <div>
               <dt>{t('voice.captured.family')}</dt>
-              <dd>{call.state.profile.familyOccupation ?? '—'}</dd>
+              <dd>{state.profile.familyOccupation ?? '—'}</dd>
             </div>
             <div>
               <dt>{t('voice.captured.education')}</dt>
               <dd>
-                {call.state.profile.schoolYears === null
+                {state.profile.schoolYears === null
                   ? '—'
-                  : t('voice.captured.classValue', { years: call.state.profile.schoolYears })}
+                  : t('voice.captured.classValue', { years: state.profile.schoolYears })}
               </dd>
             </div>
             <div>
               <dt>{t('voice.captured.recommendation')}</dt>
               <dd>
-                {call.state.recommendation
-                  ? `${call.state.recommendation.course.course} · ${call.state.recommendation.centreName}`
+                {state.recommendation
+                  ? `${state.recommendation.course.course} · ${state.recommendation.centreName}`
                   : '—'}
               </dd>
             </div>

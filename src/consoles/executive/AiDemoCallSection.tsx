@@ -29,7 +29,13 @@ export function AiDemoCallSection() {
       </header>
 
       <div className="section-body voice-section-body">
-        <VoiceCallExperience rehearseContested={rehearseContested} note={t('voice.demoNote')} />
+        <VoiceCallExperience
+          rehearseContested={rehearseContested}
+          // The console opens on a finished call so there is something to read at once.
+          // The standalone /call page does not: there, somebody is actually ringing in.
+          showExample
+          note={t('voice.demoNote')}
+        />
       </div>
     </>
   )

@@ -905,6 +905,8 @@
     "backToConsoles": "Back to the consoles",
     "transcriptTitle": "Call transcript",
     "empty": "Press Start call. SETU greets in Hindi and English, then listens — hold the button to speak, or type instead if the microphone misbehaves.",
+    "exampleLabel": "Recorded example",
+    "exampleBody": "A completed call, shown so you can read one without placing it. Press Start call to speak to SETU yourself — that call is live and replaces this.",
     "setu": "SETU",
     "caller": "Caller",
     "startCall": "Start call",

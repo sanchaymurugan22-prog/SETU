@@ -508,18 +508,50 @@
   padding: 0 22px 22px;
 }
 
-/* The embedded copy has no page chrome, so the grid starts flush with the header. */
 .voice-section-body .voice-main {
-  padding: 0;
+  padding: 20px 0 0 0;
 }
 
 .voice-note {
   margin: 0;
-  padding: 10px 14px;
+  padding: 12px 16px;
   background: rgb(153 224 255 / 14%);
   border-left: 3px solid var(--cyan-400);
   font-size: 13px;
   line-height: 1.5;
   color: var(--paper);
-  max-width: 88ch;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ── The worked example shown before the first live call ── */
+
+.voice-example {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0 0 14px;
+  padding: 10px 14px;
+  background: var(--cyan-100);
+  border-left: 3px solid var(--teal);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--grey-700);
+}
+
+.voice-example-label {
+  flex: none;
+  font-family: var(--font-heading);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--teal);
+}
+
+@media (max-width: 640px) {
+  .voice-example {
+    flex-direction: column;
+    gap: 4px;
+  }
 }
